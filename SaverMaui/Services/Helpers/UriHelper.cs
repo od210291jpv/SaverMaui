@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SaverMaui.Services.Helpers
+{
+    public static class UriHelper
+    {
+        public static string BaseIp = "192.168.0.101";
+
+        public static int Port = 5000;
+
+        public static string BaseAddress = $"http://{BaseIp}:{Port}";
+
+        public static string GetAllContent 
+        {
+            get => $"{BaseAddress}/GetAllContent";
+        }
+
+        public static string GetAllCategories 
+        {
+            get => $"{BaseAddress}/GetCategories";
+        }
+
+        public static string PostContent 
+        {
+            get => $"{BaseAddress}/SyncContent";
+        }
+    }
+}
