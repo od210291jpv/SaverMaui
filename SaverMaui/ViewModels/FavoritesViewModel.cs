@@ -15,6 +15,7 @@ namespace SaverMaui.ViewModels
     {
         public ObservableCollection<Category> FavoriteCategories { get; set; }
 
+        public ObservableCollection<Content> AllFavoriteContent { get; set; }
 
         public ObservableCollection<Content> FavoriteContent { get; set; }
 
@@ -40,12 +41,19 @@ namespace SaverMaui.ViewModels
             get;
         }
 
+        public ICommand NavigateToPersonalFeedCommand 
+        {
+            get;
+        }
+
         public FavoritesViewModel()
         {
             this.NavigateToFeedItemCommand = new NavigateToFavoriteCategoriesPageCommand(this);
             this.NavigateToFavoriteCategoriesCommand = new NavigateToFavoriteCategoriesCommand(this);
             this.FavoriteCategories = new ObservableCollection<Category>();
             this.FavoriteContent = new ObservableCollection<Content>();
+            this.AllFavoriteContent = new ObservableCollection<Content>();
+            this.NavigateToPersonalFeedCommand = new NavigateToPersonalFeedCommand(this);
 
             Realm _realm = Realm.GetInstance();
             var allFavCategories = _realm.All<Category>().ToArray().Where(c => c.IsFavorite == true);
@@ -60,6 +68,15 @@ namespace SaverMaui.ViewModels
             fc.IsFavorite == true).Select(fc =>
             fc.CategoryId).ToArray().Contains(c.CategoryId) == true).ToArray();
 
+            var allContent = _realm.All<Content>().ToArray();
+
+            foreach (var c in allFavCategories)
+            {
+                foreach (var ctnt in allContent.Where(cn => cn.CategoryId == c.CategoryId))
+                {
+                    this.AllFavoriteContent.Add(ctnt);
+                }
+            }
         }
     }
 }

@@ -10,7 +10,8 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="Black">
-            <Button Command="{Binding NavigateToFeedItemCommand}" Text="Open" BackgroundColor="Black" TextColor="Gold" BorderColor="Gold" BorderWidth="1" CornerRadius="15" Margin="5"/>
+            <Button Command="{Binding NavigateToFeedItemCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
+            <Button Command="{Binding NavigateToPersonalFeedCommand}" Text="Personal Feed" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
             <ListView ItemsSource="{Binding FavoriteCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedFavoriteCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
                 <ListView.ItemTemplate>
                     <DataTemplate>
