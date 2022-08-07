@@ -25,5 +25,8 @@
     <FlyoutItem Title="Favorites">
         <ShellContent ContentTemplate="{DataTemplate local:FavoritesPage}"></ShellContent>
     </FlyoutItem>
+    <FlyoutItem Title="Notification Center">
+        <ShellContent ContentTemplate="{DataTemplate local:NotificationCenterPage}"></ShellContent>
+    </FlyoutItem>
 
 </Shell>

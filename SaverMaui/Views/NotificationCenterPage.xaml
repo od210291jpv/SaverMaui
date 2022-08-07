@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SaverMaui.Views.NotificationCenterPage"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             Title="NotofocationCenterPage">
+
+    <ContentPage.BindingContext>
+        <vm:NotificationCenterViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Orientation="Vertical" Spacing="5">
+        <Button Text="Connect" Command="{Binding NotifyClientsCommand}"></Button>
+        <ListView ItemsSource="{Binding Messages}" HasUnevenRows="True" SeparatorVisibility="Default">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding Path=Message}" BackgroundColor="Black" TextColor="DeepPink"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
