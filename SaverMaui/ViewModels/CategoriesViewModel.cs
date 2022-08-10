@@ -1,19 +1,16 @@
 ﻿using Realms;
 using SaverMaui.Commands;
 using SaverMaui.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
     public class CategoriesViewModel : BaseViewModel
     {
+        public static CategoriesViewModel Instance { get; private set; }
+
         public ObservableCollection<Category> Categories { get; set; }
 
         private Category selectedCategory;
@@ -60,6 +57,8 @@ namespace SaverMaui.ViewModels
             }
 
             this.PropertyChanged += OnCurrentCategoryChanged;
+
+            Instance = this;
         }
 
         public void OnCurrentCategoryChanged(object sender, PropertyChangedEventArgs e)

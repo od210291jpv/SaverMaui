@@ -4,14 +4,13 @@
             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.CategoriesPageV2"
              Title="CategoriesPageV2">
+    
     <ContentPage.BindingContext>
         <vm:CategoriesViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <FlexLayout>
-            <!--<Button Command="{Binding NavigateToFeedItemCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
-            <Button Command="{Binding AddFavoriteCategoryCmd}" Text="Add To Favorites" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>-->
             <CollectionView ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" SelectionMode="Single">
                 <CollectionView.Header>
                     <StackLayout BackgroundColor="Gray">
@@ -23,6 +22,13 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnCategoryOpen"/>
+                                    <SwipeItem Text="Set Favorite" BackgroundColor="Pink" Clicked="OnAddToFavorites"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
                             <Grid HeightRequest="100">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -34,6 +40,7 @@
                                     <Label Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
                                 </Frame>
                             </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

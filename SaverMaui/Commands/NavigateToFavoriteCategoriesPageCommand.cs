@@ -29,7 +29,7 @@ namespace SaverMaui.Commands
         public async void Execute(object parameter)
         {
             Environment.SahredData.currentCategory = this._vm.SelectedFavoriteCategory;
-            await Application.Current.MainPage.Navigation.PushAsync(new CategoryFeedPage(this._vm.SelectedFavoriteCategory));
+            await Application.Current.MainPage.Navigation.PushAsync(new CategoryFeedPage());
         }
     }
 }

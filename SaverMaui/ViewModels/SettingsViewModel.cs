@@ -162,7 +162,6 @@ namespace SaverMaui.ViewModels
             }
         }
 
-
         public SettingsViewModel()
         {
             this.Categories = new ObservableCollection<Category>();

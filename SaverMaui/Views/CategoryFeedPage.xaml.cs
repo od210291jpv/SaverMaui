@@ -9,10 +9,10 @@ public partial class CategoryFeedPage : ContentPage
     public Category CurrentCat { get => currentCat; set => currentCat = value; }
 
 
-    public CategoryFeedPage(Category category)
+    public CategoryFeedPage()
     {
         InitializeComponent();
 
-        this.Title = category.Name;
+        this.Title = Environment.SahredData.currentCategory.Name;
     }
 }

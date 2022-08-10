@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace SaverMaui.Commands
 {
-    internal class AddFavoriteCategoryCommand : ICommand
+    public class AddFavoriteCategoryCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
 

@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
 
     <StackLayout Orientation="Vertical" Spacing="5">
-        <Button Text="Connect" Command="{Binding NotifyClientsCommand}"></Button>
+        <Button Text="Connect" Command="{Binding NotifyClientsCommand}" BackgroundColor="DeepPink" CornerRadius="0" TextColor="White"></Button>
         <ListView ItemsSource="{Binding Messages}" HasUnevenRows="True" SeparatorVisibility="Default">
             <ListView.ItemTemplate>
                 <DataTemplate>
