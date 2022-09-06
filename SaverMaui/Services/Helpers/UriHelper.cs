@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SaverMaui.Services.Helpers
+﻿namespace SaverMaui.Services.Helpers
 {
     public static class UriHelper
     {
         public static string BaseIp = "192.168.0.101";
-        //public static string BaseIp = "192.168.0.108";
+        //public static string BaseIp = "192.168.0.114";
 
         public static int Port = 5000;
         public static int SignalRPort = 5000;
@@ -31,6 +25,16 @@ namespace SaverMaui.Services.Helpers
         public static string PostContent 
         {
             get => $"{BaseAddress}/SyncContent";
+        }
+
+        public static string UpdateStatistics 
+        {
+            get => $"{BaseAddress}/UpdateCategoryStatistics";
+        }
+
+        public static string CategoriesStatistics 
+        {
+            get => $"{BaseAddress}/GetCategoryStatistics";
         }
     }
 }

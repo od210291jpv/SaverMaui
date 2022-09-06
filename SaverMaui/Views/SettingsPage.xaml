@@ -11,7 +11,7 @@
     <ContentPage.Content>
             <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
                 <Frame  CornerRadius="0" HasShadow="False" HorizontalOptions="FillAndExpand" Padding="5" Margin="5" BackgroundColor="Black">
-                    <Grid Margin="1" Padding="0" RowSpacing="15" ColumnSpacing="10" BackgroundColor="Black">
+                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" BackgroundColor="Black">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>

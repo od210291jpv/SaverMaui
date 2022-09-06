@@ -1,5 +1,6 @@
 ﻿using Realms;
 using SaverMaui.Models;
+using SaverMaui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace SaverMaui.Commands
                         _realm.Write(() => _realm.Remove(cat));
                     }
 
+                    CategoriesViewModel.Instance.UpdateAllCategories();
                     await Application.Current.MainPage.DisplayAlert("Done", $"Categories where deleted", "Ok");
                 }
                 else

@@ -8,19 +8,25 @@
 
     <TabBar>
         <ShellContent Title="Settings" Route="Settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
-        <ShellContent Title="Categories" ContentTemplate="{DataTemplate local:CategoriesPageV2}" />
+        <!--<ShellContent Title="Categories" ContentTemplate="{DataTemplate local:CategoriesPageV2}" />
         <ShellContent Title="Feed" ContentTemplate="{DataTemplate local:FeedPage}" />
-        <ShellContent Title="Favorites" ContentTemplate="{DataTemplate local:FavoritesPage}" />
+        <ShellContent Title="Favorites" ContentTemplate="{DataTemplate local:FavoritesPage}" />-->
     </TabBar>
 
     <FlyoutItem Title="Settings">
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Categories">
+        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}"></ShellContent>
+    </FlyoutItem>
+    <FlyoutItem Title="Categories (Old, for Windows)">
         <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Feed">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}"></ShellContent>
+    </FlyoutItem>
+    <FlyoutItem Title="Web Content">
+        <ShellContent ContentTemplate="{DataTemplate local:WebContentPage}"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Favorites">
         <ShellContent ContentTemplate="{DataTemplate local:FavoritesPage}"></ShellContent>

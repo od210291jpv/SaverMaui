@@ -8,6 +8,8 @@ namespace SaverMaui
         public static class SahredData
         {
             public static Category currentCategory;
+
+            public static WebContent currentWebContent;
         }
 
         public static class SharedSettings

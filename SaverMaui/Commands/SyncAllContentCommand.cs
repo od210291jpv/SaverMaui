@@ -55,7 +55,26 @@ namespace SaverMaui.Commands
                     CategoryId = cat.CategoryId,
                     Name = cat.Name,
                     IsFavorite = false,
+
                 };
+
+                if (cat.AmountOfOpenings != null)
+                {
+                    category.AmountOfOpenings = cat.AmountOfOpenings.Value;
+                }
+                else 
+                {
+                    category.AmountOfOpenings = 0;
+                }
+
+                if (cat.AmountOfFavorites != null)
+                {
+                    category.AmountOfFavorites = cat.AmountOfFavorites.Value;
+                }
+                else 
+                {
+                    cat.AmountOfFavorites = 0;
+                }
 
                 realmInstance.Write(() => realmInstance.Add<Category>(category));
             }

@@ -46,23 +46,35 @@ namespace SaverMaui.Commands
             var allCategoriesDto = new List<CategoryDto>();
             var allContentDto = new List<ContentDto>();
 
+            var allExistingsCategories = await this.backendClient.GetAllCategoriesAsync();
+
             foreach (var cat in allCategories)
             {
-                allCategoriesDto.Add(new CategoryDto()
+                if (!allCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
                 {
-                    Name = cat.Name,
-                    CategoryId = cat.CategoryId,
-                });
+                    allCategoriesDto.Add(new CategoryDto()
+                    {
+                        Name = cat.Name,
+                        CategoryId = cat.CategoryId,
+                        AmountOfFavorites = cat.AmountOfFavorites,
+                        AmountOfOpenings = cat.AmountOfOpenings
+                    });
+                }
             }
+
+            var allExistingContent = await this.backendClient.GetAllContentAsync();
 
             foreach (var content in allContent) 
             {
-                allContentDto.Add(new ContentDto() 
+                if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(content.ImageUri)) 
                 {
-                    CategoryId = content.CategoryId,
-                    ImageUri = content.ImageUri,
-                    Title = content.Title
-                });
+                    allContentDto.Add(new ContentDto()
+                    {
+                        CategoryId = content.CategoryId,
+                        ImageUri = content.ImageUri,
+                        Title = content.Title
+                    });
+                }
             }
 
             PostContentDataRequest request = new PostContentDataRequest()

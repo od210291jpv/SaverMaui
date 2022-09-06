@@ -73,6 +73,8 @@ namespace SaverMaui.ViewModels
             {
                 SendLocalMessage(message);
             });
+
+            this.notifyClientsCommand.Execute(this.isConnected);
         }
 
         public async Task Connect()

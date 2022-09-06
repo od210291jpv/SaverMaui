@@ -15,5 +15,8 @@ namespace SaverMaui.Models
 
         public bool IsFavorite { get; set; }
 
+        public int AmountOfOpenings { get; set; } = 0;
+
+        public int AmountOfFavorites { get; set; } = 0;
     }
 }

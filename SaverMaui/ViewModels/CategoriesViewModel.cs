@@ -31,8 +31,7 @@ namespace SaverMaui.ViewModels
         {
             get
             {
-                return navigateToFeedItemCommand ??
-                    (navigateToFeedItemCommand = new NavigateToPageCommand(this));
+                return navigateToFeedItemCommand ??= new NavigateToPageCommand(this);
             }
         }
 
@@ -66,6 +65,19 @@ namespace SaverMaui.ViewModels
             if (e.PropertyName.Equals(nameof(this.SelectedCategory)))
             {
                 Environment.SahredData.currentCategory = this.SelectedCategory;
+            }
+        }
+
+        public void UpdateAllCategories() 
+        {
+            this.Categories.Clear();
+
+            Realm _realm = Realm.GetInstance();
+            var allCategories = _realm.All<Category>();
+
+            foreach (var cat in allCategories)
+            {
+                Categories.Add(cat);
             }
         }
     }
