@@ -1,18 +1,27 @@
 ﻿using Realms;
+
 using SaverMaui.Commands;
 using SaverMaui.Models;
-using System;
-using System.Collections.Generic;
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SaverMaui.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
         private string hostIpAddress;
+
+        private static SettingsViewModel instance;
+
+        public static SettingsViewModel GetInstance() 
+        {
+            if(instance is null) 
+            {
+                instance = new SettingsViewModel();
+            }
+
+            return instance;
+        }
 
         public string HostIpAddress
         {

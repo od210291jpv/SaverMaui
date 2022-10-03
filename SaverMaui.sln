@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverMaui", "SaverMaui\SaverMaui.csproj", "{AB3E48CC-1D88-41E2-BD85-30C0CEC32D85}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverBackend", "SaverBackend\SaverBackend.csproj", "{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlowSaverTests", "SpecFlowSaverTests\SpecFlowSaverTests.csproj", "{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +21,14 @@ Global
 		{AB3E48CC-1D88-41E2-BD85-30C0CEC32D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB3E48CC-1D88-41E2-BD85-30C0CEC32D85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB3E48CC-1D88-41E2-BD85-30C0CEC32D85}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

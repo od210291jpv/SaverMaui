@@ -8,11 +8,10 @@
 
     <TabBar>
         <ShellContent Title="Settings" Route="Settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
-        <!--<ShellContent Title="Categories" ContentTemplate="{DataTemplate local:CategoriesPageV2}" />
-        <ShellContent Title="Feed" ContentTemplate="{DataTemplate local:FeedPage}" />
-        <ShellContent Title="Favorites" ContentTemplate="{DataTemplate local:FavoritesPage}" />-->
     </TabBar>
-
+    <FlyoutItem Title="Profile">
+        <ShellContent></ShellContent>
+    </FlyoutItem>
     <FlyoutItem Title="Settings">
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}"></ShellContent>
     </FlyoutItem>

@@ -49,6 +49,8 @@ namespace SaverMaui.Commands
             viewModel.NewCategoryName = "";
 
             CategoriesViewModel.Instance?.UpdateAllCategories();
+            
+            SettingsViewModel.GetInstance().CategoriesAmount += 1;
 
             await Application.Current.MainPage.DisplayAlert("Done", $"Category Added: {category.Name}", "Ok");
         }

@@ -1,10 +1,7 @@
 ﻿using Realms;
+
 using SaverMaui.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -38,6 +35,8 @@ namespace SaverMaui.Commands
             this.execute(parameter);
             await Application.Current.MainPage.DisplayAlert("Done", $"New Content Added!", "Ok");
             this.viewModel.ContentUri = "";
+
+            SettingsViewModel.GetInstance().ContentAmount += 1;
         }
     }
 

@@ -2,6 +2,7 @@
 
 using SaverMaui.Models;
 using SaverMaui.Services;
+using SaverMaui.Services.Contracts;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 
@@ -45,10 +46,26 @@ namespace SaverMaui.Commands
             this.activity.IsVisible = true;
             this.activity.IsRunning = true;
 
-            var allCategories = await this.backendClient.GetAllCategoriesAsync();
-            var allContent = await this.backendClient.GetAllContentAsync();
+            var allLocalContent = this.realmInstance.All<Content>().ToArray();
+            var allLocalCategories = this.realmInstance.All<Category>().ToArray();
 
-            foreach (var cat in allCategories) 
+            GetAllCategoriesResponseModel[] allCategories = await this.backendClient.GetAllCategoriesAsync();
+
+            var catsToBeAdded = allCategories.Where(ct =>
+            allLocalCategories
+            .Select(lc => lc.CategoryId)
+            .ToArray()
+            .Contains(ct.CategoryId) == false).ToArray();
+
+            GetAllContentResponseModel[] allContent = await this.backendClient.GetAllContentAsync();
+
+            var contentToBeAdded = allContent.Where(cn =>
+            allLocalContent
+            .Select(lcn => lcn.CategoryId)
+            .ToArray()
+            .Contains(cn.CategoryId) == false).ToArray();
+
+            foreach (var cat in catsToBeAdded) 
             {
                 Category category = new Category()
                 {
@@ -81,7 +98,7 @@ namespace SaverMaui.Commands
 
             int syncedContent = 0;
 
-            foreach (var content in allContent) 
+            foreach (var content in contentToBeAdded) 
             {
                 if (realmInstance.All<Content>().Where(ct => ct.ImageUri == content.ImageUri).ToArray().Length == 0) 
                 {
@@ -101,7 +118,7 @@ namespace SaverMaui.Commands
             this.activity.IsVisible = false;
             this.activity.IsRunning = false;
 
-            await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{allCategories.Length}, Content added {syncedContent}", "Ok");
+            await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{catsToBeAdded.Length}, Content added {contentToBeAdded.Length}", "Ok");
         }
     }
 }

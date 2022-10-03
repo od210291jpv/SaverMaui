@@ -6,7 +6,6 @@ using SaverMaui.Services.Contracts;
 using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.Contracts.Content;
 using SaverMaui.Services.ServiceExtensions;
-using SaverMaui.ViewModels;
 
 using System.Windows.Input;
 
@@ -50,7 +49,7 @@ namespace SaverMaui.Commands
 
             foreach (var cat in allCategories)
             {
-                if (!allCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
+                if (!allExistingsCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
                 {
                     allCategoriesDto.Add(new CategoryDto()
                     {
@@ -87,7 +86,7 @@ namespace SaverMaui.Commands
 
             if (result == System.Net.HttpStatusCode.Created) 
             {
-                await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{allCategories.Length}, Content added {allContent.Length}", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{allCategoriesDto.Count}, Content added {allContentDto.Count}", "Ok");
             }
             if (result == System.Net.HttpStatusCode.OK) 
             {
