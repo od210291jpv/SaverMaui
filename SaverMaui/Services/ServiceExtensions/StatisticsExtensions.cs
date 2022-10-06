@@ -4,6 +4,7 @@ using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.Contracts.Statistics;
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace SaverMaui.Services.ServiceExtensions
 {
@@ -23,11 +24,18 @@ namespace SaverMaui.Services.ServiceExtensions
             return JsonConvert.DeserializeObject<CategoryDto>(await result.Content.ReadAsStringAsync());
         }
 
-        public static async Task<StatisticsDto> GetCategoriesStatistics(this IHttpServiceClient serviceClient) 
+        public static async Task<StatisticsDto> GetCategoriesStatisticsAsync(this IHttpServiceClient serviceClient) 
         {
             HttpResponseMessage response = await serviceClient.GetRequestAsync(UriHelper.CategoriesStatistics);
 
             return JsonConvert.DeserializeObject<StatisticsDto>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<CategoryDto[]> GetMostPopularCategories(this IHttpServiceClient serviceClient, int limit = 10) 
+        {
+            var response = await serviceClient.PostRequestAsync(UriHelper.GetMostPopularCategories(limit));
+
+            return JsonConvert.DeserializeObject<CategoryDto[]>(await response.Content.ReadAsStringAsync());
         }
     }
 }

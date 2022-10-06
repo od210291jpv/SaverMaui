@@ -3,7 +3,7 @@
     public static class UriHelper
     {
         public static string BaseIp = "192.168.0.101";
-        //public static string BaseIp = "192.168.0.114";
+        //public static string BaseIp = "127.0.0.1";
 
         public static int Port = 5000;
         public static int SignalRPort = 5000;
@@ -35,6 +35,11 @@
         public static string CategoriesStatistics 
         {
             get => $"{BaseAddress}/GetCategoryStatistics";
+        }
+
+        public static string GetMostPopularCategories(int limit) 
+        {
+            return $"{BaseAddress}/GetCategories?limit={limit}";
         }
     }
 }

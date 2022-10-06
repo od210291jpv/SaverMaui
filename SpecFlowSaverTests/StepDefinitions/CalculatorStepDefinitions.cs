@@ -7,23 +7,9 @@ namespace SpecFlowSaverTests.StepDefinitions
     {
         // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
-        delegate string Mesage(string inputSt);
-
-        string DoSom(string st) 
-        {
-            return st.ToUpper();
-        }
-
-        Mesage dsam;
-
         [Given("the first number is (.*)")]
         public void GivenTheFirstNumberIs(int number)
         {
-
-            dsam = DoSom;
-
-            //dsam();
-
             //TODO: implement arrange (precondition) logic
             // For storing and retrieving scenario-specific data see https://go.specflow.org/doc-sharingdata
             // To use the multiline text or the table argument of the scenario,

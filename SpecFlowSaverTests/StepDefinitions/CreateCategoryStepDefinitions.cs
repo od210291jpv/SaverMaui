@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
+
 using SpecFlowSaverTests.Services;
 using SpecFlowSaverTests.Services.Extensions;
 using SpecFlowSaverTests.Support.Models;
@@ -31,7 +32,7 @@ namespace SpecFlowSaverTests.StepDefinitions
 
             this.categoryId = category.CategoryId;
 
-            BackendServiceClient.GetInstance().CreateCategory(category).Wait();
+            BackendServiceClient.GetInstance().CreateCategoryAsync(category).Wait();
         }
 
         [Then(@"I can find this category in results of GetAllCategory endpoint")]

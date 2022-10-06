@@ -41,5 +41,10 @@
         {
             get => $"{BaseAddress}/GetCategoryStatistics";
         }
+
+        public static string DeleteCategory(Guid categoryId) 
+        {
+            return $"{BaseAddress}/RemoveCategory/delete?categoryId={categoryId}";
+        }
     }
 }

@@ -46,5 +46,13 @@ namespace SaverMaui.Services
 
             return resp;
         }
+
+        public async Task<HttpResponseMessage> PostRequestAsync(string endpoint) 
+        {
+            var client = new HttpClient();
+            var resp = await client.PostAsync(endpoint, null);
+
+            return resp;
+        }
     }
 }

@@ -10,7 +10,7 @@
         <ShellContent Title="Settings" Route="Settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
     </TabBar>
     <FlyoutItem Title="Profile">
-        <ShellContent></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Settings">
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}"></ShellContent>
@@ -23,6 +23,9 @@
     </FlyoutItem>
     <FlyoutItem Title="Feed">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}"></ShellContent>
+    </FlyoutItem>
+    <FlyoutItem>
+        <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Web Content">
         <ShellContent ContentTemplate="{DataTemplate local:WebContentPage}"></ShellContent>

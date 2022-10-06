@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.MostPopularCategoriesPage"
+             Title="MostPopularCategoriesPage">
+
+    <ContentPage.BindingContext>
+        <vm:MostPopularCategoriesViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="Black">
+            <Button Command="{Binding NavigateToCategoryCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
+            <ListView ItemsSource="{Binding MostPopularCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="5" Padding="5" RowSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
