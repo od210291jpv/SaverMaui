@@ -26,9 +26,18 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            await BackendServiceClient
+            var status = await BackendServiceClient
                 .GetInstance()
                 .RegisterUser(viewModel.Login, viewModel.Password);
+
+            if (status == System.Net.HttpStatusCode.OK)
+            {
+                await Application.Current.MainPage.DisplayAlert("Done", $"You registered!!", "Ok");
+            }
+            else 
+            {
+                await Application.Current.MainPage.DisplayAlert("Error!", $"Something went wrong!", "Ok");
+            }
         }
     }
 }

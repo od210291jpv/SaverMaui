@@ -10,8 +10,8 @@
 
     <VerticalStackLayout BackgroundColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
         <Label Text="Welcome to Bananas Saver!" TextColor="DeepPink" FontSize="Large" HorizontalTextAlignment="Center"/>
-        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Login"/>
-        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Password"/>
+        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Login" Text="{Binding Login, Mode=TwoWay}"/>
+        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Password" Text="{Binding Password, Mode=TwoWay}"/>
         <Button Text="Login" TextColor="White" BackgroundColor="DeepPink" CornerRadius="0" Margin="5" Command="{Binding LoginCommand}"/>
         <Button Text="Register" TextColor="White" BackgroundColor="DeepPink" CornerRadius="0" Margin="5" Command="{Binding RegisterCommand}"/>
     </VerticalStackLayout>

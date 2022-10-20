@@ -17,7 +17,7 @@ namespace SaverMaui.ViewModels
             this.RegisterCommand = new RegisterUserCommand(this);
         }
 
-        public string Login { get; internal set; }
-        public string Password { get; internal set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
 }
