@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using SaverBackend.DTO;
 using SaverBackend.Models;
+using StackExchange.Redis;
 
 namespace SaverBackend.Controllers
 {
@@ -9,10 +11,14 @@ namespace SaverBackend.Controllers
     public class GetCategoryStatistics : Controller
     {
         private ApplicationContext db;
+        private ConnectionMultiplexer redis;
+        private IDatabase redisDb;
 
         public GetCategoryStatistics(ApplicationContext database)
         {
             this.db = database;
+            this.redis = ConnectionMultiplexer.Connect("192.168.0.101:6379");
+            this.redisDb = redis.GetDatabase();
         }
 
         [HttpGet(Name = "GetStatistics")]
@@ -30,6 +36,7 @@ namespace SaverBackend.Controllers
                         Favorites = cat.AmountOfFavorites,
                         Openings = cat.AmountOfOpenings
                     });
+
             }
 
             return statisticsData;

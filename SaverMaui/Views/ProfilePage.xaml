@@ -9,9 +9,9 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <RefreshView>
-            <ScrollView Padding="5" HorizontalOptions="FillAndExpand">
-                <Grid>
+        <RefreshView VerticalOptions="FillAndExpand">
+            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" Margin="1" Padding="1" HeightRequest="1000">
+                <Grid VerticalOptions="StartAndExpand" Padding="5" Margin="5" RowSpacing="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -29,10 +29,9 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0" Text="" CornerRadius="90" BackgroundColor="{Binding OnlineButtonBackgroundColor}" WidthRequest="30" BorderColor="White" HorizontalOptions="Start" Margin="15, 0, 0, 0" x:Name="OnlineButton"></Button>
+                    <Button Grid.Column="0" Grid.Row="0" Text="" CornerRadius="90" BackgroundColor="{Binding OnlineButtonBackgroundColor}" WidthRequest="30" HeightRequest="30" BorderColor="White" HorizontalOptions="Start" Margin="15, 0, 0, 0" x:Name="OnlineButton"></Button>
                     <Label Grid.Column="0" Grid.Row="1" Text="Not Registered yet? Create personal profile to get access to all featues!" HorizontalOptions="Center" FontAttributes="Bold"></Label>
-                    <Button Grid.Column="0" Grid.Row="2"  Text="Create Profile" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" x:Name="RegisterButton"/>
-                    <Button Grid.Column="0" Grid.Row="3"  Text="Login" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" x:Name="LoginButton"/>
+                    <Button Grid.Column="0" Grid.Row="3"  Text="Logout" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" x:Name="LoginButton"/>
 
                     <Image Grid.Column="0" Grid.Row="4" Aspect="AspectFit" Source="https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" HorizontalOptions="EndAndExpand"/>
 
@@ -43,7 +42,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Username" HorizontalTextAlignment="Center" TextColor="DeepPink" FontAttributes="Bold" FontSize="Header"/>
+                        <Label Grid.Row="0" Grid.Column="0" Text="Username" HorizontalTextAlignment="Center" TextColor="DeepPink" FontAttributes="Bold" FontSize="Large"/>
                     </Grid>
 
                     <Label Grid.Column="0" Grid.Row="5" Text="Favorites: " TextColor="White" FontAttributes="Bold"/>

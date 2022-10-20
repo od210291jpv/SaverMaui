@@ -1,10 +1,15 @@
 ﻿using Realms;
+using SaverMaui.Commands;
 using SaverMaui.Models;
 
 namespace SaverMaui
 {
     public static class Environment
     {
+        public static string Login;
+
+        public static string Password;
+
         public static class SahredData
         {
             public static Category currentCategory;

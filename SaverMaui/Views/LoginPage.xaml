@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.LoginPage"
              Title="LoginPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <ContentPage.BindingContext>
+        <vm:LoginPageViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout BackgroundColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
+        <Label Text="Welcome to Bananas Saver!" TextColor="DeepPink" FontSize="Large" HorizontalTextAlignment="Center"/>
+        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Login"/>
+        <Entry HorizontalOptions="Center" BackgroundColor="Black" PlaceholderColor="Gray" TextColor="DeepPink" Placeholder="Password"/>
+        <Button Text="Login" TextColor="White" BackgroundColor="DeepPink" CornerRadius="0" Margin="5" Command="{Binding LoginCommand}"/>
+        <Button Text="Register" TextColor="White" BackgroundColor="DeepPink" CornerRadius="0" Margin="5" Command="{Binding RegisterCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

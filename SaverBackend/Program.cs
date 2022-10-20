@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+
+using SaverBackend.Configuration;
 using SaverBackend.Hubs;
 using SaverBackend.Models;
 
@@ -15,9 +17,12 @@ builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(
-            SaverBackend.Models.ApplicationContext.ConnectionString,
-            ServerVersion.AutoDetect(ApplicationContext.ConnectionString)
-        ));
+            ApplicationContext.ConnectionString,
+            ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
+
+builder.Configuration.AddJsonFile("appsettings.json").AddJsonFile("appsettings.Development.json").AddJsonFile("appsettings.Production.json");
+
+ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
 
 //builder.Services.AddMvc().AddNewtonsoftJson();
 builder.Services.AddControllers().AddNewtonsoftJson();
@@ -25,7 +30,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

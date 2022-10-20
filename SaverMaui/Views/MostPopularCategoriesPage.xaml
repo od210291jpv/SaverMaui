@@ -10,27 +10,29 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout BackgroundColor="Black">
-            <Button Command="{Binding NavigateToCategoryCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
-            <ListView ItemsSource="{Binding MostPopularCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Margin="5" Padding="5" RowSpacing="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+            <StackLayout BackgroundColor="Black" HorizontalOptions="StartAndExpand">
+                <Button Command="{Binding NavigateToCategoryCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
+            <RefreshView Command="{Binding GetMostPopularCategories}" HorizontalOptions="Center">
+                <ListView ItemsSource="{Binding MostPopularCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Margin="5" Padding="5" RowSpacing="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RefreshView>
+            </StackLayout>
     </ContentPage.Content>
 
 </ContentPage>

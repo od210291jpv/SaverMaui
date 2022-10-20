@@ -6,27 +6,39 @@
     xmlns:local="clr-namespace:SaverMaui.Views"
     Shell.FlyoutBehavior="Flyout">
 
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="Black">
+                <Image Aspect="Fill"   
+                       Source="tits.svg"
+               Opacity="0.6" />
+                <Label Text="Bananas Saver"
+               TextColor="White"
+               FontAttributes="Bold"
+                       FontSize="Large"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Start" Margin="35"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
     <TabBar>
-        <ShellContent Title="Settings" Route="Settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
+        <ShellContent Title="Welcome" ContentTemplate="{DataTemplate local:LoginPage}" />
     </TabBar>
     <FlyoutItem Title="Profile">
-        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" Title="Profile"/>
+        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Title="Settings"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Settings">
-        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}"></ShellContent>
+    <FlyoutItem Title="Categories" FlyoutDisplayOptions="AsSingleItem">
+        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}" Title="Categories"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}" Title="Categories (Windows)"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}" Title="Most Popular Categories"/>
     </FlyoutItem>
-    <FlyoutItem Title="Categories">
-        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}"></ShellContent>
-    </FlyoutItem>
-    <FlyoutItem Title="Categories (Old, for Windows)">
-        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}"></ShellContent>
-    </FlyoutItem>
+
     <FlyoutItem Title="Feed">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem>
-        <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}"/>
-    </FlyoutItem>
+
     <FlyoutItem Title="Web Content">
         <ShellContent ContentTemplate="{DataTemplate local:WebContentPage}"></ShellContent>
     </FlyoutItem>

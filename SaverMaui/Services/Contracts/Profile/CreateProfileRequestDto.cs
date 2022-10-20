@@ -1,6 +1,8 @@
-﻿namespace SaverMaui.Services.Contracts.Profile
+﻿using SaverMaui.Services.Interfaces;
+
+namespace SaverMaui.Services.Contracts.Profile
 {
-    internal class CreateProfileRequestDto
+    internal class CreateProfileRequestDto : IRequest
     {
         public string UserName { get; set; }
 

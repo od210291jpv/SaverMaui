@@ -9,6 +9,8 @@ namespace SaverMaui.ViewModels
     {
         private Category selectedCategory;
 
+        public bool IsDataRefreshing { get; set; } = false;
+
         public Category SelectedCategory 
         {
             get { return selectedCategory; }

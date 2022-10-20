@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+
 using SaverMaui.Services.Helpers;
 using SaverMaui.SignalRModels;
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -8,6 +10,8 @@ namespace SaverMaui.ViewModels
 {
     public class NotificationCenterViewModel : BaseViewModel
     {
+        private static NotificationCenterViewModel Instance;
+
         HubConnection hubConnection;
 
         public string Message { get; set; }
@@ -59,7 +63,7 @@ namespace SaverMaui.ViewModels
 
             this.Messages = new ObservableCollection<Notification>();
 
-            this.notifyClientsCommand = new Command(async () => await SendMessage(), () => true);
+            this.notifyClientsCommand = new Command(async () => await SendMessage("Trying to establish connection..."), () => true);
 
             hubConnection.Closed += async (error) =>
             {
@@ -75,6 +79,18 @@ namespace SaverMaui.ViewModels
             });
 
             this.notifyClientsCommand.Execute(this.isConnected);
+
+            Instance = this;
+        }
+
+        public static NotificationCenterViewModel GetInstance() 
+        {
+            if (Instance is null) 
+            {
+                Instance = new NotificationCenterViewModel();
+            }
+
+            return Instance;
         }
 
         public async Task Connect()
@@ -104,7 +120,7 @@ namespace SaverMaui.ViewModels
             SendLocalMessage("Disconnected");
         }
 
-        async Task SendMessage()
+        public async Task SendMessage(string message = "")
         {
             if (!isConnected) 
             {
@@ -114,7 +130,7 @@ namespace SaverMaui.ViewModels
             try
             {
                 IsBusy = true;
-                await hubConnection.InvokeAsync("SendNotificationsAsync", "Trying to establish connection...");
+                await hubConnection.InvokeAsync("SendNotificationsAsync", message);
             }
             catch (Exception ex)
             {
@@ -126,7 +142,7 @@ namespace SaverMaui.ViewModels
             }
         }
 
-        private void SendLocalMessage(string message)
+        public void SendLocalMessage(string message)
         {
             Messages.Insert(0, new Notification
             {

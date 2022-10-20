@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 
 using SaverMaui.Services.Interfaces;
-
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SaverMaui.Services
 {
@@ -53,6 +54,13 @@ namespace SaverMaui.Services
             var resp = await client.PostAsync(endpoint, null);
 
             return resp;
+        }
+
+        public async Task<HttpStatusCode> GetSourceStatusCode(Uri source) 
+        {
+            var result = await this.httpClient.GetAsync(source);
+
+            return result.StatusCode;
         }
     }
 }

@@ -14,6 +14,7 @@
             <Entry Placeholder="http://" Text="{Binding ContentUrl, Mode=TwoWay}"/>
             <Entry Placeholder="title" Text="{Binding ContentTitle, Mode=TwoWay}"/>
             <Button Text="Add new content" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Command="{Binding AddWebContentCmd}"/>
+            <ScrollView Orientation="Vertical" Margin="5" Padding="5">
                 <CollectionView ItemsSource="{Binding AllWebContent}" SelectedItem="{Binding SelectedWebContent}" SelectionMode="Single">
 
                     <CollectionView.Header>
@@ -31,10 +32,10 @@
                             <SwipeView>
                                 <SwipeView.LeftItems>
                                     <SwipeItems>
-                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnWebContentOpen"/>
+                                        <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnWebContentOpen"/>
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
-                                
+
                                 <Grid HeightRequest="100">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -50,6 +51,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

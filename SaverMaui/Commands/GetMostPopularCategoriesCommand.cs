@@ -1,12 +1,13 @@
 ﻿using Realms;
 
 using SaverMaui.Models;
+
 using SaverMaui.Services;
 using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
+
 using SaverMaui.ViewModels;
-using SaverMaui.Views;
 
 using System.Windows.Input;
 
@@ -34,7 +35,9 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            CategoryDto[] popularCategories = await BackendServiceClient.GetInstance().GetMostPopularCategories();
+            this.viewModel.IsDataRefreshing = true;
+
+            CategoryDto[] popularCategories = await BackendServiceClient.GetInstance().GetMostPopularCategories(50);
 
             this.viewModel.MostPopularCategories.Clear();
             var allRealmCats = this.realmInstance.All<Category>();
@@ -43,6 +46,8 @@ namespace SaverMaui.Commands
             {
                 this.viewModel.MostPopularCategories.Add(allRealmCats.Single(ct => ct.CategoryId == category.CategoryId));
             }
+
+            this.viewModel.IsDataRefreshing = false;
         }
     }
 }

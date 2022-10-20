@@ -41,5 +41,25 @@
         {
             return $"{BaseAddress}/GetCategories?limit={limit}";
         }
+
+        public static string Login(string login, string password) 
+        {
+            return $"{BaseAddress}/Login/Login?login={login}&password={password}";
+        }
+
+        public static string Logout(string login, string password) 
+        {
+            return $"{BaseAddress}/Login/Logout?login={login}&password={password}";
+        }
+
+        public static string GetLoginStatus(string login) 
+        {
+            return $"{BaseAddress}/Login/GetLoginStatus?login={login}";
+        }
+
+        public static string RegisterUser 
+        {
+            get => $"{BaseAddress}/RegisterUserProfile/RegisterUserProfile";
+        }
     }
 }

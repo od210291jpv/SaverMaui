@@ -26,7 +26,9 @@ namespace SaverBackend.Controllers
             IEnumerable<CategoryDto>? results = allCategories?.Select(ct => new CategoryDto() 
             {
                 Name = ct.Name,
-                CategoryId = ct.CategoryId,                
+                CategoryId = ct.CategoryId,     
+                AmountOfFavorites = ct.AmountOfFavorites,
+                AmountOfOpenings = ct.AmountOfOpenings,
             });
 
             return results?.ToArray();

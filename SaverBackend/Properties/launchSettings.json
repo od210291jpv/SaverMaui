@@ -1,13 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:45929",
-      "sslPort": 0
-    }
-  },
   "profiles": {
     "SaverBackend": {
       "commandName": "Project",
@@ -36,6 +27,15 @@
         "ASPNETCORE_URLS": "http://0.0.0.0:5000"
       },
       "distributionName": ""
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 0
     }
   }
 }

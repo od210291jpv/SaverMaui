@@ -10,7 +10,6 @@
 
     <ContentPage.Content>
             <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
-                <Frame  CornerRadius="0" HasShadow="False" HorizontalOptions="FillAndExpand" Padding="5" Margin="5" BackgroundColor="Black">
                     <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" BackgroundColor="Black">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -29,37 +28,41 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Content Item:" FontAttributes="Bold"/>
-                        <Entry Grid.Row="1" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Name" Text="{Binding ContentTitle}"/>
-                        <Entry Grid.Row="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Uri" Text="{Binding ContentUri}"/>
-                        <Picker BackgroundColor="Black" Grid.Row="3" Grid.ColumnSpan="2" TextColor="White" Title="Select Category:" TitleColor="White" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}">
+                    <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Content Item:" FontAttributes="Bold"/>
+                    <Entry Grid.Row="1" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Name" Text="{Binding ContentTitle}"/>
+                    <Entry Grid.Row="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Uri" Text="{Binding ContentUri}"/>
+                    <Picker BackgroundColor="Black" Grid.Row="3" Grid.ColumnSpan="2" TextColor="White" Title="Select Category:" TitleColor="White" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}">
 
-                        </Picker>
-                        <Button Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Content" CornerRadius="0" Command="{Binding AddContentCommand}"/>
+                    </Picker>
+                    <Button Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Content" CornerRadius="0" Command="{Binding AddContentCommand}"/>
 
-                        <Label Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                        <Entry Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
-                        <Button Grid.Row="7" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Category" CornerRadius="0" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
+                    <Label Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
+                    <Button Grid.Row="7" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Category" CornerRadius="0" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
 
-                        <Label Grid.Row="8" Grid.Column="0" Text="Categories now:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                        <Label Grid.Row="8" Grid.Column="1" Text="{Binding CategoriesAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="8" Grid.Column="0" Text="Categories now:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="8" Grid.Column="1" Text="{Binding CategoriesAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
 
-                        <Label Grid.Row="9" Grid.Column="0" Text="Content amt:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                        <Label Grid.Row="9" Grid.Column="1" Text="{Binding ContentAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="9" Grid.Column="0" Text="Content amt:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Label Grid.Row="9" Grid.Column="1" Text="{Binding ContentAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
 
-                        <Button Grid.Row="11" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Erase Empty Categories" FontAttributes="Bold" CornerRadius="0" Command="{Binding EraseEmptyCategoriesCommand}" />
+                    <Button Grid.Row="11" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Erase Empty Categories" FontAttributes="Bold" CornerRadius="0" Command="{Binding EraseEmptyCategoriesCommand}" />
 
-                        <Entry Grid.Row="12" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Ip address" Text="{Binding HostIpAddress}"/>
-                        <Button Grid.Row="13" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Sync Content with backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding SyncContextCommand}"/>
-                        <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Post all data to backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding PostNewContentCommand}"/>
-                        <Button Grid.Row="15" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="0" Command="{Binding WipeAllDataCommand}"/>
+                    <Button Grid.Row="12" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Sync Content with backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding SyncContextCommand}"/>
+                    <Button Grid.Row="13" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Post all data to backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding PostNewContentCommand}"/>
+                        
+                    <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="0" Command="{Binding WipeAllDataCommand}"/>
+                    <Label Grid.Row="15" Grid.Column="0" Text="Log feeds content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Switch Grid.Row="15" Grid.ColumnSpan="1" OnColor="DeepPink" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
+                    <Label Grid.Row="16" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Switch Grid.Row="16" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
                 </Grid>
-                </Frame>
             </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -59,7 +59,6 @@ namespace SaverMaui.ViewModels
             set { this.categoriesAmount = value; OnPropertyChanged("CategoriesAmount"); }
         }
 
-
         private Category selectedCategory;
 
         public Category SelectedCategory
@@ -82,6 +81,22 @@ namespace SaverMaui.ViewModels
         {
             get => contentUri;
             set { contentUri = value; OnPropertyChanged("ContentUri"); }
+        }
+
+        private bool logFeedsEnabled;
+
+        public bool LogFeedsEnabled 
+        { 
+            get => logFeedsEnabled;
+            set { this.logFeedsEnabled = value; OnPropertyChanged(nameof(LogFeedsEnabled)); } 
+        }
+
+        private bool logCategoriesEnabled;
+
+        public bool LogCategoriesEnabled 
+        { 
+            get => logCategoriesEnabled;
+            set { logCategoriesEnabled = value; OnPropertyChanged(nameof(LogCategoriesEnabled)); }
         }
 
         private AddCategoryCommand addCategoryCommand;
@@ -186,6 +201,7 @@ namespace SaverMaui.ViewModels
 
             this.CategoriesAmount = allCategories.ToArray().Length;
             this.ContentAmount = _realm.All<Content>().ToArray().Length;
+            this.logFeedsEnabled = true;
         }
     }
 }
