@@ -1,4 +1,6 @@
 using SaverMaui.Commands;
+using SaverMaui.Services;
+using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 using System.Windows.Input;
 
@@ -33,9 +35,16 @@ public partial class CategoriesPageV2 : ContentPage
         }
     }
 
-    public void OnCategoryOpen(object sender, EventArgs e) 
+    public async void OnCategoryOpen(object sender, EventArgs e) 
 	{
-        this.NavigateToFeedItemCommand.Execute(CategoriesViewModel.Instance);
+        if (Environment.Login != null && await BackendServiceClient.GetInstance().IsUserLoggedInAsync(Environment.Login) == true)
+        {
+            this.NavigateToFeedItemCommand.Execute(CategoriesViewModel.Instance);
+        }
+        else 
+        {
+            await Application.Current.MainPage.DisplayAlert("Unauthorized", $"Please login or create account to use categories functionality!", "Ok");
+        }
     }
 
     public void OnAddToFavorites(object sender, EventArgs e) 

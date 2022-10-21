@@ -22,7 +22,7 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            if (_vm.FavoriteCategories.Count() > 0)
+            if (_vm.FavoriteCategories.Count() > 0 && Environment.Login != null)
             {
                 return true;
             }

@@ -35,7 +35,11 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            this.viewModel.IsDataRefreshing = true;
+            if (Environment.Login is null) 
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Please login to get access to all functionality!!", "Ok");
+                return;
+            }
 
             CategoryDto[] popularCategories = await BackendServiceClient.GetInstance().GetMostPopularCategories(50);
 

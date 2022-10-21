@@ -2,6 +2,7 @@
 
 using SaverMaui.Models;
 using SaverMaui.Services;
+using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 using SaverMaui.Views;
@@ -21,7 +22,7 @@ namespace SaverMaui.Commands
         }
 
         public bool CanExecute(object parameter)
-        {
+        {            
             return true;
         }
 
@@ -33,15 +34,18 @@ namespace SaverMaui.Commands
 
             Realm.GetInstance().Write(() => category.AmountOfOpenings += 1);
 
-            try
+            if (IsOnlineHelper.IsOnline == true) 
             {
-                await BackendServiceClient.GetInstance()
-                    .UpdateCategoryStatisticsAsync(category.CategoryId,
-                    category.AmountOfOpenings,
-                    category.AmountOfFavorites);
+                try
+                {
+                    await BackendServiceClient.GetInstance()
+                        .UpdateCategoryStatisticsAsync(category.CategoryId,
+                        category.AmountOfOpenings,
+                        category.AmountOfFavorites);
+                }
+                catch
+                { }
             }
-            catch 
-            { }
 
             await Application.Current.MainPage.Navigation.PushAsync(new CategoryFeedPage());
         }

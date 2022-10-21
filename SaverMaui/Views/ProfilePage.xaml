@@ -31,7 +31,7 @@
                     </Grid.RowDefinitions>
                     <Button Grid.Column="0" Grid.Row="0" Text="" CornerRadius="90" BackgroundColor="{Binding OnlineButtonBackgroundColor}" WidthRequest="30" HeightRequest="30" BorderColor="White" HorizontalOptions="Start" Margin="15, 0, 0, 0" x:Name="OnlineButton"></Button>
                     <Label Grid.Column="0" Grid.Row="1" Text="Not Registered yet? Create personal profile to get access to all featues!" HorizontalOptions="Center" FontAttributes="Bold"></Label>
-                    <Button Grid.Column="0" Grid.Row="3"  Text="Logout" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" x:Name="LoginButton"/>
+                    <Button Grid.Column="0" Grid.Row="3"  Text="Logout" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" x:Name="LogoutButton" Command="{Binding LogoutCommand}"/>
 
                     <Image Grid.Column="0" Grid.Row="4" Aspect="AspectFit" Source="https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" HorizontalOptions="EndAndExpand"/>
 

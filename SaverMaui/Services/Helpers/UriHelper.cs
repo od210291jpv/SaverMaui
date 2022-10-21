@@ -3,6 +3,7 @@
     public static class UriHelper
     {
         public static string BaseIp = "192.168.0.101";
+        //public static string BaseIp = "192.168.0.112";
         //public static string BaseIp = "127.0.0.1";
 
         public static int Port = 5000;

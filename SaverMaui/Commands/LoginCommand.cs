@@ -25,9 +25,6 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Environment.Login = this.viewModel.Login;
-            Environment.Password = this.viewModel.Password;
-
             await BackendServiceClient
                 .GetInstance()
                 .LoginUserAsync(this.viewModel.Login, this.viewModel.Password);
@@ -37,6 +34,9 @@ namespace SaverMaui.Commands
             if (isLoggedIn == true)
             {
                 await Application.Current.MainPage.DisplayAlert("Done", $"You logged in!!", "Ok");
+                
+                Environment.Login = this.viewModel.Login;
+                Environment.Password = this.viewModel.Password;
             }
             else 
             {

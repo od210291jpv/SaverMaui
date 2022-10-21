@@ -30,8 +30,8 @@
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Title="Settings"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Categories" FlyoutDisplayOptions="AsSingleItem">
-        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}" Title="Categories"></ShellContent>
-        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}" Title="Categories (Windows)"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}" Title="Categories" x:Name="AndroidCategories"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}" Title="Categories (Windows)" x:Name="WindowsCategories"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}" Title="Most Popular Categories"/>
     </FlyoutItem>
 

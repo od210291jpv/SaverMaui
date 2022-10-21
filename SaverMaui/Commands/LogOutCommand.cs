@@ -20,13 +20,24 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            bool isLoggedIn = BackendServiceClient.GetInstance().IsUserLoggedInAsync(viewModel.Login).Result;
-            return IsOnlineHelper.IsOnline && isLoggedIn;
+            return IsOnlineHelper.IsOnline && Environment.Login != null;
         }
 
         public async void Execute(object parameter)
         {
-            await BackendServiceClient.GetInstance().LoginUserAsync(this.viewModel.Login, this.viewModel.Password);
+            await BackendServiceClient.GetInstance().LogoutUserAsync();
+
+            if (await BackendServiceClient.GetInstance().IsUserLoggedInAsync(Environment.Login) == false)
+            {
+                Environment.Login = null;
+                Environment.Password = null;
+
+                await Application.Current.MainPage.DisplayAlert("Done", $"You logged out!!", "Ok");
+            }
+            else 
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Something went wrong!", "Ok");
+            }
         }
     }
 }

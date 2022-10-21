@@ -43,7 +43,7 @@ namespace SaverBackend.Controllers
                 Publications = userProfile.Publications,
                 PublishedCategories = userProfile.PublishedCategories
             };
-
+            
             this.redisDb.StringSet(userProfile.UserName, "Online");
             this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromSeconds(30));
             return profileInfo;

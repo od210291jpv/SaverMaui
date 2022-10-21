@@ -30,9 +30,9 @@ namespace SaverMaui.Services.ServiceExtensions
             return JsonConvert.DeserializeObject<LoginResponse>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task<HttpStatusCode> LogoutUserAsync(this IHttpServiceClient serviceClient, string login, string password) 
+        public static async Task<HttpStatusCode> LogoutUserAsync(this IHttpServiceClient serviceClient) 
         {
-            var response = await serviceClient.PostRequestAsync(UriHelper.Logout(login, password));
+            var response = await serviceClient.PostRequestAsync(UriHelper.Logout(Environment.Login, Environment.Password));
             return response.StatusCode;
         }
 
