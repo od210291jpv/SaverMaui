@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 using SaverBackend.Models;
 
 namespace SaverBackend.Controllers
@@ -27,6 +27,9 @@ namespace SaverBackend.Controllers
 
                 db.Categories.Remove(requiredCategory);
                 var result = await db.SaveChangesAsync();
+
+                Profile? profile = await this.db.Profiles.SingleOrDefaultAsync(p => p.PublishedCategories.Select(ct => ct.CategoryId).ToArray().Contains(categoryId));
+                profile?.PublishedCategories.Remove(requiredCategory);
 
                 return StatusCode(200);
             }

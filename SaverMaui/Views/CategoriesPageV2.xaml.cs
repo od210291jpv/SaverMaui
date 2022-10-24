@@ -37,7 +37,7 @@ public partial class CategoriesPageV2 : ContentPage
 
     public async void OnCategoryOpen(object sender, EventArgs e) 
 	{
-        if (Environment.Login != null && await BackendServiceClient.GetInstance().IsUserLoggedInAsync(Environment.Login) == true)
+        if (Environment.Login != null)
         {
             this.NavigateToFeedItemCommand.Execute(CategoriesViewModel.Instance);
         }

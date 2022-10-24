@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 using SaverBackend.DTO;
 using SaverBackend.Hubs;
@@ -27,15 +28,29 @@ namespace SaverBackend.Controllers
             {
                 foreach (var category in contentRepresentation.Categories) 
                 {
-                    if (db.Categories.Where(c => c.CategoryId == category.CategoryId).Count() == 0) 
+                    if (await db.Categories.Where(c => c.CategoryId == category.CategoryId).CountAsync().ConfigureAwait(false) == 0) 
                     {
-                        await this.db.Categories.AddAsync(new Category()
+                        var newCategory = new Category()
                         {
                             CategoryId = category.CategoryId,
                             Name = category.Name,
                             AmountOfOpenings = category.AmountOfOpenings,
                             AmountOfFavorites = category.AmountOfFavorites,
-                        });
+                        };
+
+                        await this.db.Categories.AddAsync(newCategory);
+
+                        if (category.PublisherProfileId is not null)
+                        {
+                            Profile? profile = await this.db.Profiles.SingleOrDefaultAsync(p => p.ProfileId == category.PublisherProfileId);
+
+                            if (profile?.PublishedCategories is null)
+                            {
+                                profile.PublishedCategories = new List<Category>();
+                            }
+
+                            profile.PublishedCategories.Add(newCategory);
+                        }
                     }
                 }
 

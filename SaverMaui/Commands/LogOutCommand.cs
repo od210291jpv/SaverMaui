@@ -2,7 +2,7 @@
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
-
+using SaverMaui.Views;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -33,6 +33,7 @@ namespace SaverMaui.Commands
                 Environment.Password = null;
 
                 await Application.Current.MainPage.DisplayAlert("Done", $"You logged out!!", "Ok");
+                await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
             }
             else 
             {

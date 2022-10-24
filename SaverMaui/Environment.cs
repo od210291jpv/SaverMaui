@@ -10,6 +10,8 @@ namespace SaverMaui
 
         public static string Password;
 
+        public static Guid ProfileId;
+
         public static class SahredData
         {
             public static Category currentCategory;

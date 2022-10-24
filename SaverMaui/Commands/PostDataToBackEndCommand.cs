@@ -56,7 +56,8 @@ namespace SaverMaui.Commands
                         Name = cat.Name,
                         CategoryId = cat.CategoryId,
                         AmountOfFavorites = cat.AmountOfFavorites,
-                        AmountOfOpenings = cat.AmountOfOpenings
+                        AmountOfOpenings = cat.AmountOfOpenings,
+                        PublisherProfileId = Environment.ProfileId
                     });
                 }
             }

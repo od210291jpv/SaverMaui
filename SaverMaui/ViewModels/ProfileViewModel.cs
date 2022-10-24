@@ -13,6 +13,8 @@ namespace SaverMaui.ViewModels
 
         public bool WeAreOnline { get; set; }
 
+        public string UserName { get; set; }
+
         public Color OnlineButtonBackgroundColor { get; set; } = new Color(255, 160, 122);
 
         public ICommand LogoutCommand { get; }
@@ -25,6 +27,7 @@ namespace SaverMaui.ViewModels
             if (this.WeAreOnline) 
             {
                 this.OnlineButtonBackgroundColor = new Color(124, 252, 0);
+                this.UserName = Environment.Login;
             }
         }
     }

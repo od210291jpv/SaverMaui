@@ -42,7 +42,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Username" HorizontalTextAlignment="Center" TextColor="DeepPink" FontAttributes="Bold" FontSize="Large"/>
+                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding UserName, Mode=TwoWay}" HorizontalTextAlignment="Center" TextColor="DeepPink" FontAttributes="Bold" FontSize="Large"/>
                     </Grid>
 
                     <Label Grid.Column="0" Grid.Row="5" Text="Favorites: " TextColor="White" FontAttributes="Bold"/>

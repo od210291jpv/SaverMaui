@@ -15,5 +15,8 @@ namespace SaverBackend.DTO
 
         [JsonProperty("amountOfFavorites")]
         public int? AmountOfFavorites { get; set; }
+
+        [JsonProperty("PublisherProfileId")]
+        public Guid? PublisherProfileId { get; set; }
     }
 }

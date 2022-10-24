@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-
+using Microsoft.EntityFrameworkCore;
 using SaverBackend.DTO;
 
 using SaverBackend.Hubs;
@@ -27,13 +27,30 @@ namespace SaverBackend.Controllers
         {
             if (!db.Categories.Select(ct => ct.CategoryId).ToArray().Contains(category.CategoryId)) 
             {
-                await this.db.Categories.AddAsync(new Category() 
+                var newCategory = new Category()
                 {
                     CategoryId = category.CategoryId,
                     Name = category.Name,
                     AmountOfOpenings = category.AmountOfOpenings ?? 0,
-                    AmountOfFavorites = category.AmountOfFavorites ?? 0,
-                });
+                    AmountOfFavorites = category.AmountOfFavorites ?? 0,                    
+                };
+
+                await this.db.Categories.AddAsync(newCategory);
+
+                if (category.PublisherProfileId is not null) 
+                {
+                    Profile? profile =  await this.db.Profiles.SingleOrDefaultAsync(p => p.ProfileId == category.PublisherProfileId);
+
+                    if (profile?.PublishedCategories is not null)
+                    {
+                        profile.PublishedCategories.Add(newCategory);
+                    }
+                    else 
+                    {
+                        profile.PublishedCategories = new List<Category>();
+                        profile.PublishedCategories.Add(newCategory);
+                    }
+                }
 
                 await this.db.SaveChangesAsync();
                 await this.notificationsHubContext.Clients.All.SendAsync($"New Category {category.Name} added!");
