@@ -35,22 +35,16 @@ namespace SaverBackend.Controllers
                             CategoryId = category.CategoryId,
                             Name = category.Name,
                             AmountOfOpenings = category.AmountOfOpenings,
-                            AmountOfFavorites = category.AmountOfFavorites,
+                            AmountOfFavorites = category.AmountOfFavorites,                            
                         };
 
-                        await this.db.Categories.AddAsync(newCategory);
-
-                        if (category.PublisherProfileId is not null)
+                        if (category.PublisherProfileId != null) 
                         {
-                            Profile? profile = await this.db.Profiles.SingleOrDefaultAsync(p => p.ProfileId == category.PublisherProfileId);
-
-                            if (profile?.PublishedCategories is null)
-                            {
-                                profile.PublishedCategories = new List<Category>();
-                            }
-
-                            profile.PublishedCategories.Add(newCategory);
+                            var publisherProfile = await this.db.Profiles.SingleAsync(pr => pr.ProfileId == category.PublisherProfileId);
+                            newCategory.Profile = publisherProfile;
                         }
+
+                        await this.db.Categories.AddAsync(newCategory);
                     }
                 }
 

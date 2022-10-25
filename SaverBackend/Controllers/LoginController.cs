@@ -30,7 +30,18 @@ namespace SaverBackend.Controllers
                 return new UserProfileInfoDto() { Error = "Unauthorized" };
             }
 
-            var userProfile = this.dbContext.Profiles.Single(pr => pr.UserName ==  login && pr.Password == password);
+            Profile userProfile = this.dbContext.Profiles.Single(pr => pr.UserName ==  login && pr.Password == password);
+
+            var puCats = this.dbContext.Categories.Where(ct => ct.ProfileId == userProfile.Id).ToList();
+
+            var publishedCategoriesDto = puCats.Select(c => new CategoryDto() 
+            {
+                AmountOfFavorites = c.AmountOfFavorites,
+                AmountOfOpenings = c.AmountOfOpenings,
+                CategoryId = c.CategoryId,
+                Name = c.Name,
+                PublisherProfileId = c.Profile?.ProfileId,                
+            }).ToList();
 
             UserProfileInfoDto profileInfo = new UserProfileInfoDto()
             {
@@ -41,7 +52,7 @@ namespace SaverBackend.Controllers
                 IsOnline = true,
                 ProfileId = userProfile.ProfileId,
                 Publications = userProfile.Publications,
-                PublishedCategories = userProfile.PublishedCategories
+                PublishedCategories = publishedCategoriesDto
             };
             
             this.redisDb.StringSet(userProfile.UserName, "Online");

@@ -8,7 +8,7 @@ namespace SaverBackend.DTO
 
         public string UserName { get; set; }
 
-        public List<Category> PublishedCategories { get; set; }
+        public List<CategoryDto> PublishedCategories { get; set; }
 
         public List<Content> Publications { get; set; }
 

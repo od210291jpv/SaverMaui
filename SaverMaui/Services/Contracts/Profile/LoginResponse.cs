@@ -5,7 +5,7 @@ using SaverMaui.Services.Contracts.Content;
 
 namespace SaverMaui.Services.Contracts.Profile
 {
-    internal class LoginResponse
+    public class LoginResponse
     {
         [JsonProperty("profileId")]
         public Guid ProfileId { get; set; }
@@ -14,7 +14,7 @@ namespace SaverMaui.Services.Contracts.Profile
         public string UserName { get; set; }
 
         [JsonProperty("publishedCategories")]
-        public object PublishedCategories { get; set; }
+        public List<PublishedCategory> PublishedCategories { get; set; }
 
         [JsonProperty("publications")]
         public List<ContentDto> Publications { get; set; }

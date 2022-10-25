@@ -1,4 +1,6 @@
-﻿namespace SaverBackend.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SaverBackend.Models
 {
     public class Profile
     {

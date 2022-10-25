@@ -32,25 +32,16 @@ namespace SaverBackend.Controllers
                     CategoryId = category.CategoryId,
                     Name = category.Name,
                     AmountOfOpenings = category.AmountOfOpenings ?? 0,
-                    AmountOfFavorites = category.AmountOfFavorites ?? 0,                    
+                    AmountOfFavorites = category.AmountOfFavorites ?? 0,  
                 };
 
-                await this.db.Categories.AddAsync(newCategory);
-
-                if (category.PublisherProfileId is not null) 
+                if (category.PublisherProfileId != null)
                 {
-                    Profile? profile =  await this.db.Profiles.SingleOrDefaultAsync(p => p.ProfileId == category.PublisherProfileId);
-
-                    if (profile?.PublishedCategories is not null)
-                    {
-                        profile.PublishedCategories.Add(newCategory);
-                    }
-                    else 
-                    {
-                        profile.PublishedCategories = new List<Category>();
-                        profile.PublishedCategories.Add(newCategory);
-                    }
+                    var publisherProfile = await this.db.Profiles.SingleAsync(pr => pr.ProfileId == category.PublisherProfileId);
+                    newCategory.Profile = publisherProfile;
                 }
+
+                await this.db.Categories.AddAsync(newCategory);
 
                 await this.db.SaveChangesAsync();
                 await this.notificationsHubContext.Clients.All.SendAsync($"New Category {category.Name} added!");

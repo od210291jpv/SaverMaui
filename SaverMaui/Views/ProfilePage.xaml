@@ -47,7 +47,7 @@
 
                     <Label Grid.Column="0" Grid.Row="5" Text="Favorites: " TextColor="White" FontAttributes="Bold"/>
                     <Label Grid.Column="0" Grid.Row="6" Text="Friends: " TextColor="White" FontAttributes="Bold"/>
-                    <Label Grid.Column="0" Grid.Row="7" Text="Published Categories: " TextColor="White" FontAttributes="Bold"/>
+                    <Label Grid.Column="0" Grid.Row="7" Text="Published Categories: " TextColor="White" FontAttributes="Bold" x:Name="PublishedCats"/>
                     <Button Grid.Column="0" Grid.Row="8" Text="My Groups" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White"/>
                 </Grid>
             </ScrollView>

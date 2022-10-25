@@ -21,5 +21,13 @@ namespace SaverBackend.Models
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .HasOne(p => p.Profile)
+                .WithMany(t => t.PublishedCategories)
+                .HasForeignKey(p => p.ProfileId);
+        }
     }
 }

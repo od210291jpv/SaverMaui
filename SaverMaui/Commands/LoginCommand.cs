@@ -1,4 +1,5 @@
 ﻿using SaverMaui.Services;
+using SaverMaui.Services.Contracts.Profile;
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
@@ -25,7 +26,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            var profileData = await BackendServiceClient
+            Environment.ProfileData = await BackendServiceClient
                 .GetInstance()
                 .LoginUserAsync(this.viewModel.Login, this.viewModel.Password);
 
@@ -37,7 +38,7 @@ namespace SaverMaui.Commands
                 
                 Environment.Login = this.viewModel.Login;
                 Environment.Password = this.viewModel.Password;
-                Environment.ProfileId = profileData.ProfileId;
+                Environment.ProfileId = Environment.ProfileData.ProfileId;
 
                 await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
             }

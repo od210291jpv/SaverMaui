@@ -1,6 +1,7 @@
 ﻿using Realms;
 using SaverMaui.Commands;
 using SaverMaui.Models;
+using SaverMaui.Services.Contracts.Profile;
 
 namespace SaverMaui
 {
@@ -11,6 +12,8 @@ namespace SaverMaui
         public static string Password;
 
         public static Guid ProfileId;
+
+        public static LoginResponse ProfileData;
 
         public static class SahredData
         {
