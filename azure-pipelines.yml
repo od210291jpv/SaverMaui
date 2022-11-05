@@ -8,14 +8,14 @@ trigger:
 
 pool: 
   name: MyPool
-  demands: msbuild
+  demands: dotnet
 
 variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Debug'
 
 steps:
-- task: MSBuild@1
+- task: DotNetCoreCLI@0
   inputs:
-    solution: '**/SaverBackend.csproj'
-    configuration: 'Debug'
+    command: build
+    projects: SaverBackend.csproj
