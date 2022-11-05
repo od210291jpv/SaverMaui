@@ -8,9 +8,9 @@ trigger:
 
 pool: 
   name: MyPool
+  demands: msbuild
 
 variables:
-  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Debug'
 
