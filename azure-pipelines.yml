@@ -8,7 +8,7 @@ trigger:
 
 pool: 
   name: MyPool
-  demands: msbuild, Agent.Version 2.163.1
+  demands: msbuild, -gtVersion 2.163.1
 
 variables:
   solution: '**/*.sln'
