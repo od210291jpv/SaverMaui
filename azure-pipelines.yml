@@ -18,4 +18,5 @@ steps:
 - task: DotNetCoreCLI@0
   inputs:
     command: build
-    projects: SaverBackend.csproj
+    projects: SaverBackend/SaverBackend.csproj
+    
