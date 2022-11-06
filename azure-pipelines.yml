@@ -20,6 +20,11 @@ jobs:
     inputs:
       command: build
       projects: SaverBackend/SaverBackend.csproj
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)'
+      artifact: 'BuildArtifacts'
+      publishLocation: 'pipeline'
 
 - deployment: deploy
   displayName: 'Deploy code to raspberry pi'
