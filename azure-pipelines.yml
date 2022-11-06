@@ -46,3 +46,4 @@ stages:
           steps:
             - bash: 'sudo service redis-server start'
             - bash: 'pwd'
+            - bash: 'ls -la'
