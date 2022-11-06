@@ -4,19 +4,20 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  - master
 
-pool: 
-  name: MyPool
-  demands: dotnet
-
-variables:
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Debug'
-
-steps:
-- task: DotNetCoreCLI@0
-  inputs:
-    command: build
-    projects: SaverBackend/SaverBackend.csproj
+jobs:
+- job: buildJob
+  timeoutInMinutes: 10
+  pool:
+    name: MyPool
+    demands: dotnet
+  variables:
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Debug'
+  steps:
+  - task: DotNetCoreCLI@0
+    inputs:
+      command: build
+      projects: SaverBackend/SaverBackend.csproj
     
