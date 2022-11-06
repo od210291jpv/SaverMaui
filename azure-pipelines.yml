@@ -7,6 +7,18 @@ trigger:
   - master
 
 jobs:
+- deployment: deploy
+  displayName: 'Deploy code to raspberry pi'
+  workspace:
+    clean: all
+  environment:
+    name: raspberry
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+          - bash: ''
+      
 - job: buildJob
   timeoutInMinutes: 10
   pool:
@@ -20,4 +32,3 @@ jobs:
     inputs:
       command: build
       projects: SaverBackend/SaverBackend.csproj
-    
