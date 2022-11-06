@@ -24,7 +24,7 @@ stages:
         projects: SaverBackend/SaverBackend.csproj
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)/1/s'
+        targetPath: '$(Pipeline.Workspace)/s'
         artifact: 'BuildArtifacts'
         publishLocation: 'pipeline'
 
