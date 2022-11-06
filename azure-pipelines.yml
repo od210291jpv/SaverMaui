@@ -34,5 +34,6 @@ jobs:
     runOnce:
       deploy:
         steps:
-          - bash: ''
+          - bash: 'sudo service redis-server start'
+          - bash: 'pwd'
       
