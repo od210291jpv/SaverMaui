@@ -7,7 +7,7 @@ trigger:
   - master
 
 stages:
-- stage: Stage1
+- stage: BuildApplication
   jobs:
   - job: buildJob
     timeoutInMinutes: 10
@@ -28,8 +28,8 @@ stages:
         artifact: 'BuildArtifacts'
         publishLocation: 'pipeline'
 
-- stage: Stage2
-  dependsOn: Stage1
+- stage: DeployApplication
+  dependsOn: BuildApplication
   jobs:
   - deployment: deploy
     displayName: 'Deploy code to raspberry pi'
