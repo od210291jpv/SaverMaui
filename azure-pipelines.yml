@@ -6,39 +6,43 @@
 trigger:
   - master
 
-jobs:
-- job: buildJob
-  timeoutInMinutes: 10
-  pool:
-    name: MyPool
-    demands: dotnet
-  variables:
-    buildPlatform: 'Any CPU'
-    buildConfiguration: 'Debug'
-  steps:
-  - task: DotNetCoreCLI@0
-    inputs:
-      command: build
-      projects: SaverBackend/SaverBackend.csproj
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Pipeline.Workspace)'
-      artifact: 'BuildArtifacts'
-      publishLocation: 'pipeline'
+stages:
+- stage: Stage1
+  jobs:
+  - job: buildJob
+    timeoutInMinutes: 10
+    pool:
+      name: MyPool
+      demands: dotnet
+    variables:
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Debug'
+    steps:
+    - task: DotNetCoreCLI@0
+      inputs:
+        command: build
+        projects: SaverBackend/SaverBackend.csproj
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'BuildArtifacts'
+        publishLocation: 'pipeline'
 
-- deployment: deploy
-  displayName: 'Deploy code to raspberry pi'
-  pool:
-    name: MyPool
-    demands: dotnet
-  workspace:
-    clean: all
-  environment:
-    name: raspberry
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-          - bash: 'sudo service redis-server start'
-          - bash: 'pwd'
-      
+- stage: Stage2
+  dependsOn: Stage1
+  jobs:
+  - deployment: deploy
+    displayName: 'Deploy code to raspberry pi'
+    pool:
+      name: MyPool
+      demands: dotnet
+    workspace:
+      clean: all
+    environment:
+      name: raspberry
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - bash: 'sudo service redis-server start'
+            - bash: 'pwd'
