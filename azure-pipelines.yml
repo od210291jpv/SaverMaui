@@ -44,6 +44,10 @@ stages:
       runOnce:
         deploy:
           steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                targetPath: '$(Pipeline.Workspace)/application'
             - bash: 'sudo service redis-server start'
             - bash: 'pwd'
-            - bash: 'ls -la'
+            - bash: 'ls'
