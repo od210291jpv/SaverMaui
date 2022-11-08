@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SambaServiceClient;
 using SaverBackend.Models;
 
 namespace SaverBackend.Controllers
