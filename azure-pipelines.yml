@@ -16,7 +16,6 @@ stages:
       name: MyPool
       demands: 
       - dotnet
-      - nunit-console
     variables:
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Debug'
