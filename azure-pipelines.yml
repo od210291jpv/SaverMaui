@@ -14,7 +14,7 @@ stages:
     timeoutInMinutes: 10
     pool:
       name: MyPool
-      demands: dotnet, nunit-console
+      demands: dotnet, nunit
     variables:
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Debug'
