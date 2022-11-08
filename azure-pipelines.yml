@@ -47,7 +47,6 @@ stages:
       runOnce:
         deploy:
           steps:
-            - bash: "sudo ps -ef | grep 'dotnet' | grep -v grep | awk '{print $2}' | xargs -r kill -9"
             - bash: 'sudo service redis-server start'
             - bash: 'cd /home/pi/azureagent/_work/1/BuildArtifacts/SaverBackend/bin/Debug/net6.0/'
             - bash: 'sudo nohup dotnet SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
