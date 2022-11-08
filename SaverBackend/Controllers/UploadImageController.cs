@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SambaServiceClient;
 using SaverBackend.Models;
 
 namespace SaverBackend.Controllers
@@ -9,17 +10,17 @@ namespace SaverBackend.Controllers
     {
         private ApplicationContext db;
         private readonly IWebHostEnvironment _env;
+        private readonly string SambaPath = @"\\192.168.0.137\mainShare\renders";
 
         public UploadImageController(ApplicationContext database, IWebHostEnvironment env)
         {
             this.db = database;
-            this._env = env; 
+            this._env = env;
         }
 
         [HttpPost("image")]
         public async Task<IActionResult> Index(IFormFile image)
         {
-            string contentRootPath = _env.ContentRootPath;
             string webRootPath = _env.WebRootPath;
 
             string path = Path.Combine(webRootPath, "Images");
@@ -28,41 +29,46 @@ namespace SaverBackend.Controllers
                 Directory.CreateDirectory(path);
             }
 
+            string sambaFilePath = Path.Combine(SambaPath, image.FileName);
 
-
-            using (var ms = new MemoryStream())
+            if (Directory.Exists(SambaPath)) 
             {
-                image.CopyTo(ms);
-
-                ImageModel img = new ImageModel()
+                using (var ms = new MemoryStream())
                 {
-                    FileName = image.FileName,
-                    Content = ms.ToArray()
-                };
+                    image.CopyTo(ms);
 
-                using (FileStream stream = new FileStream(Path.Combine(path, image.FileName), FileMode.Create))
-                {
-                    image.CopyTo(stream);
+                    ImageModel img = new ImageModel()
+                    {
+                        FileName = image.FileName,
+                        Content = ms.ToArray()
+                    };
+
+                    using (FileStream stream = new FileStream(sambaFilePath, FileMode.Create))
+                    {
+                        image.CopyTo(stream);
+                    }
+
+                    db.Images.Add(img);
+                    await db.SaveChangesAsync();
+                    return Json(img.Id);
                 }
-
-                db.Images.Add(img);
-                await db.SaveChangesAsync();
-                return Json(img.Id);
             }
-            
-            return View("Index", image);
+
+            return Json("Looks Like samba share is not mounted");
         }
 
         [HttpGet("image/get/all")]
-        public async Task<Uri[]> Index()
+        public async Task<string> Index()
         {
             string contentRootPath = _env.ContentRootPath;
             string webRootPath = _env.WebRootPath;
 
+            var host = HttpContext.Request.Host.ToUriComponent();
+            var filepath = db.Images.Select(im => im.FileName).ToArray().FirstOrDefault();
+            
+            var url = $"{HttpContext.Request.Scheme}://{host}/{filepath}";
 
-            var results =  db.Images.Select(im => new Uri(Path.Combine(webRootPath, "Images", im.FileName), UriKind.Relative)).ToArray();
-
-            return results;
+            return url;
         }
     }
 }

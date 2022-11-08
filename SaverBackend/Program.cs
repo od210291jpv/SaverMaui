@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.MapHub<MainNotificationsHub>("/notify");
 
 app.Run();

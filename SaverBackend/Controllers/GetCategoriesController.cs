@@ -43,9 +43,14 @@ namespace SaverBackend.Controllers
         [HttpPost(Name = "GetPopularCategories")]
         public async Task<CategoryDto[]> GetMostPopularCategories(int limit)
         {
-            Category[] result = this.db.Categories.OrderByDescending(ct => ct.AmountOfOpenings).ToArray();
-
+            Category[] result = await this.db.Categories.OrderByDescending(ct => ct.AmountOfOpenings).ToArrayAsync();
             CategoryDto[] limitedResult = new CategoryDto[limit];
+
+
+            if (result.Length < limit) 
+            {
+                return limitedResult;
+            }
 
             for (int i = 0; i != limit; i++)
             {
@@ -60,6 +65,34 @@ namespace SaverBackend.Controllers
                     PublisherProfileId = profileId
                 };
             }
+            return limitedResult;
+        }
+
+        [HttpGet("GetMostFavoriteCategories")]
+        public async Task<CategoryDto[]> GetMostFavoriteCategories(int categoriesLimit)
+        {
+            Category[] allCategories = await this.db.Categories.OrderByDescending(ct => ct.AmountOfFavorites).ToArrayAsync();
+            CategoryDto[] limitedResult = new CategoryDto[categoriesLimit];
+
+            if (allCategories.Length < categoriesLimit)
+            {
+                return limitedResult;
+            }
+
+            for (int i = 0; i != categoriesLimit; i++)
+            {
+                Guid? profileId = await GetPublisherProfile(allCategories[i].CategoryId);
+
+                limitedResult[i] = new CategoryDto()
+                {
+                    Name = allCategories[i].Name,
+                    CategoryId = allCategories[i].CategoryId,
+                    AmountOfFavorites = allCategories[i].AmountOfFavorites,
+                    AmountOfOpenings = allCategories[i].AmountOfOpenings,
+                    PublisherProfileId = profileId
+                };
+            }
+
             return limitedResult;
         }
 

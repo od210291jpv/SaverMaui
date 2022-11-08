@@ -36,7 +36,8 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Feed">
-        <ShellContent ContentTemplate="{DataTemplate local:FeedPage}"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:FeedPage}" Title="MainFeed"></ShellContent>
+        <ShellContent Title="Renders Library"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Web Content">

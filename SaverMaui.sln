@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverBackend", "SaverBacken
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlowSaverTests", "SpecFlowSaverTests\SpecFlowSaverTests.csproj", "{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServiceClient", "SignalRServiceClient\SignalRServiceClient.csproj", "{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SambaServiceClient", "SambaServiceClient\SambaServiceClient.csproj", "{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
