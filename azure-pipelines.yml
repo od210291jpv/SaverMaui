@@ -6,6 +6,9 @@
 trigger:
   - master
   - feature/*
+  
+ extends:
+    template: build-params.yml
 
 stages:
 - stage: BuildApplication
