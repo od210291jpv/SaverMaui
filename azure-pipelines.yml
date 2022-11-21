@@ -9,8 +9,6 @@ trigger:
 
 extends:
   template: build-params.yml
-  parameters:
-    Location: Georgia
   
 stages:
 - stage: BuildApplication
