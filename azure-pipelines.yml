@@ -15,9 +15,8 @@ parameters:
 extends:
   template: build-params.yml
   parameters:
-    ${{ each param in parameters }}:
-      ${{ param.Key }}: ${{ param.Value }}
- 
+    Location: Georgia
+  
 stages:
 - stage: BuildApplication
   jobs:
