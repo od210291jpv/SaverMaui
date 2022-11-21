@@ -7,10 +7,8 @@ trigger:
   - master
   - feature/*
   
-extends:
+parameters:
     template: build-params.yml
-    parameters:
-        client: ClientOne
         
 stages:
 - stage: BuildApplication
