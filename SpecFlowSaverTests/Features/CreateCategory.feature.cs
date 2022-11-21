@@ -103,7 +103,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.When("I call endpoint for create the category with name \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I call endpoint for create the category with name \"TestAQACategory\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
  testRunner.Then("I can find this category in results of GetAllCategory endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

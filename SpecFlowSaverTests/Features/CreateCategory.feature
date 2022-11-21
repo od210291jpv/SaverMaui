@@ -3,7 +3,7 @@
 
 @tag1
 Scenario: CreateCategory	
-	When I call endpoint for create the category with name "Test"
+	When I call endpoint for create the category with name "TestAQACategory"
 	Then I can find this category in results of GetAllCategory endpoint
 
 Scenario: DeleteExistingCategory

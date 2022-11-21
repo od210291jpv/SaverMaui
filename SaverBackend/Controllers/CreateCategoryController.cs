@@ -32,12 +32,12 @@ namespace SaverBackend.Controllers
                     CategoryId = category.CategoryId,
                     Name = category.Name,
                     AmountOfOpenings = category.AmountOfOpenings ?? 0,
-                    AmountOfFavorites = category.AmountOfFavorites ?? 0,  
+                    AmountOfFavorites = category.AmountOfFavorites ?? 0,
                 };
 
                 if (category.PublisherProfileId != null)
                 {
-                    var publisherProfile = await this.db.Profiles.SingleAsync(pr => pr.ProfileId == category.PublisherProfileId);
+                    var publisherProfile = await this.db.Profiles.SingleOrDefaultAsync(pr => pr.ProfileId == category.PublisherProfileId);
                     newCategory.Profile = publisherProfile;
                 }
 

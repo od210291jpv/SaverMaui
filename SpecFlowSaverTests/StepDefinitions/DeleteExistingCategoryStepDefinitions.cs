@@ -38,13 +38,17 @@ namespace SpecFlowSaverTests.StepDefinitions
         [Then(@"I can delete the category")]
         public void ThenICanDeleteTheCategory()
         {
-            throw new PendingStepException();
+            System.Net.HttpStatusCode result = BackendServiceClient.GetInstance().DeleteCategoryAsync(this.categoryId).Result;
+            result.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
         [Then(@"the deleted category should not be available anymore in GetCategories results")]
         public void ThenTheDeletedCategoryShouldNotBeAvailableAnymoreInGetCategoriesResults()
         {
-            throw new PendingStepException();
+            AllCategoriesResponseModel[] allCats = BackendServiceClient.GetInstance().GetAllCategoriesAsync().Result;
+            IEnumerable<Guid> allCatsIds = allCats.Select(cat => cat.CategoryId);
+            
+            allCatsIds.Should().NotContain(this.categoryId);
         }
 
     }

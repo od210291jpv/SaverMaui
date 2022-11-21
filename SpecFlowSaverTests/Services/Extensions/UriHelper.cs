@@ -19,7 +19,7 @@
 
         public static string CreateCategory
         {
-            get => $"{BaseAddress}/CreateCategory";
+            get => $"{BaseAddress}/CreateCategory/create";
         }
 
         public static string GetAllCategories

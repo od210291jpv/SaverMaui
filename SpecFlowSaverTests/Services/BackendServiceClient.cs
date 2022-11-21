@@ -44,5 +44,10 @@ namespace SpecFlowSaverTests.Services
 
             return resp;
         }
+
+        public async Task<HttpResponseMessage> PostRequestAsync(string endpoint) 
+        {
+            return await this.httpClient.PostAsync(endpoint, null);
+        }
     }
 }

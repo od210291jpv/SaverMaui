@@ -19,8 +19,4 @@
     <Folder Include="Drivers\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SaverBackend\SaverBackend.csproj" />
-  </ItemGroup>
-
 </Project>

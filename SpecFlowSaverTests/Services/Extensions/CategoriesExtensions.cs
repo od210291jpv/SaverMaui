@@ -19,9 +19,10 @@ namespace SpecFlowSaverTests.Services.Extensions
             return response.StatusCode;
         }
 
-        //internal static async Task<HttpStatusCode> DeleteCategoryAsync(Guid categoryId) 
-        //{
-
-        //}
+        internal static async Task<HttpStatusCode> DeleteCategoryAsync(this BackendServiceClient serviceClient, Guid categoryId)
+        {
+            var response = await serviceClient.PostRequestAsync(UriHelper.DeleteCategory(categoryId));
+            return response.StatusCode;
+        }
     }
 }

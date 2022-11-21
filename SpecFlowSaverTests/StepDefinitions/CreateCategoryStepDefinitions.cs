@@ -32,7 +32,7 @@ namespace SpecFlowSaverTests.StepDefinitions
 
             this.categoryId = category.CategoryId;
 
-            BackendServiceClient.GetInstance().CreateCategoryAsync(category).Wait();
+            var status = BackendServiceClient.GetInstance().CreateCategoryAsync(category).Result;
         }
 
         [Then(@"I can find this category in results of GetAllCategory endpoint")]
