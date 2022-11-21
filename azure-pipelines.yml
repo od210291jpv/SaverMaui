@@ -9,8 +9,8 @@ trigger:
   
 parameters:
     - name: yesno
-    type: boolean
-    default: false
+    - type: boolean
+    - default: false
         
 stages:
 - stage: BuildApplication
