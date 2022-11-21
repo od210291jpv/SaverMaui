@@ -7,11 +7,6 @@ trigger:
   - master
   - feature/*
 
-parameters:
-- name: Location
-  type: string
-  default: 'westus'
-
 extends:
   template: build-params.yml
   parameters:
