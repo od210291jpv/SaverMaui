@@ -11,6 +11,7 @@ trigger:
     template: build-params.yml
     parameters:
         client: ClientOne
+        
 stages:
 - stage: BuildApplication
   jobs:
