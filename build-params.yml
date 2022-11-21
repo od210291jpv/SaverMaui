@@ -1,0 +1,17 @@
+parameters:
+    - name: client
+    - type: object
+    - default: ClientOne
+    
+    
+ClientOne:
+    AdminPortal: 'http://google.com'
+    UserName: 'ClientWitehead'
+    Password: 'passwors'
+    AffiliateId: 12345
+    
+ClientTwo:
+    AdminPortal: 'https://gmail.com'
+    UserName: 'ClientTwo'
+    Password: 'password'
+    AffiliateId: 45678
