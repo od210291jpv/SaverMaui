@@ -2,6 +2,9 @@ parameters:
 - name: Location
   type: string
   default: 'eastus'
+  values:
+  - default
+  - ubuntu
 
 steps:
 - script: echo ${{ parameters.Location }}
