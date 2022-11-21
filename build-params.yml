@@ -6,9 +6,6 @@ parameters:
   - default
   - ubuntu
 
-steps:
-- script: echo ${{ parameters.Location }}
-
 ClientOne:
     AdminPortal: 'http://google.com'
     UserName: 'ClientWitehead'

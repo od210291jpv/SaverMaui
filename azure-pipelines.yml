@@ -17,7 +17,7 @@ extends:
   parameters:
     ${{ each param in parameters }}:
       ${{ param.Key }}: ${{ param.Value }}
-        
+ 
 stages:
 - stage: BuildApplication
   jobs:
