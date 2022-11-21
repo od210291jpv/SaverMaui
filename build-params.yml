@@ -1,10 +1,11 @@
 parameters:
 - name: Location
   type: string
-  default: 'eastus'
+  default: 'westus'
   values:
-  - default
-  - ubuntu
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
 
 ClientOne:
     AdminPortal: 'http://google.com'
