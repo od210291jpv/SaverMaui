@@ -7,12 +7,43 @@ trigger:
   - master
   - feature/*
 
-extends:
-  template: build-params.yml
-  parameters:
-    values:
-      ${{ each param in parameters }}:
-        ${{ param.Key }}: ${{ param.Value }}
+parameters:
+- name: hubConfig
+  type: object
+  default:
+    vnetSubscriptionId: <snip>
+    vnetRsg: bicep
+    vnetRsgLocation: westeurope
+    vnetName: Hub
+    vnetAddressSpace: 10.10.0.0/16
+    snetConfig:
+    - name: frontend
+      range: 10.10.0.0/24
+    - name: backend
+      range: 10.10.1.0/24
+- name: spokeConfig
+  type: object
+  default:
+  - vnetSubscriptionId: <snip>
+    vnetRsg: bicep2
+    vnetRsgLocation: westeurope
+    vnetName: Spoke1
+    vnetAddressSpace: 10.11.0.0/16
+    snetConfig:
+    - name: frontend
+      range: 10.11.0.0/24
+    - name: backend
+      range: 10.11.1.0/24
+  - vnetSubscriptionId: <snip>
+    vnetRsg: bicep3
+    vnetRsgLocation: westeurope
+    vnetName: Spoke2
+    vnetAddressSpace: 10.12.0.0/16
+    snetConfig:
+    - name: frontend
+      range: 10.12.0.0/24
+    - name: backend
+      range: 10.12.1.0/24
   
 stages:
 - stage: BuildApplication
