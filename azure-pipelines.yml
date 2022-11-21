@@ -7,9 +7,10 @@ trigger:
   - master
   - feature/*
   
- extends:
-    template: build-params.yml
-
+parameters:
+    extends: 
+        template: build-params.yml
+       
 stages:
 - stage: BuildApplication
   jobs:
