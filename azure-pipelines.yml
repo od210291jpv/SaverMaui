@@ -7,8 +7,20 @@ trigger:
   - master
   - feature/*
 
+parameters:
+- name: Location
+  type: string
+  default: 'westus'
+  values:
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
+
 extends:
   template: build-params.yml
+  parameters:
+    ${{ each param in parameters }}:
+      ${{ param.Key }}: ${{ param.Value }}
   
 stages:
 - stage: BuildApplication
