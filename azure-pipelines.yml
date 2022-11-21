@@ -7,9 +7,6 @@ trigger:
   - master
   - feature/*
 
-variables:
-  PipeVars:
-
 stages:
 - stage: BuildApplication
   jobs:
