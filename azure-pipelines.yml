@@ -7,7 +7,7 @@ trigger:
   - master
   - feature/*
   
-extends:
+parameters:
   template: build-params.yml
         
 stages:
