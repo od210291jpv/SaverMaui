@@ -8,9 +8,9 @@ trigger:
   - feature/*
   
 parameters:
-    - name: yesno
-    - type: boolean
-    - default: false
+- name: yesno
+    type: boolean
+    default: false
         
 stages:
 - stage: BuildApplication
