@@ -7,10 +7,10 @@ trigger:
   - master
   - feature/*
   
-parameters:
-    extends: 
-        template: build-params.yml
-       
+ extends:
+    template: build-params.yml
+    parameters:
+        client: ClientOne
 stages:
 - stage: BuildApplication
   jobs:
