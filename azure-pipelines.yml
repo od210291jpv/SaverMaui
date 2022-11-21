@@ -8,7 +8,9 @@ trigger:
   - feature/*
   
 parameters:
-    template: build-params.yml
+    name: yesno
+    type: boolean
+    default: false
         
 stages:
 - stage: BuildApplication
