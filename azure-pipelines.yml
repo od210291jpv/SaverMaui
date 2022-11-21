@@ -7,7 +7,7 @@ trigger:
   - master
   - feature/*
   
- extends:
+extends:
     template: build-params.yml
     parameters:
         client: ClientOne
