@@ -8,19 +8,15 @@ trigger:
   - feature/*
 
 parameters:
-- name: hubConfig
-  type: object
-  default:
-    vnetRsg: bicep
-    snetConfig:
-    - name: frontend
-      range: 10.10.0.0/24
+  - name: listOfValues
+    type: object
+    default:
+      this_is:
+        a_complex: object
+        with:
+          - one
+          - two
 
-- name: spokeConfig
-  type: object
-  default:
-  - vnetSubscriptionId: <snip>
-  
 stages:
 - stage: BuildApplication
   jobs:
