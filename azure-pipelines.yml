@@ -9,7 +9,7 @@ trigger:
 
 parameters:
   - name: listOfValues
-    type: object
+    type: number
     values:
       - this_is
       - second
