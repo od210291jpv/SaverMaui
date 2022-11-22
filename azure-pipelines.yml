@@ -10,12 +10,9 @@ trigger:
 parameters:
   - name: listOfValues
     type: object
-    default:
-      this_is:
-        a_complex: object
-        with:
-          - one
-          - two
+    values:
+      - this_is
+      - second
 
 stages:
 - stage: BuildApplication
