@@ -8,21 +8,15 @@ trigger:
   - feature/*
 
 parameters:
-  - name: listOfValues
+  - name: Client
+    displayName: Client
     type: string
     values:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 11
-      - 12
+      - 11 Affiliates
+      - Affilbet
+      - AffiliateGo
+      - AffiliateSaga
+      - Affilialimpo
 
 stages:
 - stage: BuildApplication
@@ -67,3 +61,8 @@ stages:
             - bash: 'sudo service redis-server start'
             - bash: 'cd /home/pi/azureagent/_work/1/BuildArtifacts/SaverBackend/bin/Debug/net6.0/'
             - bash: 'sudo nohup dotnet SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
+            - script: echo building $(Build.BuildNumber)
+              - ${{ if eq(parameters.Client, '11 Affiliates') }}:
+            - script: echo "11 Affiliates"
+              - ${{if eq(parameters.Client, 'Affilbet')}}:
+            - script: echo "Affilbet"
