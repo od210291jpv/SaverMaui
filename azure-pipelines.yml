@@ -9,7 +9,7 @@ trigger:
 
 parameters:
   - name: listOfValues
-    type: number
+    type: string
     values:
       - 1
       - 2
