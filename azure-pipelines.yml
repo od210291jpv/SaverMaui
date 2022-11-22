@@ -11,8 +11,8 @@ parameters:
   - name: listOfValues
     type: number
     values:
-      - this_is
-      - second
+      - 1
+      - 2
 
 stages:
 - stage: BuildApplication
