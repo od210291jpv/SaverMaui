@@ -203,5 +203,18 @@ namespace SaverMaui.ViewModels
             this.ContentAmount = _realm.All<Content>().ToArray().Length;
             this.logFeedsEnabled = true;
         }
+
+        public void UpdateAllCategories()
+        {
+            this.Categories.Clear();
+
+            Realm _realm = Realm.GetInstance();
+            var allCategories = _realm.All<Category>();
+
+            foreach (var cat in allCategories)
+            {
+                Categories.Add(cat);
+            }
+        }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -49,8 +44,14 @@ namespace SaverMaui.Commands
             viewModel.NewCategoryName = "";
 
             CategoriesViewModel.Instance?.UpdateAllCategories();
-            
+            SettingsViewModel.GetInstance().UpdateAllCategories();
+
             SettingsViewModel.GetInstance().CategoriesAmount += 1;
+
+            if (DeviceInfo.Current.Platform.ToString().ToLower() == "android") 
+            {
+                HapticFeedback.Perform(HapticFeedbackType.Click);
+            }
 
             await Application.Current.MainPage.DisplayAlert("Done", $"Category Added: {category.Name}", "Ok");
         }

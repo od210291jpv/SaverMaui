@@ -21,11 +21,20 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            return IsOnlineHelper.IsOnline;
+            return IsOnlineHelper.IsOnline &&
+                this.viewModel.Login != null &&
+                this.viewModel.Login != "" &&
+                this.viewModel.Password != null &&
+                this.viewModel.Password != "";
         }
 
         public async void Execute(object parameter)
         {
+            if (!await BackendServiceClient.GetInstance().PingAsync()) 
+            {
+                return;
+            }
+
             Environment.ProfileData = await BackendServiceClient
                 .GetInstance()
                 .LoginUserAsync(this.viewModel.Login, this.viewModel.Password);

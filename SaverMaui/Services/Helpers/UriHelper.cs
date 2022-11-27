@@ -61,5 +61,10 @@
         {
             get => $"{BaseAddress}/RegisterUserProfile/RegisterUserProfile";
         }
+
+        public static string Ping 
+        {
+            get => $"{BaseAddress}/Ping/ping";
+        }
     }
 }

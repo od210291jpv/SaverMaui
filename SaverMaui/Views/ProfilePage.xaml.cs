@@ -6,7 +6,9 @@ public partial class ProfilePage : ContentPage
 	{
 		InitializeComponent();
 
-		this.PublishedCats.Text = $"Amount of published categories: {Environment.ProfileData.PublishedCategories.Count()}";
-
+		if (Environment.ProfileData != null) 
+		{
+            this.PublishedCats.Text = $"Amount of published categories: {Environment.ProfileData.PublishedCategories.Count()}";
+        }
     }
 }

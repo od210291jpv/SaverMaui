@@ -20,7 +20,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
             ApplicationContext.ConnectionString,
             ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
-builder.Configuration.AddJsonFile("appsettings.json").AddJsonFile("appsettings.Development.json").AddJsonFile("appsettings.Production.json");
+builder.Configuration.AddJsonFile("appsettings.json");
 
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
 
