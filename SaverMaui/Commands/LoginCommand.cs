@@ -21,11 +21,7 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            return IsOnlineHelper.IsOnline &&
-                this.viewModel.Login != null &&
-                this.viewModel.Login != "" &&
-                this.viewModel.Password != null &&
-                this.viewModel.Password != "";
+            return IsOnlineHelper.IsOnline;
         }
 
         public async void Execute(object parameter)
