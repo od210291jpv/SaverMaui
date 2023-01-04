@@ -209,7 +209,7 @@ namespace SaverMaui.ViewModels
             this.Categories.Clear();
 
             Realm _realm = Realm.GetInstance();
-            var allCategories = _realm.All<Category>();
+            var allCategories = _realm.All<Category>().ToArray();
 
             foreach (var cat in allCategories)
             {
