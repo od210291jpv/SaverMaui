@@ -37,7 +37,6 @@
 
     <FlyoutItem Title="Feed">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}" Title="MainFeed"></ShellContent>
-        <ShellContent Title="Renders Library"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Web Content">

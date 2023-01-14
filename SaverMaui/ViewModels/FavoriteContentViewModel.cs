@@ -2,26 +2,13 @@
 using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
-
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
-    public class FeedViewModel : BaseViewModel
+    public class FavoriteContentViewModel : BaseViewModel
     {
-        private static FeedViewModel instance;
-
-        public static FeedViewModel GetInstance()
-        {
-            if (instance is null)
-            {
-                instance = new FeedViewModel();
-            }
-
-            return instance;
-        }
-
         private ObservableCollection<ImageRepresentationElement> contentCollection;
         public ObservableCollection<ImageRepresentationElement> ContentCollection { get => contentCollection; set => contentCollection = value; }
 
@@ -30,26 +17,26 @@ namespace SaverMaui.ViewModels
         public ImageRepresentationElement CurrentContent
         {
             get => currentImage;
-            set => currentImage = value; 
+            set => currentImage = value;
         }
 
-        public ICommand ItemChangedCommand 
+        public ICommand ItemChangedCommand
         {
             get;
         }
 
-        public FeedViewModel()
+        public FavoriteContentViewModel()
         {
-            this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
+            this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
 
-            this.ItemChangedCommand = new FeedItemChangedCommand(this);
+            this.ItemChangedCommand = new FavoriteContentFeedItemChangedCommand(this);
 
             Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().ToArray();
+            Content[] allRelatedContent = _realm.All<Content>().Where(ct => ct.IsFavorite == true).ToArray();
 
-            foreach (var cat in allRelatedContent.ToArray().Reverse())
+            foreach (var cat in allRelatedContent)
             {
-                ContentCollection.Add(new ImageRepresentationElement() 
+                ContentCollection.Add(new ImageRepresentationElement()
                 {
                     CategoryId = cat.CategoryId.Value,
                     Name = cat.Title,

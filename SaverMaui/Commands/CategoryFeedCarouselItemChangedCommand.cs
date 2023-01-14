@@ -1,7 +1,6 @@
 ﻿using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -26,6 +25,8 @@ namespace SaverMaui.Commands
         {
             try
             {
+
+
                 NotificationCenterViewModel.GetInstance()?.SendLocalMessage($"Debug: " +
                     $"loading image {this.viewModel.CurrentImage.Id} \r\n" +
                     $"Is loaded {this.viewModel.CurrentImage.IsLoaded} \r\n" +

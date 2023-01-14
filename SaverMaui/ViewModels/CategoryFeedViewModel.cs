@@ -9,6 +9,18 @@ namespace SaverMaui.ViewModels
 {
     public class CategoryFeedViewModel : BaseViewModel
     {
+        private static CategoryFeedViewModel instance;
+
+        public static CategoryFeedViewModel GetInstance()
+        {
+            if (instance is null)
+            {
+                instance = new CategoryFeedViewModel();
+            }
+
+            return instance;
+        }
+
         private ObservableCollection<ImageRepresentationElement> contentCollection;
         public ObservableCollection<ImageRepresentationElement> ContentCollection { get => contentCollection; set => contentCollection = value; }
 

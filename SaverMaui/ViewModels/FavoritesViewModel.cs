@@ -1,12 +1,7 @@
 ﻿using Realms;
 using SaverMaui.Commands;
 using SaverMaui.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
@@ -41,6 +36,11 @@ namespace SaverMaui.ViewModels
             get;
         }
 
+        public ICommand NavigateToFavoriteContentCommand 
+        {
+            get;
+        }
+
         public ICommand NavigateToPersonalFeedCommand 
         {
             get;
@@ -54,6 +54,7 @@ namespace SaverMaui.ViewModels
             this.FavoriteContent = new ObservableCollection<Content>();
             this.AllFavoriteContent = new ObservableCollection<Content>();
             this.NavigateToPersonalFeedCommand = new NavigateToPersonalFeedCommand(this);
+            this.NavigateToFavoriteContentCommand = new NavigateToFavoriteContentCommand();
 
             Realm _realm = Realm.GetInstance();
             var allFavCategories = _realm.All<Category>().ToArray().Where(c => c.IsFavorite == true);

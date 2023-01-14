@@ -46,7 +46,6 @@ namespace SaverBackend.Controllers
                 await this.db.SaveChangesAsync();
                 await this.notificationsHubContext.Clients.All.SendAsync($"New Category {category.Name} added!");
                 return StatusCode(201);
-
             }
 
             return StatusCode(200);

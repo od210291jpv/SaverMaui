@@ -1,4 +1,6 @@
+using Realms;
 using SaverMaui.Models;
+using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
 
@@ -14,5 +16,10 @@ public partial class CategoryFeedPage : ContentPage
         InitializeComponent();
 
         this.Title = Environment.SahredData.currentCategory.Name;
+    }
+
+    private void OnTapGestureRecognizerTapped(object sender, EventArgs e)
+    {
+
     }
 }

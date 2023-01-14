@@ -1,4 +1,5 @@
 ﻿using Realms;
+using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services.Contracts.Profile;
 
@@ -13,6 +14,8 @@ namespace SaverMaui
         public static Guid ProfileId;
 
         public static LoginResponse ProfileData;
+
+        public static ImageRepresentationElement CurrentImageOnScreen;
 
         public static class SahredData
         {

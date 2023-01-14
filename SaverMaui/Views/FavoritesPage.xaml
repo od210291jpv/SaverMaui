@@ -21,7 +21,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Row="0" Grid.Column="0" Text="Categories" HorizontalOptions="FillAndExpand" BackgroundColor="DeepPink" CornerRadius="0" TextColor="White" HeightRequest="200" Margin="5" Command="{Binding NavigateToFavoriteCategoriesCommand}"/>
-                <Button Grid.Row="0" Grid.Column="1" Text="Content" HorizontalOptions="FillAndExpand" BackgroundColor="DeepPink" CornerRadius="0" TextColor="White" HeightRequest="200" Margin="5"/>
+                <Button Grid.Row="0" Grid.Column="1" Text="Content" HorizontalOptions="FillAndExpand" BackgroundColor="DeepPink" CornerRadius="0" TextColor="White" HeightRequest="200" Margin="5" Command="{Binding NavigateToFavoriteContentCommand}"/>
 
             </Grid>
         </StackLayout>

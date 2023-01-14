@@ -192,7 +192,7 @@ namespace SaverMaui.ViewModels
 
             Realm _realm = Realm.GetInstance();
 
-            var allCategories = _realm.All<Category>();
+            var allCategories = _realm.All<Category>().OrderBy(c => c.Name).ToArray();
 
             foreach (var cat in allCategories)
             {
@@ -209,7 +209,7 @@ namespace SaverMaui.ViewModels
             this.Categories.Clear();
 
             Realm _realm = Realm.GetInstance();
-            var allCategories = _realm.All<Category>().ToArray();
+            var allCategories = _realm.All<Category>().OrderBy(c => c.Name).ToArray();
 
             foreach (var cat in allCategories)
             {
