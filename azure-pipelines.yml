@@ -58,6 +58,4 @@ stages:
                   
                   cd /var/www/saverbackend/BuildDrop/SaverBackend
                   
-                  sudo dotnet publish --configuration Release
-
-                  sudo nohup dotnet /var/www/saverbackend/BuildDrop/SaverBackend/bin/Release/net6.0/SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
+                  sudo nohup dotnet /var/www/saverbackend/BuildDrop/SaverBackend/bin/Debug/net6.0/SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
