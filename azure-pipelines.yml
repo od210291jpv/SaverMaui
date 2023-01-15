@@ -50,6 +50,14 @@ stages:
             - bash: 'sudo service redis-server start' 
             - bash: 'sudo rm -rf /var/www/saverbackend/BuildDrop'
             - bash: 'sudo cp -r /home/pi/azureagent/_work/1/BuildDrop /var/www/saverbackend'
-            - bash: 'cd /var/www/saverbackend/BuildDrop/SaverBackend'
+            - task: Bash@3
+              inputs:
+                targetType: 'inline'
+                script: |
+                  # Write your commands here
+                  
+                  cd /var/www/saverbackend/BuildDrop/SaverBackend
+                  
+                  dotnet publish --configuration Release
             - bash:  'dotnet publish --configuration Release'
             - bash: 'sudo nohup dotnet /home/pi/azureagent/_work/1/BuildArtifacts/SaverBackend/bin/Debug/net6.0/SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
