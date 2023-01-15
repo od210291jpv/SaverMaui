@@ -28,9 +28,8 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)/s'
-        artifact: 'BuildArtifacts'
-        publishLocation: 'filepath'
-        fileSharePath: "~/BuildArtifacts"
+        artifact: 'BuildDrop'
+        publishLocation: 'pipeline'
 
 - stage: DeployApplication
   dependsOn: BuildApplication
@@ -49,5 +48,4 @@ stages:
         deploy:
           steps:
             - bash: 'sudo service redis-server start'
-            - bash: 'sudo cd ~/BuildArtifacts'
             - bash: 'sudo nohup dotnet /home/pi/azureagent/_work/1/BuildArtifacts/SaverBackend/bin/Debug/net6.0/SaverBackend.dll -d --urls=http://0.0.0.0:5000/ --configuration debug > /dev/null 2>&1 &'
