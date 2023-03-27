@@ -9,7 +9,8 @@ namespace SaverBackend.Controllers
     {
         private ApplicationContext db;
         private readonly IWebHostEnvironment _env;
-        private readonly string SambaPath = @"\\192.168.0.137\mainShare\renders";
+
+        private readonly string LocalImagesCategory = "LocalPublications";
 
         public UploadImageController(ApplicationContext database, IWebHostEnvironment env)
         {
@@ -17,43 +18,56 @@ namespace SaverBackend.Controllers
             this._env = env;
         }
 
-        [HttpPost("image")]
-        public async Task<IActionResult> Index(IFormFile image)
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
         {
-            string webRootPath = _env.WebRootPath;
+            var host = HttpContext.Request.Host.ToUriComponent();
 
-            string path = Path.Combine(webRootPath, "Images");
-            if (!Directory.Exists(path))
+            if (file == null || file.Length == 0)
+                return Content("file not selected");
+
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot",
+                        file.FileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
             {
-                Directory.CreateDirectory(path);
+                await file.CopyToAsync(stream);
             }
 
-            string sambaFilePath = Path.Combine(SambaPath, image.FileName);
+            var fileUrl = $"{HttpContext.Request.Scheme}://{host}/{file.FileName}";
 
-            if (Directory.Exists(SambaPath)) 
+            if (!this.db.Categories.Any(c => c.Name == LocalImagesCategory)) 
             {
-                using (var ms = new MemoryStream())
+                var newCategory = new Category()
                 {
-                    image.CopyTo(ms);
+                    CategoryId = Guid.NewGuid(),
+                    Name = LocalImagesCategory,
+                    AmountOfOpenings = 0,
+                    AmountOfFavorites = 0,
+                    ProfileId = 1
+                };
 
-                    ImageModel img = new ImageModel()
-                    {
-                        FileName = image.FileName,
-                        Content = ms.ToArray()
-                    };
-
-                    using (FileStream stream = new FileStream(sambaFilePath, FileMode.Create))
-                    {
-                        image.CopyTo(stream);
-                    }
-
-                    db.Images.Add(img);
-                    await db.SaveChangesAsync();
-                    return Json(img.Id);
-                }
+                await db.Categories.AddAsync(newCategory);
             }
 
-            return Json("Looks Like samba share is not mounted");
+            await db.SaveChangesAsync();
+
+            var category = this.db.Categories.Where(c => c.Name == LocalImagesCategory).FirstOrDefault();
+
+            if (category is not null) 
+            {
+                await db.Contents.AddAsync(new Content()
+                {
+                    CategoryId = category.CategoryId,
+                    ImageUri = fileUrl,
+                    Title = $"LocallyStored{DateTime.Now.Day}",
+                });
+            }
+
+            await db.SaveChangesAsync();
+
+            return Ok(fileUrl);
         }
 
         [HttpGet("image/get/all")]
