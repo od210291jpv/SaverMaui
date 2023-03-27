@@ -33,6 +33,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    app.UseStaticFiles();
     app.UseSwaggerUI();
 }
 

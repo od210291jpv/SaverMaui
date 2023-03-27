@@ -69,5 +69,23 @@ namespace SaverBackend.Controllers
 
             return url;
         }
+
+        [HttpPost("Upload")]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Content("file not selected");
+
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot",
+                        file.FileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok($"http://localhost:5000/{file.FileName}");
+        }
     }
 }

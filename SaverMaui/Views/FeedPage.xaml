@@ -16,6 +16,7 @@
                         <Image Source="{Binding Path=Source}" Aspect="AspectFit">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                <PinchGestureRecognizer PinchUpdated="OnDeleteGestureRecognizerTapped"/>
                             </Image.GestureRecognizers>
                         </Image>
                     </DataTemplate>
