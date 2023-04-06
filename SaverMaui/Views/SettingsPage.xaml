@@ -9,8 +9,8 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
-                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" BackgroundColor="Black">
+            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black" VerticalOptions="Center">
+                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" BackgroundColor="Black" VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -28,8 +28,9 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                     <RowDefinition/>
-                </Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -59,10 +60,11 @@
                         
                     <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="0" Command="{Binding WipeAllDataCommand}"/>
                     <Label Grid.Row="15" Grid.Column="0" Text="Log feeds content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Switch Grid.Row="15" Grid.ColumnSpan="1" OnColor="DeepPink" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
+                    <Switch Grid.Row="15" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
                     <Label Grid.Row="16" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Switch Grid.Row="16" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
-                </Grid>
+                    <Button Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" Text="QuitApp" TextColor="White" FontAttributes="Bold" Command="{Binding CloseAppCommand}"/>
+            </Grid>
             </ScrollView>
     </ContentPage.Content>
 </ContentPage>

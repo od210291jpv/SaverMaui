@@ -186,6 +186,16 @@ namespace SaverMaui.ViewModels
             }
         }
 
+        private QuitAppCommand closeAppCommand;
+
+        public QuitAppCommand CloseAppCommand 
+        {
+            get 
+            {
+                return this.closeAppCommand ?? (this.closeAppCommand = new QuitAppCommand());
+            }
+        }
+
         public SettingsViewModel()
         {
             this.Categories = new ObservableCollection<Category>();
