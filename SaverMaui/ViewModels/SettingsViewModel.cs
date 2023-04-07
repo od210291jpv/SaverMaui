@@ -43,6 +43,14 @@ namespace SaverMaui.ViewModels
             set { this.newCategoryName = value; OnPropertyChanged("NewCategoryName"); }
         }
 
+        private string feedUrl;
+
+        public string FeedUrl 
+        {
+            get => this.feedUrl;
+            set { this.feedUrl = value; OnPropertyChanged("FeedUrl"); }
+        }
+
         private int contentAmount;
 
         public int ContentAmount
@@ -194,6 +202,13 @@ namespace SaverMaui.ViewModels
             {
                 return this.closeAppCommand ?? (this.closeAppCommand = new QuitAppCommand());
             }
+        }
+
+        private ParseRemoteContentFeedCommand parseFeedCommand;
+
+        public ParseRemoteContentFeedCommand ParseFeedCommand 
+        {
+            get => this.parseFeedCommand ?? (this.parseFeedCommand = new ParseRemoteContentFeedCommand(this));
         }
 
         public SettingsViewModel()

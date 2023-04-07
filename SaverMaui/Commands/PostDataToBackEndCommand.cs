@@ -89,9 +89,14 @@ namespace SaverMaui.Commands
             {
                 await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{allCategoriesDto.Count}, Content added {allContentDto.Count}", "Ok");
             }
-            if (result == System.Net.HttpStatusCode.OK) 
+            if (result == System.Net.HttpStatusCode.OK)
             {
                 await Application.Current.MainPage.DisplayAlert("Done", $"No new categories or content was found!", "Ok");
+            }
+
+            if(result != System.Net.HttpStatusCode.Created && result == System.Net.HttpStatusCode.OK) 
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error occured!", "Ok");
             }
         }
     }

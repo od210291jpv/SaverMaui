@@ -108,9 +108,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.7" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	  <PackageReference Include="Realm" Version="10.12.0" />
+	  <PackageReference Include="RestSharp" Version="110.1.0" />
 	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
 

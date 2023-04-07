@@ -29,6 +29,8 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                     <RowDefinition/>
                     </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -63,7 +65,9 @@
                     <Switch Grid.Row="15" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
                     <Label Grid.Row="16" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Switch Grid.Row="16" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
-                    <Button Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" Text="QuitApp" TextColor="White" FontAttributes="Bold" Command="{Binding CloseAppCommand}"/>
+                <Entry Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" Placeholder="enter feed url" Text="{Binding FeedUrl, Mode=TwoWay}"/>
+                <Button Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" FontAttributes="Bold" CornerRadius="0" Text="Parse content for feed" Command="{Binding ParseFeedCommand}"/>
+                <Button Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="0" Command="{Binding CloseAppCommand}"/>
             </Grid>
             </ScrollView>
     </ContentPage.Content>
