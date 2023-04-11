@@ -26,7 +26,7 @@ builder.Configuration.AddJsonFile("appsettings.json");
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
 
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddCoreAdmin();
+builder.Services.AddCoreAdmin("user");
 
 //builder.Services.AddApplicationInsightsTelemetry();
 
