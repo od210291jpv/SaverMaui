@@ -211,6 +211,14 @@ namespace SaverMaui.ViewModels
             get => this.parseFeedCommand ?? (this.parseFeedCommand = new ParseRemoteContentFeedCommand(this));
         }
 
+        private DeleteImagesCommand deleteImagesCommand;
+
+        public DeleteImagesCommand DeleteImagesCommand 
+        {
+            get => this.deleteImagesCommand ?? (this.deleteImagesCommand = new DeleteImagesCommand());
+
+        }
+
         public SettingsViewModel()
         {
             this.Categories = new ObservableCollection<Category>();
