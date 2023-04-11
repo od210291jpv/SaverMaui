@@ -1,6 +1,5 @@
 using Realms;
 using SaverMaui.Models;
-using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
 
@@ -22,4 +21,18 @@ public partial class FeedPage : ContentPage
 
         await Application.Current.MainPage.DisplayAlert("Done", $"Content added to favorites", "Ok");
     }
+
+	private async void OnPinchGestureTapped(object sender, EventArgs e) 
+	{
+        Realm _realm = Realm.GetInstance();
+        var all = _realm.All<Content>().ToArray();
+
+        Environment.ImagesToDelete.Add(all.Where(c => c.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault().ImageUri);
+        await Application.Current.MainPage.DisplayAlert("Done", $"Content added to delete list", "Ok");
+    }
+
+	private void OnPinchGestureTapped(object sender, PinchGestureUpdatedEventArgs e)
+	{
+
+	}
 }

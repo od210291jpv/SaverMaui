@@ -13,9 +13,10 @@
             <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Path=Source}" Aspect="AspectFit">
+                        <Image Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                <PinchGestureRecognizer PinchUpdated="OnPinchGestureTapped" />
                             </Image.GestureRecognizers>
                         </Image>
                     </DataTemplate>

@@ -17,6 +17,8 @@ namespace SaverMaui
 
         public static ImageRepresentationElement CurrentImageOnScreen;
 
+        public static List<string> ImagesToDelete = new List<string>();
+
         public static class SahredData
         {
             public static Category currentCategory;

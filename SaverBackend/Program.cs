@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using SaverBackend.Configuration;
+
 using SaverBackend.Hubs;
 using SaverBackend.Models;
 
@@ -24,9 +25,10 @@ builder.Configuration.AddJsonFile("appsettings.json");
 
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
 
-//builder.Services.AddMvc().AddNewtonsoftJson();
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddCoreAdmin();
+
+//builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
@@ -39,9 +41,7 @@ if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
 app.MapControllers();
-
+app.MapDefaultControllerRoute();
 app.MapHub<MainNotificationsHub>("/notify");
-
 app.Run();
