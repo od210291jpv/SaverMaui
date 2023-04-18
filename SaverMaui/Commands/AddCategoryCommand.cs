@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
 using System.Windows.Input;
@@ -53,7 +55,9 @@ namespace SaverMaui.Commands
                 HapticFeedback.Perform(HapticFeedbackType.Click);
             }
 
-            await Application.Current.MainPage.DisplayAlert("Done", $"Category Added: {category.Name}", "Ok");
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var toast = Toast.Make($"Category added!", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
         }
     }
 }

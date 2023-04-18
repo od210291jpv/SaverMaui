@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ContentPage  
+            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             xmlns:controls="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SaverMaui.Views.VideoManagementPage">
+    <ContentPage.BindingContext>
+        <vm:VideoManagementViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black" VerticalOptions="Center" Padding="5">
+            <Grid ColumnSpacing="1" Margin="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Entry Grid.Row="0" Grid.Column="0" x:Name="VideoUrlEntry" Placeholder="enter video url" PlaceholderColor="Gray" Text="{Binding AddVideoUrl}"/>
+                <Entry Grid.Row="1" Grid.Column="0" x:Name="VideoName" Placeholder="enter video name" PlaceholderColor="Gray" Text="{Binding AddVideoName}"/>
+                <Button Grid.Row="2" Grid.Column="0" x:Name="SubmitVideo" HeightRequest="100" Text="Submit video" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" FontAttributes="Bold" Command="{Binding AddVideoCommand}"/>
+                <Picker Grid.Row="3" Grid.Column="0" Title="Select Video:" ItemsSource="{Binding Videos}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedVideo}" TextColor="White" Margin="15">
+                </Picker>
+                <Button Grid.Row="4" Grid.Column="0" BackgroundColor="DeepPink" HeightRequest="100" CornerRadius="0" Text="Play" TextColor="White" FontAttributes="Bold"/>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</controls:ContentPage>

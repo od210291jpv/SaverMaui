@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
 using System;
@@ -37,16 +39,24 @@ namespace SaverMaui.Commands
                     }
 
                     CategoriesViewModel.Instance.UpdateAllCategories();
-                    await Application.Current.MainPage.DisplayAlert("Done", $"Categories where deleted", "Ok");
+                    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                    var toast = Toast.Make($"Categories where deleted", ToastDuration.Short, 14);
+                    await toast.Show(cancellationTokenSource.Token);
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Done", $"Operation aborted", "Ok");
+                    CategoriesViewModel.Instance.UpdateAllCategories();
+                    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                    var toast = Toast.Make($"Operation aborted", ToastDuration.Short, 14);
+                    await toast.Show(cancellationTokenSource.Token);
                 }
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Done", $"No empty categories where found!", "Ok");
+                CategoriesViewModel.Instance.UpdateAllCategories();
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                var toast = Toast.Make($"No empty categories where found", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
             }
         }
     }

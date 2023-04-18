@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 
 using SaverMaui.ViewModels;
 
@@ -33,7 +35,9 @@ namespace SaverMaui.Commands
         public async void Execute(object parameter)
         {
             this.execute(parameter);
-            await Application.Current.MainPage.DisplayAlert("Done", $"New Content Added!", "Ok");
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var toast = Toast.Make($"New content added!", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
             this.viewModel.ContentUri = "";
 
             SettingsViewModel.GetInstance().ContentAmount += 1;
