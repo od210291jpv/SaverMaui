@@ -18,5 +18,7 @@ namespace SaverBackend.DTO
 
         [JsonProperty("PublisherProfileId")]
         public Guid? PublisherProfileId { get; set; }
+
+        public DateTime TimeCreated { get; set; } = DateTime.UtcNow;
     }
 }

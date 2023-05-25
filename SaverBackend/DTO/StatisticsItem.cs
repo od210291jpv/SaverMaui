@@ -12,5 +12,7 @@ namespace SaverBackend.DTO
 
         [JsonProperty("favorites")]
         public int? Favorites { get; set; }
+
+        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
     }
 }

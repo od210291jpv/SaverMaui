@@ -8,9 +8,11 @@ namespace SaverBackend.DTO
         public string Title { get; set; }
 
         [JsonProperty("imageUri")]
-        public string ImageUri { get; set; }
+        public string ImageUri { get; set; } = string.Empty;
 
         [JsonProperty("categoryId")]
         public Guid? CategoryId { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

@@ -9,5 +9,7 @@
         public string ImageUri { get; set; }
 
         public Guid? CategoryId { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

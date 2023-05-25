@@ -6,7 +6,7 @@ namespace SaverBackend.Models
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public Guid CategoryId { get; set; }
         
@@ -17,5 +17,7 @@ namespace SaverBackend.Models
         public int? AmountOfOpenings { get; set; }
 
         public int? AmountOfFavorites { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }

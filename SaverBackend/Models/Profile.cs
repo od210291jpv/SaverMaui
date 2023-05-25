@@ -8,21 +8,21 @@ namespace SaverBackend.Models
 
         public Guid ProfileId { get; set; }
 
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
-        public string VerificationCode { get; set; }
+        public string VerificationCode { get; set; } = string.Empty;
 
-        public List<Category> PublishedCategories { get; set; }
+        public List<Category> PublishedCategories { get; set; } = new List<Category>();
 
-        public List<Content> Publications { get; set; }
+        public List<Content> Publications { get; set; } = new List<Content>();
 
-        public List<Category> FavoriteCategories { get; set; }
+        public List<Category> FavoriteCategories { get; set; } = new List<Category>();
 
-        public List<Profile> Friends { get; set; }
+        public List<Profile> Friends { get; set; } = new List<Profile>();
 
-        public List<Group> Groups { get; set; }
+        public List<Group> Groups { get; set; } = new List<Group>();
 
         public bool IsOnline { get; set; }
     }
