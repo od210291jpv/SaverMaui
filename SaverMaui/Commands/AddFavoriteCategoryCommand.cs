@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.Services.ServiceExtensions;
@@ -55,7 +57,9 @@ namespace SaverMaui.Commands
             }
             catch { }
 
-            await Application.Current.MainPage.DisplayAlert("Done", $"Category Added/Removed as favorite: {requiredCategory.Name}", "Ok");
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var toast = Toast.Make($"Category Added/Removed as favorite: {requiredCategory.Name}", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
         }
     }
 }

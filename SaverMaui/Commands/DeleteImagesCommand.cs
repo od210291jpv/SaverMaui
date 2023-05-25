@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Models;
 using System.Windows.Input;
 
@@ -28,13 +30,16 @@ namespace SaverMaui.Commands
                         _realm.Write(() => _realm.Remove(targetImage));
                     }
                 }
-
-                await Application.Current.MainPage.DisplayAlert("Done", $"{Environment.ImagesToDelete.Count} images where deleted", "Ok");
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                var toast = Toast.Make($"{Environment.ImagesToDelete.Count} images where deleted", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
                 Environment.ImagesToDelete.Clear();
             }
             else 
             {
-                await Application.Current.MainPage.DisplayAlert("Warning", $"No images in list to be deleted", "Ok");
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                var toast = Toast.Make($"No images in list to be deleted", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
             }
         }
     }
