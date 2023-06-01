@@ -25,5 +25,7 @@ namespace SaverBackend.Models
         public List<Group> Groups { get; set; } = new List<Group>();
 
         public bool IsOnline { get; set; }
+
+        public ICollection<Content> FavoriteContent { get; } = new List<Content>();
     }
 }

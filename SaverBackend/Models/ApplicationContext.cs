@@ -28,6 +28,12 @@ namespace SaverBackend.Models
                 .HasOne(p => p.Profile)
                 .WithMany(t => t.PublishedCategories)
                 .HasForeignKey(p => p.ProfileId);
+
+            modelBuilder.Entity<Profile>()
+                .HasMany(e => e.FavoriteContent)
+                .WithOne(p => p.Profile)
+                .HasForeignKey(p => p.ProfileId)
+                .IsRequired(false);
         }
     }
 }

@@ -5,8 +5,8 @@
         public static string BaseIp = "192.168.88.252";
         //public static string BaseIp = "localhost";
 
-        public static int Port = 80;
-        public static int SignalRPort = 80;
+        public static int Port = 5000;
+        public static int SignalRPort = 5000;
 
         public static string SendNotificationUrl = $"http://{BaseIp}:{SignalRPort}/notify";
 
