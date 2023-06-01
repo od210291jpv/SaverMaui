@@ -69,6 +69,16 @@ namespace SaverMaui.ViewModels
             }
         }
 
+        private SyncVideoCommand syncVideoCommand;
+
+        public SyncVideoCommand SyncVideoCommand 
+        {
+            get 
+            {
+                return this.syncVideoCommand ?? (this.syncVideoCommand = new SyncVideoCommand());
+            }
+        }
+
         public VideoManagementViewModel()
         {
             instance = this;
@@ -77,7 +87,6 @@ namespace SaverMaui.ViewModels
 
             Realm _realm = Realm.GetInstance();
 
-            //_realm.Write(() => _realm.RemoveAll<Video>());
             var allVideos = _realm.All<Video>();
 
             foreach ( Video video in allVideos.ToArray() ) 

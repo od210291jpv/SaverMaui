@@ -2,14 +2,14 @@
 
 namespace SaverBackend.Models
 {
-    public class Content
+    public class VideoContent
     {
         [ForeignKey(nameof(Id))]
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
-        public string ImageUri { get; set; }
+        public string VideoUri { get; set; } = string.Empty;
 
         public Guid? CategoryId { get; set; }
 

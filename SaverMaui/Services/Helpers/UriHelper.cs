@@ -2,11 +2,11 @@
 {
     public static class UriHelper
     {
-        public static string BaseIp = "192.168.88.252";
-        //public static string BaseIp = "localhost";
+        //public static string BaseIp = "192.168.88.252";
+        public static string BaseIp = "192.168.88.117";
 
-        public static int Port = 80;
-        public static int SignalRPort = 80;
+        public static int Port = 5000;
+        public static int SignalRPort = 5000;
 
         public static string SendNotificationUrl = $"http://{BaseIp}:{SignalRPort}/notify";
 
@@ -65,6 +65,16 @@
         public static string Ping 
         {
             get => $"{BaseAddress}/Ping/ping";
+        }
+
+        public static string AddVideo
+        {
+            get => $"{BaseAddress}/VideoContent";
+        }
+
+        public static string GetUserVideo(Guid userId) 
+        {
+            return $"{BaseAddress}/VideoContent?userId={userId}";
         }
     }
 }

@@ -22,7 +22,7 @@ namespace SaverBackend.Controllers
         }
 
         [HttpPost(Name = "SyncContent")]
-        public async Task<IActionResult> Index(ContentRepresentationData contentRepresentation)
+        public async Task<IActionResult> SyncContent(ContentRepresentationData contentRepresentation)
         {
             if (contentRepresentation is not null) 
             {
@@ -82,6 +82,43 @@ namespace SaverBackend.Controllers
             }
 
             return StatusCode(404);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> AddFavoriteContent(string login, string password, int[] contentIds) 
+        {
+            Profile? user = await this.db.Profiles.SingleOrDefaultAsync(p => p.UserName == login && p.Password == password);
+            if (user == null) 
+            {
+                return NotFound("User not found");
+            }
+
+            foreach (var contentId in contentIds) 
+            {
+                var contentToBeAdded = await this.db.Contents.SingleOrDefaultAsync(c => c.Id == contentId);
+
+                if (contentToBeAdded != null)
+                {
+                    user.FavoriteContent.Add(contentToBeAdded);
+                }
+            }
+
+            var res = await this.db.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<int[]> GetFavoriteContent(string login, string password) 
+        {
+            Profile? user = await this.db.Profiles.SingleOrDefaultAsync(p => p.UserName == login && p.Password == password);
+            if (user == null)
+            {
+                return Array.Empty<int>();
+            }
+
+            return this.db.Contents.Where(c => c.ProfileId == user.Id).Select(c => c.Id).ToArray();
         }
     }
 }

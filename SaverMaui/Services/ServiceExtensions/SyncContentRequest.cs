@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SaverMaui.Services.Contracts;
+using SaverMaui.Services.Contracts.Video;
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.Interfaces;
 using System.Net;
@@ -28,6 +29,18 @@ namespace SaverMaui.Services.ServiceExtensions
         {
             var response = await serviceClient.GetRequestAsync(UriHelper.GetAllContent);
             return JsonConvert.DeserializeObject<GetAllContentResponseModel[]>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async static Task<int[]> AddVideoRequest(this IHttpServiceClient serviceClient, SyncVideoRequestDto requestModel) 
+        {
+            var response = await serviceClient.PostRequestAsync(UriHelper.AddVideo, requestModel);
+            return JsonConvert.DeserializeObject<int[]>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async static Task<AddVideoRequestDto[]> GetVideoRequest(this IHttpServiceClient serviceClient, Guid profileId)
+        {
+            var response = await serviceClient.GetRequestAsync(UriHelper.GetUserVideo(profileId));
+            return JsonConvert.DeserializeObject<AddVideoRequestDto[]>(await response.Content.ReadAsStringAsync());
         }
     }
 }
