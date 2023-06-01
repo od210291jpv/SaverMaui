@@ -20,6 +20,8 @@ namespace SaverBackend.Models
 
         public List<Category> FavoriteCategories { get; set; } = new List<Category>();
 
+        public List<VideoContent> VideoContents { get; set; } = new List<VideoContent>();
+
         public List<Profile> Friends { get; set; } = new List<Profile>();
 
         public List<Group> Groups { get; set; } = new List<Group>();

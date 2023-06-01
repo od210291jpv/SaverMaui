@@ -16,6 +16,8 @@ namespace SaverBackend.Models
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<VideoContent> Videos { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -31,6 +33,12 @@ namespace SaverBackend.Models
 
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.FavoriteContent)
+                .WithOne(p => p.Profile)
+                .HasForeignKey(p => p.ProfileId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Profile>()
+                .HasMany(e => e.VideoContents)
                 .WithOne(p => p.Profile)
                 .HasForeignKey(p => p.ProfileId)
                 .IsRequired(false);
