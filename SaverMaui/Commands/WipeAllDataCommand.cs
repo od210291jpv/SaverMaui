@@ -23,9 +23,13 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            this.realmInstance.Write(() => this.realmInstance.RemoveAll());
+            bool answer = await Application.Current.MainPage.DisplayAlert("Attention", "Would you like to delete all content", "Yes", "No");
 
-            await Application.Current.MainPage.DisplayAlert("Done", $"All data was deleted", "Ok");
+            if (answer == true) 
+            {
+                this.realmInstance.Write(() => this.realmInstance.RemoveAll());
+                await Application.Current.MainPage.DisplayAlert("Done", $"All data was deleted", "Ok");
+            }
         }
     }
 }

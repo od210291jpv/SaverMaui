@@ -46,24 +46,22 @@ namespace SaverMaui.Commands
             this.activity.IsVisible = true;
             this.activity.IsRunning = true;
 
-            var allLocalContent = this.realmInstance.All<Content>().ToArray();
+            Content[] allLocalContent = this.realmInstance.All<Content>().ToArray();
             var allLocalCategories = this.realmInstance.All<Category>().ToArray();
 
             GetAllCategoriesResponseModel[] allCategories = await this.backendClient.GetAllCategoriesAsync();
 
-            var catsToBeAdded = allCategories.Where(ct =>
-            allLocalCategories
+            var allLocalCategorioesIds = allLocalCategories
             .Select(lc => lc.CategoryId)
-            .ToArray()
+            .ToArray();
+
+            var catsToBeAdded = allCategories.Where(ct =>
+            allLocalCategorioesIds
             .Contains(ct.CategoryId) == false).ToArray();
 
             GetAllContentResponseModel[] allContent = await this.backendClient.GetAllContentAsync();
 
-            var contentToBeAdded = allContent.Where(cn =>
-            allLocalContent
-            .Select(lcn => lcn.CategoryId)
-            .ToArray()
-            .Contains(cn.CategoryId) == false).ToArray();
+            GetAllContentResponseModel[] contentToBeAdded = CalculateContentToBeAdded(allContent, allLocalContent);
 
             foreach (var cat in catsToBeAdded) 
             {
@@ -72,26 +70,9 @@ namespace SaverMaui.Commands
                     CategoryId = cat.CategoryId,
                     Name = cat.Name,
                     IsFavorite = false,
-
+                    AmountOfOpenings = cat.AmountOfOpenings != null ? cat.AmountOfOpenings.Value : 0,
+                    AmountOfFavorites = cat.AmountOfFavorites != null ? cat.AmountOfFavorites.Value : 0,
                 };
-
-                if (cat.AmountOfOpenings != null)
-                {
-                    category.AmountOfOpenings = cat.AmountOfOpenings.Value;
-                }
-                else 
-                {
-                    category.AmountOfOpenings = 0;
-                }
-
-                if (cat.AmountOfFavorites != null)
-                {
-                    category.AmountOfFavorites = cat.AmountOfFavorites.Value;
-                }
-                else 
-                {
-                    cat.AmountOfFavorites = 0;
-                }
 
                 realmInstance.Write(() => realmInstance.Add<Category>(category));
             }
@@ -119,6 +100,16 @@ namespace SaverMaui.Commands
             this.activity.IsRunning = false;
 
             await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{catsToBeAdded.Length}, Content added {contentToBeAdded.Length}", "Ok");
+        }
+
+        private GetAllContentResponseModel[] CalculateContentToBeAdded(GetAllContentResponseModel[] allContent, Content[] allLocalContent) 
+        {
+            var allLocalContentIds = allLocalContent
+                .Select(lcn => lcn.ImageUri).ToArray();
+
+            return allContent.Where(cn =>
+                allLocalContentIds
+                .Contains(cn.ImageUri) == false).ToArray();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace SaverMaui.ViewModels
             Realm _realm = Realm.GetInstance();
             var allCategories = _realm.All<Category>();
 
-            foreach (var cat in allCategories)
+            foreach (var cat in allCategories.OrderBy(c => c.Name))
             {
                 Categories.Add(cat);
             }

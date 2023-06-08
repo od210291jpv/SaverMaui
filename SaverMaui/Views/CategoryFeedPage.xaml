@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentImage}" Loop="False" CurrentItemChangedCommand="{Binding LogImageLoadCommand}">
+            <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentImage}" Loop="True" CurrentItemChangedCommand="{Binding LogImageLoadCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Image Source="{Binding Path=Source}" Margin="0">
