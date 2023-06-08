@@ -39,7 +39,6 @@ namespace SaverMaui.Commands
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             var toast = Toast.Make($"New Video Added", ToastDuration.Short, 14);
             await toast.Show(cancellationTokenSource.Token);
-            this.viewModel.AddVideoName = "";
             this.viewModel.AddVideoUrl = "";
         }
     }

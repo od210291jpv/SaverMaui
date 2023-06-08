@@ -19,7 +19,6 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -29,8 +28,7 @@
                 <Button Grid.Row="2" Grid.Column="0" x:Name="SubmitVideo" HeightRequest="100" Text="Submit video" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" FontAttributes="Bold" Command="{Binding AddVideoCommand}"/>
                 <Picker Grid.Row="3" Grid.Column="0" Title="Select Video:" ItemsSource="{Binding Videos}" ItemDisplayBinding="{Binding Title}" SelectedItem="{Binding SelectedVideo}" TextColor="White" Margin="15">
                 </Picker>
-                <Button Grid.Row="4" Grid.Column="0" BackgroundColor="DeepPink" HeightRequest="100" CornerRadius="0" Text="Play" TextColor="White" FontAttributes="Bold"/>
-                <Button Grid.Row="5" Grid.Column="0" BackgroundColor="DeepPink" HeightRequest="100" CornerRadius="0" Text="SyncVidoe" TextColor="White" FontAttributes="Bold" Command="{Binding SyncVideoCommand}"/>
+                <Button Grid.Row="4" Grid.Column="0" BackgroundColor="DeepPink" HeightRequest="100" CornerRadius="0" Text="Sync Vieo with backend" TextColor="White" FontAttributes="Bold" Command="{Binding SyncVideoCommand}" Padding="15"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

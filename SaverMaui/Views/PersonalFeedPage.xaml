@@ -9,7 +9,7 @@
     </ContentPage.BindingContext>
 
     <FlexLayout>
-        <CarouselView x:Name="Feed" ItemsSource="{Binding AllFavoriteContent}">
+        <CarouselView x:Name="Feed" ItemsSource="{Binding AllFavoriteContent}" Loop="True">
             <CarouselView.ItemTemplate>
                 <DataTemplate>
                     <Image Source="{Binding Path=ImageUri}" Margin="0"/>
