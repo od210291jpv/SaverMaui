@@ -1,4 +1,5 @@
-﻿using Realms;
+﻿using DynamicData.Binding;
+using Realms;
 using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
@@ -10,20 +11,19 @@ namespace SaverMaui.ViewModels
 {
     public class FeedViewModel : BaseViewModel
     {
-        private static FeedViewModel instance;
-
-        public static FeedViewModel GetInstance()
-        {
-            if (instance is null)
-            {
-                instance = new FeedViewModel();
-            }
-
-            return instance;
-        }
+        public static FeedViewModel Instance { get; private set; }
 
         private ObservableCollection<ImageRepresentationElement> contentCollection;
-        public ObservableCollection<ImageRepresentationElement> ContentCollection { get => contentCollection; set => contentCollection = value; }
+
+        public ObservableCollection<ImageRepresentationElement> ContentCollection 
+        { 
+            get => this.contentCollection;
+            set 
+            {
+                this.contentCollection = value;
+                OnPropertyChanged(nameof(ContentCollection));
+            }
+        }
 
         private ImageRepresentationElement currentImage;
 
@@ -40,6 +40,7 @@ namespace SaverMaui.ViewModels
 
         public FeedViewModel()
         {
+            this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
             this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
 
             this.ItemChangedCommand = new FeedItemChangedCommand(this);
@@ -47,9 +48,11 @@ namespace SaverMaui.ViewModels
             Realm _realm = Realm.GetInstance();
             Content[] allRelatedContent = _realm.All<Content>().ToArray();
 
+            ObservableCollection<ImageRepresentationElement> allFeed = new();
+
             foreach (var cat in allRelatedContent.ToArray().Reverse())
             {
-                ContentCollection.Add(new ImageRepresentationElement() 
+                allFeed.Add(new ImageRepresentationElement()
                 {
                     CategoryId = cat.CategoryId.Value,
                     Name = cat.Title,
@@ -57,6 +60,10 @@ namespace SaverMaui.ViewModels
                     IsFavorite = cat.IsFavorite
                 });
             }
+
+            this.ContentCollection = allFeed;
+
+            Instance = this;
         }
     }
 }

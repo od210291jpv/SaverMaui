@@ -18,7 +18,7 @@ namespace SaverBackend.Controllers
         public LoginController(ApplicationContext context)
         {
             this.dbContext = context;
-            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             this.redisDb = redis.GetDatabase();            
         }
 

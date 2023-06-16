@@ -1,14 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+using LiveHost.Configuration;
+using LiveHost.DataBase;
 
 using Microsoft.AspNetCore.HttpOverrides;
-
-using SaverBackend.Configuration;
-
-using SaverBackend.Hubs;
-using SaverBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 
@@ -18,21 +14,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 
-
-
-builder.Configuration.AddJsonFile("appsettings.json");
-
-ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
-
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(
             ApplicationContext.ConnectionString,
             ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
-builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddCoreAdmin("user");
+builder.Configuration.AddJsonFile("appsettings.json");
 
-//builder.Services.AddApplicationInsightsTelemetry();
+ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
+
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 var app = builder.Build();
 
@@ -42,15 +33,12 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseStaticFiles();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
+
 app.MapControllers();
 app.MapDefaultControllerRoute();
-app.MapHub<MainNotificationsHub>("/notify");
 app.Run();

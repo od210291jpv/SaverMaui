@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Core.Extensions;
+using Newtonsoft.Json.Linq;
 using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
@@ -41,14 +43,19 @@ namespace SaverMaui.Commands
                 IsFavorite = false,
             };
 
-            realmInstance.Write(() => realmInstance.Add(category));
+            Realm _realm = Realm.GetInstance();
+            _realm.Write(() => _realm.Add(category));
+
+            this.viewModel.Categories = _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
 
             viewModel.NewCategoryName = "";
 
-            CategoriesViewModel.Instance?.UpdateAllCategories();
-            SettingsViewModel.GetInstance().UpdateAllCategories();
-
             SettingsViewModel.GetInstance().CategoriesAmount += 1;
+
+            if (CategoriesViewModel.Instance != null) 
+            {
+                CategoriesViewModel.Instance.Categories = this.viewModel.Categories;
+            }
 
             if (DeviceInfo.Current.Platform.ToString().ToLower() == "android") 
             {
