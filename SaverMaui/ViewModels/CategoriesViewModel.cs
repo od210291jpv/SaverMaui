@@ -1,4 +1,5 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using Realms;
 using SaverMaui.Commands;
 using SaverMaui.Models;
 using System.Collections.ObjectModel;
@@ -11,7 +12,18 @@ namespace SaverMaui.ViewModels
     {
         public static CategoriesViewModel Instance { get; private set; }
 
-        public ObservableCollection<Category> Categories { get; set; }
+        public ObservableCollection<Category> Categories 
+        {
+            get
+            {
+                Realm _realm = Realm.GetInstance();
+                return _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
+            }
+            set
+            {               
+                OnPropertyChanged("Categories");
+            }
+        }
 
         private Category selectedCategory;
 
@@ -46,17 +58,6 @@ namespace SaverMaui.ViewModels
             this.AddFavoriteCategoryCmd = new AddFavoriteCategoryCommand(this);
 
             this.Categories = new ObservableCollection<Category>();
-
-            Realm _realm = Realm.GetInstance();
-            var allCategories = _realm.All<Category>();
-
-            foreach (var cat in allCategories.OrderBy(c => c.Name))
-            {
-                Categories.Add(cat);
-            }
-
-            this.PropertyChanged += OnCurrentCategoryChanged;
-
             Instance = this;
         }
 

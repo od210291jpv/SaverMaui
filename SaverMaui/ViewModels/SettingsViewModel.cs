@@ -1,4 +1,5 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using Realms;
 
 using SaverMaui.Commands;
 using SaverMaui.Models;
@@ -33,7 +34,18 @@ namespace SaverMaui.ViewModels
             }
         }
 
-        public ObservableCollection<Category> Categories { get; set; }
+        public ObservableCollection<Category> Categories 
+        {
+            get 
+            {
+                Realm _realm = Realm.GetInstance();
+                return _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
+            }
+            set 
+            {
+                OnPropertyChanged("Categories");
+            }
+        }
 
         private string newCategoryName;
 
@@ -63,7 +75,12 @@ namespace SaverMaui.ViewModels
 
         public int CategoriesAmount
         {
-            get => categoriesAmount;
+            get
+            {
+                Realm _realm = Realm.GetInstance();
+                return _realm.All<Category>().OrderBy(c => c.Name).Count();
+            }
+
             set { this.categoriesAmount = value; OnPropertyChanged("CategoriesAmount"); }
         }
 

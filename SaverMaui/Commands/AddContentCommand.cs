@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Realms;
-
+using SaverMaui.Custom_Elements;
+using SaverMaui.Models;
 using SaverMaui.ViewModels;
-
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -41,6 +42,30 @@ namespace SaverMaui.Commands
             this.viewModel.ContentUri = "";
 
             SettingsViewModel.GetInstance().ContentAmount += 1;
+
+
+            if (FeedViewModel.Instance != null) 
+            {
+                FeedViewModel.Instance.ContentCollection.Clear();
+
+                Realm _realm = Realm.GetInstance();
+                Content[] allRelatedContent = _realm.All<Content>().ToArray();
+
+                ObservableCollection<ImageRepresentationElement> allFeed = new();
+
+                foreach (var cat in allRelatedContent.ToArray().Reverse())
+                {
+                    allFeed.Add(new ImageRepresentationElement()
+                    {
+                        CategoryId = cat.CategoryId.Value,
+                        Name = cat.Title,
+                        Source = cat.ImageUri,
+                        IsFavorite = cat.IsFavorite
+                    });
+                }
+
+                FeedViewModel.Instance.ContentCollection = allFeed;
+            }
         }
     }
 
