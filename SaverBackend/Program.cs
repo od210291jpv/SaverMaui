@@ -18,14 +18,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseMySql(
-            ApplicationContext.ConnectionString,
-            ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
+
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
+
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseMySql(
+            ApplicationContext.ConnectionString,
+            ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddCoreAdmin("user");

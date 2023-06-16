@@ -21,7 +21,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
-ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
+ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
