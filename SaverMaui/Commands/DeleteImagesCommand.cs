@@ -12,7 +12,7 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            return Environment.ImagesToDelete.Count > 0;
+            return true;
         }
 
         public async void Execute(object parameter)

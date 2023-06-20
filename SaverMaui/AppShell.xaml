@@ -23,11 +23,11 @@
     </Shell.FlyoutHeaderTemplate>
 
     <TabBar>
-        <ShellContent Title="Welcome" ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent Title="Welcome" ContentTemplate="{DataTemplate local:LoginPage}" Route="Login"/>
     </TabBar>
     <FlyoutItem Title="Profile">
-        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" Title="Profile"/>
-        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Title="Settings"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" Title="Profile" Route="Profile"/>
+        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Title="Settings" Route="Settings"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Categories" FlyoutDisplayOptions="AsSingleItem">
         <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}" Title="Categories" x:Name="AndroidCategories"></ShellContent>

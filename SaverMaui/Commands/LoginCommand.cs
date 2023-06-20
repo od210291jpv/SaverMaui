@@ -1,9 +1,7 @@
 ﻿using SaverMaui.Services;
-using SaverMaui.Services.Contracts.Profile;
 using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
-using SaverMaui.Views;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -42,8 +40,8 @@ namespace SaverMaui.Commands
                 Environment.Login = this.viewModel.Login;
                 Environment.Password = this.viewModel.Password;
                 await Application.Current.MainPage.DisplayAlert("Done", $"You logged as secret admin!!", "Ok");
-                await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
 
+                await Shell.Current.GoToAsync("///Settings");
                 return;
             }
 
@@ -54,8 +52,7 @@ namespace SaverMaui.Commands
                 Environment.Login = this.viewModel.Login;
                 Environment.Password = this.viewModel.Password;
                 Environment.ProfileId = Environment.ProfileData.ProfileId;
-
-                await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
+                await Shell.Current.GoToAsync("///Settings");
             }
             else 
             {
