@@ -7,13 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverMaui", "SaverMaui\Save
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverBackend", "SaverBackend\SaverBackend.csproj", "{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlowSaverTests", "SpecFlowSaverTests\SpecFlowSaverTests.csproj", "{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServiceClient", "SignalRServiceClient\SignalRServiceClient.csproj", "{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SambaServiceClient", "SambaServiceClient\SambaServiceClient.csproj", "{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveHost", "LiveHost\LiveHost.csproj", "{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveHost", "LiveHost\LiveHost.csproj", "{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,18 +27,10 @@ Global
 		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8179406E-EA88-4A5B-85CC-8E9FACDB01DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24DC2F49-D46A-490F-BD12-A8B55FAF9C91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1FA6518-066F-4FB6-B34F-37AC4DD4E751}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A04F493D-93E5-49B2-8A76-0B3DF30C0FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
