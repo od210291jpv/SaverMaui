@@ -27,19 +27,22 @@ namespace SaverBackend.Controllers
 
             foreach (var content in allContent) 
             {
-                var result = await client.ExecuteGetAsync(new RestRequest(content.ImageUri, Method.Get));
-
-                if (result.StatusCode != System.Net.HttpStatusCode.OK) 
+                if (content.ImageUri != null && content.ImageUri != "") 
                 {
-                    unavailableContent.Add(new ContentAvailabilityInfo()
-                    {
-                        Url = content.ImageUri,
-                        ContentTitle = content.Title,
-                        StatusCode = result.StatusCode,
-                        CategoryName = this.context.Categories.SingleOrDefault(c => c.CategoryId == content.CategoryId)?.Name ?? "Undefined"
-                    });
+                    var result = await client.ExecuteGetAsync(new RestRequest(content.ImageUri, Method.Get));
 
-                    System.Console.WriteLine($"Orphan content found, {content.Title}");
+                    if (result.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        unavailableContent.Add(new ContentAvailabilityInfo()
+                        {
+                            Url = content.ImageUri,
+                            ContentTitle = content.Title,
+                            StatusCode = result.StatusCode,
+                            CategoryName = this.context.Categories.SingleOrDefault(c => c.CategoryId == content.CategoryId)?.Name ?? "Undefined"
+                        });
+
+                        System.Console.WriteLine($"Orphan content found, {content.Title}");
+                    }
                 }
             }
 
