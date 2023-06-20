@@ -22,7 +22,7 @@ builder.Services.AddSignalR();
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
-ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DatabaseConnection"];
+ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(

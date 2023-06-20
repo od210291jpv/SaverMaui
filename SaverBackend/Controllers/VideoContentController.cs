@@ -28,16 +28,19 @@ namespace SaverBackend.Controllers
 
             foreach (var video in payload.VideoContent) 
             {
-                var res = this.db.Videos.Add(new VideoContent()
+                if (this.db.Videos.Where(v => v.VideoUri == video.ImageUri).Count() == 0) 
                 {
-                    CategoryId = video.CategoryId,
-                    Title = video.Title,
-                    DateCreated = DateTime.UtcNow,
-                    VideoUri = video.ImageUri,
-                    ProfileId = user.Id
-                });
+                    var res = this.db.Videos.Add(new VideoContent()
+                    {
+                        CategoryId = video.CategoryId,
+                        Title = video.Title,
+                        DateCreated = DateTime.UtcNow,
+                        VideoUri = video.ImageUri,
+                        ProfileId = user.Id
+                    });
 
-                user.VideoContents.Add(res.Entity);
+                    user.VideoContents.Add(res.Entity);
+                }
             }
 
             await this.db.SaveChangesAsync();

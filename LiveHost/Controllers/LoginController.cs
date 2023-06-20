@@ -1,6 +1,7 @@
 ﻿using LiveHost.DataBase;
 using LiveHost.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 namespace LiveHost.Controllers
@@ -28,7 +29,7 @@ namespace LiveHost.Controllers
                 return new UserProfileInfoDto() { Error = "Unauthorized" };
             }
 
-            DataBase.Models.Profile userProfile = this.dbContext.Profiles.Single(pr => pr.UserName == login && pr.Password == password);
+            DataBase.Models.Profile userProfile = await this.dbContext.Profiles.SingleAsync(pr => pr.UserName == login && pr.Password == password);
 
             var puCats = this.dbContext.Categories.Where(ct => ct.ProfileId == userProfile.Id).ToList();
 

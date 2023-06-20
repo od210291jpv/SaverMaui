@@ -77,8 +77,7 @@ namespace SaverMaui.ViewModels
         {
             get
             {
-                Realm _realm = Realm.GetInstance();
-                return _realm.All<Category>().OrderBy(c => c.Name).Count();
+                return this.categoriesAmount;
             }
 
             set { this.categoriesAmount = value; OnPropertyChanged("CategoriesAmount"); }
@@ -233,7 +232,6 @@ namespace SaverMaui.ViewModels
         public DeleteImagesCommand DeleteImagesCommand 
         {
             get => this.deleteImagesCommand ?? (this.deleteImagesCommand = new DeleteImagesCommand());
-
         }
 
         public SettingsViewModel()
@@ -249,8 +247,8 @@ namespace SaverMaui.ViewModels
                 Categories.Add(cat);
             }
 
-            this.CategoriesAmount = allCategories.ToArray().Length;
-            this.ContentAmount = _realm.All<Content>().ToArray().Length;
+            this.CategoriesAmount = allCategories.Count();
+            this.contentAmount = _realm.All<Content>().Count();
             this.logFeedsEnabled = true;
         }
 
