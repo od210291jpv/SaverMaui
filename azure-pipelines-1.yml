@@ -13,7 +13,7 @@ stages:
   - job: buildJob
     timeoutInMinutes: 10
     pool:
-      name: Raspberry3Pool
+      name: MyPool
       demands: 
       - dotnet
     variables:
@@ -29,6 +29,7 @@ stages:
         targetPath: '$(Pipeline.Workspace)/s'
         artifact: 'BuildDrop'
         publishLocation: 'pipeline'
+
 - stage: DeployApplication
   dependsOn: BuildApplication
   jobs:
@@ -45,8 +46,18 @@ stages:
         runOnce:
           deploy:
             steps:
+              - task: DownloadBuildArtifacts@1
+                inputs:
+                  buildType: 'specific'
+                  project: '93714e8f-952f-46f8-b552-ef93626e9c0e'
+                  pipeline: '1'
+                  specificBuildWithTriggering: true
+                  buildVersionToDownload: 'latest'
+                  downloadType: 'single'
+                  downloadPath: '$(System.ArtifactsDirectory)'
+                  cleanDestinationFolder: true
               - bash: 'sudo rm -rf /var/www/saverbackend/BuildDrop'
-              - bash: 'sudo cp -r /home/pi/azureagent/_work/1/BuildDrop /var/www/saverbackend'
+              - bash: 'sudo cp -r $(System.ArtifactsDirectory) /var/www/saverbackend'
               - task: Bash@3
                 inputs:
                   targetType: 'inline'
