@@ -13,7 +13,7 @@ stages:
   - job: buildJob
     timeoutInMinutes: 10
     pool:
-      name: MyPool
+      name: Raspberry3Pool
       demands: 
       - dotnet
     variables:
@@ -48,11 +48,7 @@ stages:
             steps:
               - task: DownloadBuildArtifacts@1
                 inputs:
-                  buildType: 'specific'
-                  project: '93714e8f-952f-46f8-b552-ef93626e9c0e'
-                  pipeline: '1'
-                  specificBuildWithTriggering: true
-                  buildVersionToDownload: 'latest'
+                  buildType: 'current'
                   downloadType: 'single'
                   downloadPath: '$(System.ArtifactsDirectory)'
                   cleanDestinationFolder: true
