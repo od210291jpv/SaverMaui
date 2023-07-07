@@ -18,6 +18,8 @@ namespace LiveHost.DataBase
 
         public DbSet<VideoContent> Videos { get; set; }
 
+        public DbSet<BrokenContent> BrokenContents { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -26,6 +28,8 @@ namespace LiveHost.DataBase
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>()
                 .HasOne(p => p.Profile)
                 .WithMany(t => t.PublishedCategories)

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestSharp;
 using SaverBackend.DataStructures;
 using SaverBackend.Models;
+using SaverBackend.Services.RabbitMq;
 
 namespace SaverBackend.Controllers
 {
@@ -11,42 +10,20 @@ namespace SaverBackend.Controllers
     public class UnavailableContentController : ControllerBase
     {
         private readonly ApplicationContext context;
+        private readonly IRabbitMqService mqService;
 
-        public UnavailableContentController(ApplicationContext context)
+        public UnavailableContentController(ApplicationContext context, IRabbitMqService mqService)
         {
             this.context = context;
+            this.mqService = mqService;
         }
 
-        [HttpGet(Name = "GetUnavailableContent")]
-        public async Task<List<ContentAvailabilityInfo>> Index()
+        [HttpPost(Name = "GetUnavailableContent")]
+        public IActionResult Index(RabbitMqMessage message)
         {
-            Content[] allContent = await this.context.Contents.ToArrayAsync();
-            List<ContentAvailabilityInfo> unavailableContent = new List<ContentAvailabilityInfo>();
+            mqService.SendMessage(message);
 
-            RestClient client = new RestClient();
-
-            foreach (var content in allContent) 
-            {
-                if (content.ImageUri != null && content.ImageUri != "") 
-                {
-                    var result = await client.ExecuteGetAsync(new RestRequest(content.ImageUri, Method.Get));
-
-                    if (result.StatusCode != System.Net.HttpStatusCode.OK)
-                    {
-                        unavailableContent.Add(new ContentAvailabilityInfo()
-                        {
-                            Url = content.ImageUri,
-                            ContentTitle = content.Title,
-                            StatusCode = result.StatusCode,
-                            CategoryName = this.context.Categories.SingleOrDefault(c => c.CategoryId == content.CategoryId)?.Name ?? "Undefined"
-                        });
-
-                        System.Console.WriteLine($"Orphan content found, {content.Title}");
-                    }
-                }
-            }
-
-            return unavailableContent;
+            return Ok($"Message sent: {message.Topic}");
         }
     }
 }
