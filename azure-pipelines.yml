@@ -47,7 +47,6 @@ stages:
       runOnce:
         deploy:
           steps:
-            - bash: 'sudo mv /var/www/saverbackend/BuildDrop/SaverBackend/bin/Release/net6.0/wwwroot/ /home/pi/' 
             - bash: 'sudo service redis-server start' 
             - bash: 'sudo rm -rf /var/www/saverbackend/BuildDrop'
             - bash: 'sudo cp -r /home/pi/azureagent/_work/1/BuildDrop /var/www/saverbackend'
