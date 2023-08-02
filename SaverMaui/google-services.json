@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "627246233013",
+    "project_id": "livehostnotifier",
+    "storage_bucket": "livehostnotifier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627246233013:android:50923f375de203f3c555fc",
+        "android_client_info": {
+          "package_name": "com.companyname1.savermaui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627246233013-8kjctpc5dahu65dmbb6ekcngprprmme1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBi2BpCzaSqLsuaujcPQMg71Pv9YhT1oQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627246233013-8kjctpc5dahu65dmbb6ekcngprprmme1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,7 +3,7 @@
     public static class UriHelper
     {
         public static string BaseIp = "192.168.88.252";
-        //public static string BaseIp = "192.168.88.117";
+        //public static string BaseIp = "localhost";
 
         public static int Port = 80;
         public static int SignalRPort = 80;

@@ -33,9 +33,8 @@ namespace SaverMaui.Commands
         public async void Execute(object parameter)
         {
             Realm _realm = Realm.GetInstance();
-            var reqCatId = Environment.SahredData.currentCategory.CategoryId;
 
-            var requiredCategory = _realm.All<Category>().Single(ct => ct.CategoryId == Environment.SahredData.currentCategory.CategoryId);
+            var requiredCategory = _realm.All<Category>().Single(ct => ct.CategoryId == this.vm.SelectedCategory.CategoryId);
 
             if (requiredCategory.IsFavorite == false) 
             {

@@ -6,6 +6,7 @@ using SaverBackend.Configuration;
 
 using SaverBackend.Hubs;
 using SaverBackend.Models;
+using SaverBackend.Services.RabbitMq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 
 
 

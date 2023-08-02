@@ -64,11 +64,6 @@ namespace SaverMaui.ViewModels
                 FavoriteCategories.Add(fc);
             }
 
-            var filteredCategories = allFavCategories.Where(c =>
-            this.FavoriteCategories.Where(fc =>
-            fc.IsFavorite == true).Select(fc =>
-            fc.CategoryId).ToArray().Contains(c.CategoryId) == true).ToArray();
-
             var allContent = _realm.All<Content>().ToArray();
 
             foreach (var c in allFavCategories)

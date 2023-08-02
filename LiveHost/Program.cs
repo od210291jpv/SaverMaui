@@ -1,6 +1,6 @@
 using LiveHost.Configuration;
 using LiveHost.DataBase;
-
+using LiveHost.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddHostedService<RabbitMqListener>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(

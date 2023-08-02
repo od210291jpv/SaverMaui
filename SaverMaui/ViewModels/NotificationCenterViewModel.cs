@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using CommunityToolkit.Maui.Markup;
+using Microsoft.AspNetCore.SignalR.Client;
 
 using SaverMaui.Services.Helpers;
 using SaverMaui.SignalRModels;
@@ -63,7 +64,7 @@ namespace SaverMaui.ViewModels
 
             this.Messages = new ObservableCollection<Notification>();
 
-            this.notifyClientsCommand = new Command(async () => await SendMessage("Trying to establish connection..."), () => true);
+            this.notifyClientsCommand = new Command(async () => await SendMessage($"[{DateTime.Now}] Trying to establish connection..."), () => true);
 
             hubConnection.Closed += async (error) =>
             {
@@ -73,9 +74,9 @@ namespace SaverMaui.ViewModels
                 await Connect();
             };
 
-            hubConnection.On<string>("SendNotificationsAsync", (message) =>
+            hubConnection.On<string>("SendNotificationsAsync", async (message) =>
             {
-                SendLocalMessage(message);
+                await Task.Run(() => SendLocalMessage(message));
             });
 
             this.notifyClientsCommand.Execute(this.isConnected);
@@ -144,14 +145,18 @@ namespace SaverMaui.ViewModels
 
         public void SendLocalMessage(string message)
         {
-            Messages.Insert(0, new Notification
+            try 
             {
-                Message = message,
-            });
+                Messages.Insert(0, new Notification
+                {
+                    Message = message,
+                });
+            }
+            catch { }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop = "")
+        public new event PropertyChangedEventHandler PropertyChanged;
+        public new void OnPropertyChanged(string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
