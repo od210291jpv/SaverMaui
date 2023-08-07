@@ -20,9 +20,15 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
             ApplicationContext.ConnectionString,
             ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
+builder.Services.AddDbContext<BananasGamblerApplicationContext>(opt => 
+    opt.UseMySql(
+        BananasGamblerApplicationContext.ConnectionString,
+        ServerVersion.AutoDetect(BananasGamblerApplicationContext.ConnectionString)));
+
 builder.Configuration.AddJsonFile("appsettings.json");
 
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
+BananasGamblerApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["BananasGamblerDbConnection"];
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
