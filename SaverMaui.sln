@@ -11,6 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServiceClient", "Sig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveHost", "LiveHost\LiveHost.csproj", "{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3228540-C34B-4E4E-AFC4-3BB15D71DFAF}"
+	ProjectSection(SolutionItems) = preProject
+		TaskList.txt = TaskList.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BananasGamblerBackend", "BananasGamblerBackend\BananasGamblerBackend.csproj", "{122AB829-4E84-4592-AAB7-995DB585EFCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +42,10 @@ Global
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

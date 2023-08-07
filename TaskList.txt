@@ -1,0 +1,12 @@
+1. Create separate database
+2. Configure database permissions
+3. Create ASP .NET solution
+4. Create user models
+5. Integrate user authorization with exising authorization of Saver Backend
+6. Create gmae card model
+7. Integrate data transformation to get content for game cards from saver backend
+8. Implement rareness mechanism for game cards
+9. Implement credits system
+10. Implement credits check in mechanism
+11. Implement buy game card for credits
+12. Implement game logic
