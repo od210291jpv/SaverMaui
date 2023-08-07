@@ -1,6 +1,6 @@
-1. Create separate database
+1. Create separate database - ok
 2. Configure database permissions
-3. Create ASP .NET solution
+3. Create ASP .NET solution - ok
 4. Create user models
 5. Integrate user authorization with exising authorization of Saver Backend
 6. Create gmae card model
