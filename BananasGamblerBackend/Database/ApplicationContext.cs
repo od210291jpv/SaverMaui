@@ -5,6 +5,8 @@ namespace BananasGamblerBackend.Database
 {
     public class ApplicationContext : DbContext
     {
+        public static string ConnectionString = string.Empty;
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<GameCard> GameCards { get; set; }

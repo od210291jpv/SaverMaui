@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BananasGamblerBackend.Database.Models
+﻿namespace BananasGamblerBackend.Dto
 {
-    public class GameCard
+    public class GameCardDto
     {
-        [ForeignKey(nameof(Id))]
         public int Id { get; set; }
 
         public string CardTitle { get; set; } = string.Empty;
@@ -12,10 +9,6 @@ namespace BananasGamblerBackend.Database.Models
         public string ImageUri { get; set; } = string.Empty;
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
-
-        public int? UserId { get; set; }
-
-        public User? User { get; set; }
 
         public decimal CostInCredits { get; set; }
     }
