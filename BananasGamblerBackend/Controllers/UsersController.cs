@@ -2,6 +2,8 @@
 
 namespace BananasGamblerBackend.Controllers
 {
+    //[ApiController]
+    //[Route("[controller]")]
     public class UsersController : Controller
     {
         public IActionResult Index()

@@ -1,42 +1,40 @@
 ﻿using BananasGamblerBackend.Database;
 using BananasGamblerBackend.Database.Models;
 using BananasGamblerBackend.Dto;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace BananasGamblerBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class SignupUserController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private ApplicationContext context;
 
-        public SignupUserController(ApplicationContext context)
+        public LoginController(ApplicationContext context)
         {
             this.context = context;
         }
 
-        [HttpPost("Signup")]
-        public async Task<IActionResult> Register(RegisterDto model)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto model) 
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
-                var user = this.context.Users.FirstOrDefault(u => u.Login == model.Login && u.Password == model.Password);
-                if (user is null)
+                User? user = await this.context.Users.FirstOrDefaultAsync(u => model.Login == u.Login && model.Password == u.Password);
+                if (user != null) 
                 {
-                    await this.context.Users.AddAsync(new User() { Login = model.Login, Password = model.Password });
-                    await this.context.SaveChangesAsync();
                     await Authenticate(model.Login);
-                    return Ok(user);
+                    return Ok();
                 }
-
-                return BadRequest();
+                ModelState.AddModelError("", "Incorrect credentials");
+                return Unauthorized();
             }
-
-            return BadRequest("User already registered");
+            return Unauthorized();
         }
 
         private async Task Authenticate(string userName)

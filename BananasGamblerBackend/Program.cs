@@ -1,6 +1,7 @@
 using BananasGamblerBackend.Configuration;
 using BananasGamblerBackend.Database;
 using BananasGamblerBackend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<RabbitMqListener>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
 
 // I can add another context with another models and host it as separate db service
 builder.Services.AddDbContext<ApplicationContext>(options =>
@@ -37,6 +43,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllers();
 app.MapDefaultControllerRoute();
 app.Run();
