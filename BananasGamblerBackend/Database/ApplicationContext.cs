@@ -12,6 +12,7 @@ namespace BananasGamblerBackend.Database
         public DbSet<GameCard> GameCards { get; set; }
 
         public DbSet<CheckInCode> CheckInCodes { get; set; }
+        public DbSet<GameCardUser> CardsToUsers { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
