@@ -6,22 +6,22 @@ using SaverBackend.Services.RabbitMq;
 namespace SaverBackend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class UnavailableContentController : ControllerBase
+    [Route("Controller")]
+    public class NotifyNewCardsAddedController : ControllerBase
     {
         private readonly ApplicationContext context;
         private readonly IRabbitMqService mqService;
 
-        public UnavailableContentController(ApplicationContext context, IRabbitMqService mqService)
+        public NotifyNewCardsAddedController(IRabbitMqService rabbit, ApplicationContext context)
         {
+            this.mqService = rabbit;
             this.context = context;
-            this.mqService = mqService;
         }
 
-        [HttpPost(Name = "GetUnavailableContent")]
+        [HttpPost(Name = "NotifyNewCardsAdded")]
         public IActionResult Index(RabbitMqMessage message)
         {
-            mqService.SendMessage(message, "MyQueue");
+            mqService.SendMessage(message, "CardsUpdateQueque");
 
             return Ok($"Message sent: {message.Topic}");
         }

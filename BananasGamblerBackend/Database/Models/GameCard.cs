@@ -15,8 +15,10 @@ namespace BananasGamblerBackend.Database.Models
 
         public int? UserId { get; set; }
 
-        public User? User { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
 
         public decimal CostInCredits { get; set; }
+
+        public decimal Rarity { get; set;} = decimal.Zero;
     }
 }

@@ -11,6 +11,8 @@ namespace BananasGamblerBackend.Database
 
         public DbSet<GameCard> GameCards { get; set; }
 
+        public DbSet<CheckInCode> CheckInCodes { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -23,9 +25,9 @@ namespace BananasGamblerBackend.Database
 
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Cards)
-                .WithOne(p => p.User)
-                .HasForeignKey(p => p.UserId)
-                .IsRequired(false);
+                .WithMany(p => p.Users);
+
+            //modelBuilder.Entity<GameCard>().HasMany(c => c.Users).WithMany(c => c.Cards);
         }
     }
 }

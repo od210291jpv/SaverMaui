@@ -11,5 +11,7 @@
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
         public decimal CostInCredits { get; set; }
+
+        public decimal Rarity { get; set; } = decimal.Zero;
     }
 }

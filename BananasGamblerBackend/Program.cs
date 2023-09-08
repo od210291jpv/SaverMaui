@@ -27,8 +27,14 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
             ApplicationContext.ConnectionString,
             ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
+builder.Services.AddDbContext<SaveBackendApplicationContext>(options =>
+    options.UseMySql(
+            SaveBackendApplicationContext.ConnectionString,
+            ServerVersion.AutoDetect(SaveBackendApplicationContext.ConnectionString)));
+
 builder.Configuration.AddJsonFile("appsettings.json");
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
+SaveBackendApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["BananasSaverConnection"];
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 var app = builder.Build();

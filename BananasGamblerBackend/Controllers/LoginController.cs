@@ -37,6 +37,13 @@ namespace BananasGamblerBackend.Controllers
             return Unauthorized();
         }
 
+        [HttpGet("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Ok();
+        }
+
         private async Task Authenticate(string userName)
         {
             var claims = new List<Claim>

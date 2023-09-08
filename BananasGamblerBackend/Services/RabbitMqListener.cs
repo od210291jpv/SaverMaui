@@ -2,11 +2,21 @@
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
+using BananasGamblerBackend.Database;
+//using SaverBackend.Models;
+using System.Linq;
 
 namespace BananasGamblerBackend.Services
 {
     public class RabbitMqListener : BackgroundService
     {
+
+        private IConnection _connection;
+        private IModel _channel;
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         public void SendMessage(object obj)
         {
             var message = JsonSerializer.Serialize(obj);
@@ -19,7 +29,7 @@ namespace BananasGamblerBackend.Services
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "MyQueue",
+                channel.QueueDeclare(queue: "CardsUpdateQueque",
                                durable: false,
                                exclusive: false,
                                autoDelete: false,
@@ -28,23 +38,19 @@ namespace BananasGamblerBackend.Services
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish(exchange: "",
-                               routingKey: "MyQueue",
+                               routingKey: "CardsUpdateQueque",
                                basicProperties: null,
                                body: body);
             }
         }
 
-        private IConnection _connection;
-        private IModel _channel;
-
-        public RabbitMqListener()
+        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory)
         {
-            // Не забудьте вынести значения "localhost" и "MyQueue"
-            // в файл конфигурации
+            this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.55", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "MyQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: "CardsUpdateQueque", durable: false, exclusive: false, autoDelete: false, arguments: null);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -52,18 +58,48 @@ namespace BananasGamblerBackend.Services
             stoppingToken.ThrowIfCancellationRequested();
 
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (ch, ea) =>
+            consumer.Received += async (ch, ea) =>
             {
                 var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                // Каким-то образом обрабатываем полученное сообщение
+
+                this.PullNewGameCards();
 
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            _channel.BasicConsume("MyQueue", false, consumer);
+            _channel.BasicConsume("CardsUpdateQueque", false, consumer);
 
             return Task.CompletedTask;
+        }
+
+        private async void PullNewGameCards()
+        {
+            using var scope = serviceScopeFactory.CreateScope();
+
+            using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+            using var saverNackendContext = scope.ServiceProvider.GetRequiredService<SaveBackendApplicationContext>();
+
+            var existingCards = context.GameCards.ToArray();
+            var saverCards = saverNackendContext.Contents.ToArray();
+            var saverCardsUrls = saverNackendContext.Contents.Select(c => c.ImageUri);
+            var existingCardsUrls = existingCards.Select(c => c.ImageUri).ToArray();
+
+            var cardsToBeAdded = saverCards.Where(c => existingCardsUrls.Contains(c.ImageUri) == false).ToArray();
+
+            foreach (var card in cardsToBeAdded)
+            {
+                await context.GameCards.AddAsync(new Database.Models.GameCard()
+                {
+                    CardTitle = card.Title,
+                    CostInCredits = new Random().Next(1, 150),
+                    ImageUri = card.ImageUri,
+                    DateCreated = DateTime.UtcNow,
+                    Rarity = new Random().Next(1, 100),
+                });
+
+                await context.SaveChangesAsync();
+            }
         }
 
         public override void Dispose()
@@ -72,5 +108,5 @@ namespace BananasGamblerBackend.Services
             _connection.Close();
             base.Dispose();
         }
-    }
+    }    
 }

@@ -1,15 +1,15 @@
 1. Create separate database - ok
-2. Configure database permissions
+2. Configure database permissions - ok
 3. Create ASP .NET solution - ok
 4. Create user models - ok
 5. Create user DTO - ok
-5. Integrate user authorization controller
+5. Integrate user authorization controller - ok
 6. Create gmae card model - ok
 7. Create Game card DTO - ok
-7. Integrate data transformation to get content for game cards from saver backend
-8. Implement background service for game cards creation, pulling data from bananas db
-8. Implement rareness mechanism for game cards
-9. Implement credits system
-10. Implement credits check in mechanism
+7. Integrate data transformation to get content for game cards from saver backend - ok
+8. Implement background service for game cards creation, pulling data from bananas db - ok
+8. Implement rareness mechanism for game cards - ok
+9. Implement credits system - ok
+10. Implement credits check in mechanism - ok
 11. Implement buy game card for credits
 12. Implement game logic
