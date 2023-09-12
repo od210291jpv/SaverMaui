@@ -13,10 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveHost", "LiveHost\LiveHo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3228540-C34B-4E4E-AFC4-3BB15D71DFAF}"
 	ProjectSection(SolutionItems) = preProject
+		MobileAppTasks.txt = MobileAppTasks.txt
 		TaskList.txt = TaskList.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BananasGamblerBackend", "BananasGamblerBackend\BananasGamblerBackend.csproj", "{122AB829-4E84-4592-AAB7-995DB585EFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananasGamblerBackend", "BananasGamblerBackend\BananasGamblerBackend.csproj", "{122AB829-4E84-4592-AAB7-995DB585EFCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
