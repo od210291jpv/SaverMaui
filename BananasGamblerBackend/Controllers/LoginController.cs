@@ -29,7 +29,7 @@ namespace BananasGamblerBackend.Controllers
                 if (user != null) 
                 {
                     await Authenticate(model.Login);
-                    return Ok();
+                    return Ok(user);
                 }
                 ModelState.AddModelError("", "Incorrect credentials");
                 return Unauthorized();

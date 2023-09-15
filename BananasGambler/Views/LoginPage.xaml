@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BananasGambler.ViewModels"
+             x:Class="BananasGambler.Views.LoginPage"
+             Title="LoginPage">
+
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout VerticalOptions="Center" Spacing="15">
+        <Label x:Name="StatusLabel" Text="{Binding Status, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+        <Entry x:Name="LoginInput" PlaceholderColor="BlueViolet" Placeholder="Login" HorizontalTextAlignment="Center" TextColor="BlueViolet" Margin="25, 5, 25, 5" Text="{Binding Login, Mode=TwoWay}"/>
+        <Entry x:Name="PasswordInput" PlaceholderColor="BlueViolet" Placeholder="Password" IsPassword="True" HorizontalTextAlignment="Center" TextColor="BlueViolet" Margin="25, 5, 25, 5" Text="{Binding Password, Mode=TwoWay}"/>
+        <Button x:Name="LoginButton" Text="Login" Background="Blue" TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="5" WidthRequest="150" Command="{Binding LoginCommand}"/>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BananasGambler.ViewModels"
+             x:Class="BananasGambler.Views.ProfilePage"
+             Title="ProfilePage">
+    <ContentPage.BindingContext>
+        <vm:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Orientation="Vertical" Margin="5" Spacing="10">
+        <Label Text="Your funds:" TextColor="BlueViolet" FontSize="35"/>
+        <Label Text="00.0" FontSize="60" HorizontalOptions="Start" TextColor="Violet"/>
+        <Entry Placeholder="Add Funds: put checkin code here" PlaceholderColor="Gray" HorizontalTextAlignment="Center" TextColor="BlueViolet"/>
+        <Button Text="Check In" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
+    </StackLayout>
+</ContentPage>
