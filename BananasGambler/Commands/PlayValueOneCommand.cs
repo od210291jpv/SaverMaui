@@ -21,17 +21,14 @@ namespace BananasGambler.Commands
 
         public bool CanExecute(object parameter)
         {
-            if (GlobalData.GameStarted == false) 
-            {
-                return false;
-            }
-
             return true;
         }
 
-        public async void Execute(object parameter)
+        public void Execute(object parameter)
         {
             viewModel.ValueToPlay = int.Parse(viewModel.ValueOne);
+            GlobalData.GameBid += viewModel.ValueToPlay;
+            this.viewModel.BtnOneEnabled = false;
         }
     }
 }

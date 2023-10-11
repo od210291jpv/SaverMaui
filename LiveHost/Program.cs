@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<RabbitMqListener>();
+builder.Services.AddHostedService<ContentDownloadService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(

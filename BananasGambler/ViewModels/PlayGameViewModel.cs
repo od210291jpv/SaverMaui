@@ -1,6 +1,9 @@
 ﻿using BananasGambler.Commands;
+using BananasGambler.DTO;
+using BananasGambler.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +13,22 @@ namespace BananasGambler.ViewModels
 {
     internal class PlayGameViewModel : BaseViewModel
     {
+        internal static PlayGameViewModel Instance;
+
+        public ObservableCollection<GameCardDto> Cards { get; set; }
+
+        private GameCardDto bidCard { get; set; }
+
+        public GameCardDto BidCard 
+        {
+            get => bidCard;
+            set 
+            {
+                bidCard = value;
+                OnPropertyChanged(nameof(BidCard));
+            }
+        }
+
         public int ValueToPlay { get; set; }
 
         private string valueOne { get; set; }
@@ -109,9 +128,12 @@ namespace BananasGambler.ViewModels
 
         public ICommand BuySevenCommand { get; set; }
 
+        public ICommand IsPassCommand { get; set; }
+
         public PlayGameViewModel()
         {
-            this.InitGameValues();
+            Instance = this;
+
             this.PlayCommand = new PlayGameCommand(this);
             this.PlayValueOneCommand = new PlayValueOneCommand(this);
             this.PlayValueTwoCommand = new PlayValueTwoCommand(this);
@@ -120,19 +142,39 @@ namespace BananasGambler.ViewModels
             this.BuyThreeCommand = new BuyThreeCommand(this);
             this.BuyFiveCommand = new BuyFiveCommand(this);
             this.BuySevenCommand = new BuySevenCommand(this);
+            this.IsPassCommand = new PassCommand(this);
+
+            this.InitGameValues();
+
+            this.Cards = new ObservableCollection<GameCardDto>();
+
+            if (GlobalData.UserData.Login != "" && GlobalData.UserData.Password != "") 
+            {
+                var httpClient = HttpClientService.GetInstance();
+                var cards = httpClient.GetUserCards(new LoginRequestDto() 
+                {
+                    Login = GlobalData.UserData.Login,
+                    Password = GlobalData.UserData.Password
+                });
+
+                foreach (var card in cards) 
+                {
+                    this.Cards.Add(card);
+                }
+            }
 
             this.Status = "Game Not Started";
 
-            this.BtnThreeEnabled = false;
-            this.btnTwoEnabled = false;
-            this.btnThreeEnabled = false;
+            this.BtnThreeEnabled = true;
+            this.btnTwoEnabled = true;
+            this.btnThreeEnabled = true;
         }
 
-        private void InitGameValues() 
+        internal void InitGameValues() 
         {
-            this.ValueOne = new Random().Next(1, 7).ToString();
+            this.ValueOne = "1";
             this.ValueTwo = new Random().Next(2, 5).ToString();
-            this.ValueThree = new Random().Next(3, 5).ToString();
+            this.ValueThree = new Random().Next(1, 7).ToString();
         }
 
         public void LockGameButtons(bool unLock) 
@@ -140,6 +182,31 @@ namespace BananasGambler.ViewModels
             this.btnOneEnabled = unLock;
             this.btnTwoEnabled = unLock;
             this.btnThreeEnabled = unLock;
+        }
+
+        public async Task RefreshCardsAsync() 
+        {
+            this.Cards.Clear();
+
+            if (GlobalData.UserData.Login != "" && GlobalData.UserData.Password != "")
+            {
+                var httpClient = HttpClientService.GetInstance();
+                var cards = await httpClient.GetUserCardsAsync(new LoginRequestDto()
+                {
+                    Login = GlobalData.UserData.Login,
+                    Password = GlobalData.UserData.Password
+                });
+
+                foreach (var card in cards)
+                {
+                    this.Cards.Add(card);
+                }
+
+                if (cards.Length > 0) 
+                {
+                    this.bidCard = cards.First();
+                }
+            }
         }
     }
 }

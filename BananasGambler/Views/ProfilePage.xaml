@@ -10,8 +10,9 @@
 
     <StackLayout Orientation="Vertical" Margin="5" Spacing="10">
         <Label Text="Your funds:" TextColor="BlueViolet" FontSize="35"/>
-        <Label Text="00.0" FontSize="60" HorizontalOptions="Start" TextColor="Violet"/>
+        <Label Text="{Binding Credits, Mode=TwoWay}" FontSize="60" HorizontalOptions="Start" TextColor="Violet"/>
         <Entry Placeholder="Add Funds: put checkin code here" PlaceholderColor="Gray" HorizontalTextAlignment="Center" TextColor="BlueViolet"/>
         <Button Text="Check In" TextColor="White" HorizontalOptions="Center" FontAttributes="Bold"/>
+        <Button Text="Try your luck, buy a card" TextColor="White" HorizontalOptions="Center" Command="{Binding BuyCardCommand}"/>
     </StackLayout>
 </ContentPage>

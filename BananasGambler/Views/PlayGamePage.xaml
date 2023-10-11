@@ -26,12 +26,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Grid.Column="1" Grid.Row="0" Text="Select your bid" HorizontalOptions="Center" VerticalOptions="End" FontAttributes="Bold" TextColor="BlueViolet"/>
-            <Picker Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Title="Bid Card" TextColor="BlueViolet" HorizontalTextAlignment="Center">
-                <Picker.Items>
-                    <x:String>Test</x:String>
-                    <x:String>Test2</x:String>
-                    <x:String>Test3</x:String>
-                </Picker.Items>
+            <Picker Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Title="Bid Card" TextColor="BlueViolet" HorizontalTextAlignment="Center" ItemsSource="{Binding Cards, Mode=TwoWay}" ItemDisplayBinding="{Binding CardTitle}" SelectedItem="{Binding BidCard}">
             </Picker>
             <ImageButton Grid.Column="1" Grid.Row="2" Source="playgame.svg" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding PlayCommand}">
                 <VisualStateManager.VisualStateGroups>
@@ -54,19 +49,21 @@
                 </VisualStateManager.VisualStateGroups>
             </ImageButton>
             <Label Grid.Column="1" Grid.Row="3" VerticalOptions="Start" Text="Play" Padding="5" TextColor="BlueViolet" FontAttributes="Bold" HorizontalOptions="Center"/>
-            <HorizontalStackLayout Grid.Column="1" Grid.Row="4" Padding="5" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
-                <Button Text="{Binding ValueOne, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnOneEnabled, Mode=TwoWay}" CornerRadius="50"/>
-                <Button Text="{Binding ValueTwo, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnTwoEnabled, Mode=TwoWay}" CornerRadius="50"/>
-                <Button Text="{Binding ValueThree, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnThreeEnabled,Mode=TwoWay}" CornerRadius="50"/>
+            <HorizontalStackLayout Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" Padding="10" HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                <Button Text="{Binding ValueOne, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnOneEnabled, Mode=TwoWay}" CornerRadius="50" Command="{Binding PlayValueOneCommand}"/>
+                <Button Text="{Binding ValueThree, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnThreeEnabled,Mode=TwoWay}" CornerRadius="50" Command="{Binding PlayValueThreeCommand}"/>
+                <Button Text="{Binding ValueTwo, Mode=TwoWay}" TextColor="White" IsEnabled="{Binding BtnTwoEnabled, Mode=TwoWay}" CornerRadius="50" Command="{Binding PlayValueTwoCommand}"/>
+                
             </HorizontalStackLayout>
 
-            <Label x:Name="StatusLabel" Grid.Column="1" Grid.Row="5" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="BlueViolet" Text="{Binding Status, Mode=TwoWay}" Margin="15"/>
+            <Label x:Name="StatusLabel" Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand" Grid.ColumnSpan="2" TextColor="BlueViolet" Text="{Binding Status, Mode=TwoWay}" Margin="15"/>
             <HorizontalStackLayout Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
                 <Button Text="+1" TextColor="White"/>
                 <Button Text="+3" TextColor="White"/>
                 <Button Text="+5" TextColor="White"/>
                 <Button Text="+7" TextColor="White"/>
             </HorizontalStackLayout>
+            <Button Grid.Column="0" Grid.Row="5" Text="Pass" TextColor="White" VerticalOptions="Center" Command="{Binding IsPassCommand}" HorizontalOptions="Center"/>
         </Grid>
     </StackLayout>
 </ContentPage>

@@ -86,7 +86,6 @@ namespace BananasGamblerBackend.Controllers
             {
                 if ((hiddenNumber - value) >= ((hiddenNumber/100)*80))
                 {
-                    user.Credits += (hiddenNumber - value);
                     await this.database.SaveChangesAsync();
 
                     return new GameResultDto()
@@ -120,20 +119,50 @@ namespace BananasGamblerBackend.Controllers
             {
                 if (getCardAsReward == true)
                 {
-                    user.Credits += card.CostInCredits;
-
                     var randomCards = this.database.GameCards.Where(c => c.Users.Select(u => u.Id).Contains(user.Id) == false).ToArray();
                     var randomCard = randomCards[new Random().Next(0, randomCards.Count() - 1)];
                     randomCard.Users.Add(user);
-                    user.Credits += 100;
-                    await this.database.SaveChangesAsync();
+
+                    var userCardCategories = user.Cards.Select(c => c.CategoryId).ToArray();
+
+                    string resultMessage = string.Empty;
+
+                    if (userCardCategories.Contains(randomCard.CategoryId) == true)
+                    {
+                        resultMessage = $"Hidden value was {hiddenNumber}, your value {value}.\r\n Congrats, you win! you get new card in stack! The reward is: {decimal.Round((100 + card.CostInCredits), 2)} credits and new card!";
+                    }
+                    else 
+                    {
+                        resultMessage = $"Hidden value was {hiddenNumber}, your value {value}.\r\n Congrats, you win! you get {decimal.Round((100 + card.Rarity), 2)} credits and new card!";
+                    }
+
+                    RewardsDto reward = new();
+                    if (userCardCategories.Contains(randomCard.CategoryId) == true)
+                    {
+                        user.Credits += 100 + card.CostInCredits;
+                        await this.database.SaveChangesAsync();
+
+                        reward.NewIncome = 100 + card.CostInCredits;
+                        reward.RewardCard = randomCard.Id;
+                    }
+                    else 
+                    {
+                        user.Credits += 100 + card.Rarity;
+                        await this.database.SaveChangesAsync();
+
+                        reward.NewIncome = 100 + card.Rarity;
+                        reward.RewardCard = randomCard.Id;
+                    }
+
+
+
 
                     this.redisDb.StringGetDelete(user.Id.ToString());
 
                     return new GameResultDto()
                     {
-                        Result = $"Hidden value was {hiddenNumber}, your value {value}.\r\n Congrats, you win! you get {100} credits and new card!",
-                        Rewards = new RewardsDto() { NewIncome = 100, RewardCard = randomCard.Id }
+                        Result = resultMessage,
+                        Rewards = reward
                     };
                 }
                 else
@@ -145,8 +174,8 @@ namespace BananasGamblerBackend.Controllers
 
                     return new GameResultDto()
                     {
-                        Result = $"Hidden value was {hiddenNumber}, your value {value}.\r\n Congrats, you win! you get {100 + card.CostInCredits} credits!",
-                        Rewards = new RewardsDto() { NewIncome = 100 + card.CostInCredits }
+                        Result = $"Hidden value was {hiddenNumber}, your value {value}.\r\n Congrats, you win! you get {100 + card.CostInCredits + card.Rarity} credits!",
+                        Rewards = new RewardsDto() {NewIncome = 100 + card.CostInCredits + card.Rarity }
                     };
                 }
                 // you win +100 credits + card price * 2

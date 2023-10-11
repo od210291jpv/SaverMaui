@@ -20,12 +20,14 @@ namespace BananasGambler.Commands
 
         public bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            throw new NotImplementedException();
+            this.viewModel.ValueToPlay = int.Parse(viewModel.ValueTwo);
+            GlobalData.GameBid += viewModel.ValueToPlay;
+            this.viewModel.BtnTwoEnabled = true;
         }
     }
 }

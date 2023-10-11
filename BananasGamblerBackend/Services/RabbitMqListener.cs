@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using BananasGamblerBackend.Database;
 //using SaverBackend.Models;
 using System.Linq;
+using Bogus;
+using BananasGamblerBackend.Database.SaverBackendModels;
 
 namespace BananasGamblerBackend.Services
 {
@@ -85,17 +87,32 @@ namespace BananasGamblerBackend.Services
             var saverCardsUrls = saverNackendContext.Contents.Select(c => c.ImageUri);
             var existingCardsUrls = existingCards.Select(c => c.ImageUri).ToArray();
 
-            var cardsToBeAdded = saverCards.Where(c => existingCardsUrls.Contains(c.ImageUri) == false).ToArray();
+            Content[] cardsToBeAdded = saverCards.Where(c => existingCardsUrls.Contains(c.ImageUri) == false).ToArray();
 
             foreach (var card in cardsToBeAdded)
             {
                 await context.GameCards.AddAsync(new Database.Models.GameCard()
                 {
-                    CardTitle = card.Title,
-                    CostInCredits = new Random().Next(1, 150),
+                    CardTitle = new Faker().Name.FirstName() + " " + new Faker().Commerce.Color(),
+                    CostInCredits = new Random().Next(100, 700),
                     ImageUri = card.ImageUri,
                     DateCreated = DateTime.UtcNow,
                     Rarity = new Random().Next(1, 100),
+                    CategoryId = card.CategoryId,
+                });
+
+                await context.SaveChangesAsync();
+            }
+
+            var allCategories = saverNackendContext.Categories.ToArray();
+
+            foreach (var cat in allCategories) 
+            {
+                await context.Categories.AddAsync(new Database.Models.Category()
+                {
+                    DateCreated = DateTime.UtcNow,
+                    CategoryId = cat.CategoryId,
+                    Name = cat.Name,
                 });
 
                 await context.SaveChangesAsync();

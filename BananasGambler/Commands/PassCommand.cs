@@ -3,26 +3,29 @@ using System.Windows.Input;
 
 namespace BananasGambler.Commands
 {
-    internal class PlayValueThreeCommand : ICommand
+    internal class PassCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
         private PlayGameViewModel viewModel;
 
-        public PlayValueThreeCommand(PlayGameViewModel vm)
+        public PassCommand(PlayGameViewModel vm)
         {
             this.viewModel = vm;
         }
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            if (GlobalData.UserData.Login != "" && GlobalData.UserData.Password != "") 
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public void Execute(object parameter)
         {
-            this.viewModel.ValueToPlay = int.Parse(viewModel.ValueThree);
-            GlobalData.GameBid += viewModel.ValueToPlay;
-            this.viewModel.BtnThreeEnabled = true;
+            GlobalData.IsPass = true;
         }
     }
 }

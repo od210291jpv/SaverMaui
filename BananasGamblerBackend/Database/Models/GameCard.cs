@@ -20,5 +20,7 @@ namespace BananasGamblerBackend.Database.Models
         public decimal CostInCredits { get; set; }
 
         public decimal Rarity { get; set;} = decimal.Zero;
+
+        public Guid? CategoryId { get; set; }
     }
 }

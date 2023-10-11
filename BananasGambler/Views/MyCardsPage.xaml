@@ -9,27 +9,36 @@
         <vm:MyCardsViewModel />
     </ContentPage.BindingContext>
 
-    <ScrollView Margin="5" Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-        <StackLayout Orientation="Vertical" BindableLayout.ItemsSource="{Binding Cards}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="5" Margin="5" HorizontalOptions="Fill">
-                        <StackLayout Orientation="Vertical" BackgroundColor="White" Spacing="5" Margin="10">
-                            <Label Text="{Binding Path=CardTitle}" TextColor="BlueViolet" FontSize="20"/>
-                            <StackLayout Orientation="Horizontal" Spacing="3">
-                                <Label Text="Rarity: " TextColor="BlueViolet" FontSize="20"/>
-                                <Label Text="{Binding Path=Rarity}" TextColor="BlueViolet" FontSize="20"/>
-                            </StackLayout>
+    <ContentPage.Content>
+        <FlexLayout>
+            <CarouselView ItemsSource="{Binding Cards}" CurrentItem="{Binding CurrentCard, Mode=TwoWay}" CurrentItemChangedCommand="{Binding OnItemChangedCommand}" PeekAreaInsets="1" Loop="False" ItemsUpdatingScrollMode="KeepScrollOffset" IndicatorView="indicatorView">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="5" Margin="5" BackgroundColor="BlueViolet">
+                            <StackLayout Orientation="Vertical" BackgroundColor="BlueViolet" Spacing="0" Margin="5">
+
+                                <Label Text="{Binding Path=CardTitle}" TextColor="White" FontSize="20"/>
                                 
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="Cost: " TextColor="BlueViolet" FontSize="20"/>
-                                <Label Text="{Binding Path=CostInCredits}" TextColor="BlueViolet" FontSize="20"/>
+                                <StackLayout Orientation="Horizontal" Spacing="3">
+                                    <Label Text="Rarity: " TextColor="White" FontSize="20"/>
+                                    <Label Text="{Binding Path=Rarity}" TextColor="White" FontSize="20"/>
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Spacing="3">
+                                    <Label Text="Cost: " TextColor="White" FontSize="20"/>
+                                    <Label Text="{Binding Path=CostInCredits}" TextColor="White" FontSize="20"/>
+                                </StackLayout>
+                                <Image Source="{Binding Path=ImageUri}" Aspect="AspectFit"/>
+                                <Image Source="newitem.png" Opacity="50" Aspect="AspectFit" HeightRequest="70" HorizontalOptions="Start" Margin="2" IsVisible="{Binding IsNewItem, Mode=TwoWay}"/>
                             </StackLayout>
-                            <Image Source="https://www.researchgate.net/profile/Shagufta-Yasmin/publication/313121867/figure/fig4/AS:629900906078221@1527191487716/Original-Colour-Test-Image.png" Aspect="AspectFit"/>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
-    </ScrollView>
+                        </Frame>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <IndicatorView x:Name="indicatorView"
+                   IndicatorColor="LightGray"
+                   SelectedIndicatorColor="DarkGray"
+                   HorizontalOptions="Center" VerticalOptions="Center" ItemsSource="{Binding Cards}"/>
+        </FlexLayout>
+    </ContentPage.Content>
 </ContentPage>
