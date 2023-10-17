@@ -1,4 +1,5 @@
-﻿using LiveHost.DataBase;
+﻿using Flurl.Http;
+using LiveHost.DataBase;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -45,13 +46,54 @@ namespace LiveHost.Services
                 var directory = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory());
 
                 var allCategories = context.Categories.Select(c => c.Name).ToList();
+                var allCatsAsObj = context.Categories.ToArray();
 
                 foreach (var category in allCategories)
                 {
-                    Directory.CreateDirectory(directory + "/" + category);
+                    Directory.CreateDirectory(directory + "/data/" + category);
                 }
 
+                var allContent = context.Contents.ToArray();
+
                 RestClient client = new RestClient();
+
+
+                foreach (var con in allContent) 
+                {
+                    System.Console.WriteLine($"Downloading file: {con.Title}");
+
+                    if (con.CategoryId != null) 
+                    {
+                        try
+                        {
+                            var dir = allCatsAsObj.FirstOrDefault(c => c.CategoryId == con?.CategoryId);
+
+
+                            var targetDir = dir != null ? dir.Name : "Rest";
+
+
+
+                            Console.WriteLine($"For category: {targetDir}");
+
+                            try 
+                            {
+                                await con.ImageUri.DownloadFileAsync(Directory.GetCurrentDirectory() + "/data/" + targetDir);
+                            }
+                            catch (Flurl.Http.FlurlHttpException) 
+                            {
+                                continue;
+                            }
+                        }
+
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                    }
+
+                    
+                }
+
 
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
