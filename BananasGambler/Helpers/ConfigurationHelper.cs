@@ -26,7 +26,8 @@ namespace BananasGambler.Helpers
             {
                 //IConfigurationSection section = this.configurationRoot.GetSection(nameof(HttpClientConfiguration));
                 //return section.GetValue<string>("BaseUrl");
-                return "http://192.168.88.117:5086";
+                //return "http://192.168.88.117:5086";
+                return "http://192.168.88.252:5086";
             }
         }
 

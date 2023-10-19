@@ -1,0 +1,38 @@
+﻿namespace ImageRecognitionNN.Enums
+{
+    public enum Labels
+    {
+        String,
+        Asss,
+        Blondeswithhugetits,
+        MILF,
+        Blondes,
+        Tits,
+        Skinny,
+        Azian,
+        Cumface,
+        Selfie,
+        bj,
+        Sluts,
+        Brunettes,
+        BrunnetesWithBigTits,
+        Curvys,
+        Red,
+        Women,
+        Glasses,
+        Lesbian,
+        Face,
+        Cute,
+        Mom,
+        Curly,
+        Latina,
+        Home,
+        BluHair,
+        Lips,
+        Glamour,
+        Tattoo,
+        POW,
+        Armenian,
+        Smile
+    }
+}
