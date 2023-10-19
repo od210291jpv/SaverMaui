@@ -13,6 +13,12 @@
     <PackageReference Include="Microsoft.ML" Version="1.7.1" />
     <PackageReference Include="Microsoft.ML.Vision" Version="1.7.1" />
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU" Version="2.2.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU-fragment1" Version="2.11.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU-fragment2" Version="2.11.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU-fragment3" Version="2.11.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU-primary" Version="2.11.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Lite" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup Label="ImageLearning">
     <None Include="ImageLearning.consumption.cs">

@@ -32,4 +32,8 @@
     <ProjectReference Include="..\ImageRecognitionNN\ImageRecognitionNN.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="data\" />
+  </ItemGroup>
+
 </Project>
