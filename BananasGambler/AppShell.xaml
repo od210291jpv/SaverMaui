@@ -31,6 +31,12 @@
                 ContentTemplate="{DataTemplate local:MyCardsPage}"
                 Route="MainPage" />
         </Tab>
+        <Tab Title="My Packs" Icon="cards.svg">
+            <ShellContent
+                Title="My Packs"
+                ContentTemplate="{DataTemplate local:PacksPage}"
+                Route="MainPage" />
+        </Tab>
         <Tab Title="Settings" Icon="settings.svg">
             <ShellContent
                 Title="Settings"

@@ -2,6 +2,7 @@
 using BananasGambler.Helpers;
 using RestSharp;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace BananasGambler.Services
 {
@@ -79,6 +80,18 @@ namespace BananasGambler.Services
         {
             RestClient client = new RestClient();
             return await client.PostAsync<GameResultDto>(new RestRequest(UrlHelper.PlayGame(pass, value, getCardAsReward), Method.Post).AddJsonBody(requestModel));
+        }
+
+        public async Task<CategoryDto[]> GetCardsCategoriesAsync() 
+        {
+            RestClient client = new RestClient();
+            return await client.GetAsync<CategoryDto[]>(new RestRequest(UrlHelper.GetAllCardCategories, Method.Get));
+        }
+
+        public  CategoryDto[] GetCardsCategories()
+        {
+            RestClient client = new RestClient();
+            return client.Get<CategoryDto[]>(new RestRequest(UrlHelper.GetAllCardCategories, Method.Get));
         }
     }
 }

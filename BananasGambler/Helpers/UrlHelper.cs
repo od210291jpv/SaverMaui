@@ -41,5 +41,7 @@
         internal static string LogOut = $"{BaseUrl}/Login/Logout";
 
         internal static string SignUp = $"{BaseUrl}/SignupUser/Signup";
+
+        internal static string GetAllCardCategories = $"{BaseUrl}/GetAllCategories";
     }
 }
