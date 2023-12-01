@@ -10,11 +10,11 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CollectionView ItemsSource="{Binding Packs}" SelectedItem="{Binding SelectedPack}" SelectionMode="Single">
+        <FlexLayout BackgroundColor="Black">
+            <CollectionView ItemsSource="{Binding Packs}" SelectedItem="{Binding SelectedPack, Mode=TwoWay}" SelectionMode="Single">
                 <CollectionView.Header>
-                    <StackLayout BackgroundColor="Gray">
-                        <Label Text="Py Packs" TextColor="Purple" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
+                    <StackLayout BackgroundColor="White">
+                        <Label Text="My Packs" TextColor="Purple" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
                     </StackLayout>
                 </CollectionView.Header>
                 <CollectionView.ItemsLayout>
@@ -22,11 +22,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
+                        <SwipeView BackgroundColor="Wheat">
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnCategoryOpen"/>
-                                    <SwipeItem Text="Set Favorite" BackgroundColor="Pink" Clicked="OnAddToFavorites"/>
+                                    <SwipeItem Text="Open" BackgroundColor="Pink"  Clicked="OnCategoryOpen"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <Grid HeightRequest="100">

@@ -13,9 +13,9 @@ namespace BananasGambler.ViewModels
     {
         internal static PacksPageViewModel Instance { get; private set; }
 
-        public ObservableCollection<CategoryDto> Packs = new ObservableCollection<CategoryDto>();
+        public ObservableCollection<CategoryDto> Packs { get; set; }
 
-        private CategoryDto selectedPack;
+        private CategoryDto selectedPack { get; set; }
 
         public CategoryDto SelectedPack
         {
@@ -31,8 +31,9 @@ namespace BananasGambler.ViewModels
         public PacksPageViewModel()
         {
             Instance = this;
+            this.Packs = new ObservableCollection<CategoryDto>();
 
-            var userPacksIds = HttpClientService.GetInstance()
+            Guid[] userPacksIds = HttpClientService.GetInstance()
                 .GetUserCards(
                 new LoginRequestDto() 
                 { 
@@ -40,15 +41,38 @@ namespace BananasGambler.ViewModels
                     Password = GlobalData.UserData.Password
                 })
                 .Select(x => x.CategoryId)
+                .Distinct()
                 .ToArray();
 
-            var allCategories = HttpClientService.GetInstance().GetCardsCategories();
-            var userPacksCategories = allCategories.Where(c => userPacksIds.Contains(c.CategoryId) == true).ToArray();
+            CategoryDto[] allCategories = HttpClientService.GetInstance().GetCardsCategories();
+            List<CategoryDto> userPacksCategories = new List<CategoryDto>();
+
+            foreach (var i in userPacksIds) 
+            {
+                var catToAdd = allCategories.FirstOrDefault(c => c.CategoryId == i);
+                if (catToAdd != null) 
+                {
+                    userPacksCategories.Add(catToAdd);
+                }
+            }
 
             foreach (var c in userPacksCategories) 
             {
                 this.Packs.Add(c);
             }
+
+        }
+
+        public async void OnCategoryOpen(object sender, EventArgs e)
+        {
+            //if (Environment.Login != null)
+            //{
+            //    this.NavigateToFeedItemCommand.Execute(CategoriesViewModel.Instance);
+            //}
+            //else
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Unauthorized", $"Please login or create account to use categories functionality!", "Ok");
+            //}
         }
     }
 }

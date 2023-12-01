@@ -1,7 +1,6 @@
 ﻿using BananasGambler.DTO;
 using BananasGambler.Services;
 using BananasGambler.ViewModels;
-using System.Linq;
 using System.Windows.Input;
 
 namespace BananasGambler.Commands
@@ -23,6 +22,10 @@ namespace BananasGambler.Commands
                 this.viewModel.Status = "You are not authorized";
                 return false;
             }
+            if (this.viewModel == null) 
+            {
+                return false;
+            }
             return true;
         }
 
@@ -33,6 +36,9 @@ namespace BananasGambler.Commands
             GlobalData.IsPass = false;
             this.viewModel.LockGameButtons(true);
             this.viewModel.BtnOneEnabled = true;
+            this.viewModel.BidCardName = "";
+            this.viewModel.BidCardPrice = "";
+            this.viewModel.BidCardRarity = "";
         }
 
         public async void Execute(object parameter)
@@ -54,6 +60,11 @@ namespace BananasGambler.Commands
                 {
                     GlobalData.GameStarted = true;
                     this.viewModel.Status = "Game session started.";
+
+                    this.viewModel.BidCardName = this.viewModel.BidCard.CardTitle;
+                    this.viewModel.BidCardPrice = decimal.Round(this.viewModel.BidCard.CostInCredits, 3).ToString();
+                    this.viewModel.BidCardRarity = decimal.Round(this.viewModel.BidCard.Rarity, 3).ToString();
+                    this.viewModel.CurrentBalance = decimal.Round(httpService.Login(new DTO.LoginRequestDto() { Login = GlobalData.UserData.Login, Password = GlobalData.UserData.Password }).Credits, 3).ToString();
                 }
 
                 GlobalData.IsPass = false;
@@ -82,6 +93,7 @@ namespace BananasGambler.Commands
 
                 if (result.Result.Contains("Parial win, you get"))
                 {
+                    this.viewModel.CurrentBalance = decimal.Round(HttpClientService.GetInstance().Login(new DTO.LoginRequestDto() { Login = GlobalData.UserData.Login, Password = GlobalData.UserData.Password }).Credits, 3).ToString();
                     this.ResetGame();
                     return;
                 }
@@ -115,6 +127,7 @@ namespace BananasGambler.Commands
                 }
                 if (result.Result.Contains("Congrats, you win! you get")) 
                 {
+                    this.viewModel.CurrentBalance = decimal.Round(HttpClientService.GetInstance().Login(new DTO.LoginRequestDto() { Login = GlobalData.UserData.Login, Password = GlobalData.UserData.Password }).Credits, 3).ToString();
                     this.ResetGame();
 
                     if (MyCardsViewModel.Instance != null)

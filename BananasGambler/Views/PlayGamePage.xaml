@@ -57,13 +57,32 @@
             </HorizontalStackLayout>
 
             <Label x:Name="StatusLabel" Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand" Grid.ColumnSpan="2" TextColor="BlueViolet" Text="{Binding Status, Mode=TwoWay}" Margin="15"/>
-            <HorizontalStackLayout Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
-                <Button Text="+1" TextColor="White"/>
-                <Button Text="+3" TextColor="White"/>
-                <Button Text="+5" TextColor="White"/>
-                <Button Text="+7" TextColor="White"/>
-            </HorizontalStackLayout>
+
             <Button Grid.Column="0" Grid.Row="5" Text="Pass" TextColor="White" VerticalOptions="Center" Command="{Binding IsPassCommand}" HorizontalOptions="Center"/>
+
+            <Grid Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Text="Bid card name: " Grid.Row="0" TextColor="Black" FontAttributes="Bold"/>
+                <Label Grid.Column="1" Grid.Row="0" Text="{Binding BidCardName, Mode=TwoWay}" TextColor="Black"/>
+
+                <Label Grid.Column="0" Text="Card rarity: " Grid.Row="1" TextColor="Black" FontAttributes="Bold"/>
+                <Label Grid.Column="1" Grid.Row="1" Text="{Binding BidCardRarity, Mode=TwoWay}" TextColor="Black"/>
+
+                <Label Grid.Column="0" Text="Card price: " Grid.Row="2" TextColor="Black" FontAttributes="Bold"/>
+                <Label Grid.Column="1" Grid.Row="2" Text="{Binding BidCardPrice, Mode=TwoWay}" TextColor="Black"/>
+
+                <Label Grid.Column="0" Text="Current balance: " Grid.Row="3" TextColor="Black" FontAttributes="Bold"/>
+                <Label Grid.Column="1" Grid.Row="3" Text="{Binding CurrentBalance, Mode=TwoWay}" TextColor="Black"/>
+            </Grid>
         </Grid>
     </StackLayout>
 </ContentPage>

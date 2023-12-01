@@ -38,9 +38,4 @@ public partial class FeedPage : ContentPage
         var toast = Toast.Make($"Content added to delete list", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
     }
-
-	private void OnPinchGestureTapped(object sender, PinchGestureUpdatedEventArgs e)
-	{
-
-	}
 }

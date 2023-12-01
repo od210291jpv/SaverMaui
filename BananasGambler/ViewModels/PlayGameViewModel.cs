@@ -1,12 +1,7 @@
 ﻿using BananasGambler.Commands;
 using BananasGambler.DTO;
 using BananasGambler.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BananasGambler.ViewModels
@@ -26,6 +21,54 @@ namespace BananasGambler.ViewModels
             {
                 bidCard = value;
                 OnPropertyChanged(nameof(BidCard));
+            }
+        }
+
+        private string bidCardName { get; set; }
+
+        public string BidCardName 
+        { 
+            get => this.bidCardName;
+            set 
+            {
+                this.bidCardName = value;
+                OnPropertyChanged(nameof(BidCardName));
+            }
+        }
+
+        private string bidCardRarity { get; set; }
+
+        public string BidCardRarity 
+        {
+            get => this.bidCardRarity;
+            set 
+            {
+                this.bidCardRarity = value;
+                OnPropertyChanged(nameof(BidCardRarity));
+            }
+        }
+
+        private string bidCardPrice { get; set; }
+
+        public string BidCardPrice 
+        {
+            get => this.bidCardPrice;
+            set 
+            {
+                this.bidCardPrice = value;
+                OnPropertyChanged(nameof(BidCardPrice));
+            }
+        }
+
+        private string currentBalance { get; set; }
+
+        public string CurrentBalance 
+        {
+            get => this.currentBalance;
+            set 
+            {
+                this.currentBalance = value;
+                OnPropertyChanged(nameof(CurrentBalance));
             }
         }
 
@@ -155,12 +198,13 @@ namespace BananasGambler.ViewModels
                 {
                     Login = GlobalData.UserData.Login,
                     Password = GlobalData.UserData.Password
-                });
+                }).OrderBy(c => c.CardTitle);
 
                 foreach (var card in cards) 
                 {
                     this.Cards.Add(card);
                 }
+
             }
 
             this.Status = "Game Not Started";
@@ -197,7 +241,7 @@ namespace BananasGambler.ViewModels
                     Password = GlobalData.UserData.Password
                 });
 
-                foreach (var card in cards)
+                foreach (var card in cards.OrderBy(c => c.CardTitle))
                 {
                     this.Cards.Add(card);
                 }
