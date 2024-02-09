@@ -23,7 +23,7 @@ namespace BananasGambler.Commands
         {
             var client = HttpClientService.GetInstance();
             DTO.LoginResponseDto clientData = await client.LoginAsync(new DTO.LoginRequestDto() { Login = GlobalData.UserData.Login, Password = GlobalData.UserData.Password });
-            this.viewModel.Credits = decimal.Round(clientData.Credits, 2);
+            this.viewModel.Credits = decimal.Round(clientData.Credits, 2) - 1m;
 
             var allAvailableCards = await client.GetAllCardsAsync();
             var allPlayerCards = await client.GetUserCardsAsync(new DTO.LoginRequestDto() { Login = GlobalData.UserData.Login, Password = GlobalData.UserData.Password });

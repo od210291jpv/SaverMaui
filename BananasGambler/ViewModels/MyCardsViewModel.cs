@@ -16,13 +16,29 @@ namespace BananasGambler.ViewModels
 
         private GameCardDto currentCard { get; set; }
 
-        public GameCardDto CurrentCard 
-        { 
+        public GameCardDto CurrentCard
+        {
             get => this.currentCard;
-            set 
+            set
             {
                 this.currentCard = value;
                 OnPropertyChanged(nameof(this.CurrentCard));
+            }
+        }
+
+        private Color currentCardColor 
+        {
+            get => Color.Parse(this.CurrentCard.CardTitle.Split(" ").Last());
+            set => this.currentCardColor = value;
+        }
+
+        public Color CurrentCardColor 
+        { 
+            get => currentCardColor;
+            set 
+            {
+                this.currentCardColor = value;
+                OnPropertyChanged(nameof(this.CurrentCardColor));
             }
         }
 
@@ -69,7 +85,7 @@ namespace BananasGambler.ViewModels
             }
         }
 
-        public async Task RefreshCardsAsync() 
+        public async Task RefreshCardsAsync()
         {
             var oldCards = this.Cards.ToArray();
 
@@ -87,7 +103,7 @@ namespace BananasGambler.ViewModels
             {
                 card.CostInCredits = decimal.Round(card.CostInCredits, 2);
                 card.Rarity = decimal.Round(card.Rarity, 2);
-                if (newCards.Contains(card) == true) 
+                if (newCards.Contains(card) == true)
                 {
                     card.IsNewItem = true;
                 }

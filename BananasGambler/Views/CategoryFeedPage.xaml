@@ -14,7 +14,9 @@
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Image Source="{Binding Path=ImageUri}" Margin="0">
-                            
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                            </Image.GestureRecognizers>
                         </Image>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>

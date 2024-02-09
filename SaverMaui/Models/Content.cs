@@ -11,5 +11,7 @@ namespace SaverMaui.Models
         public Guid? CategoryId { get; set; }
 
         public bool IsFavorite { get; set; }
+
+        public int Rating { get; set; } = 0;
     }
 }

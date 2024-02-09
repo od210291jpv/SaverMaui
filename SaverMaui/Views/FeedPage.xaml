@@ -13,12 +13,33 @@
             <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                                <PinchGestureRecognizer PinchUpdated="OnPinchGestureTapped" />
-                            </Image.GestureRecognizers>
-                        </Image>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                    <PinchGestureRecognizer PinchUpdated="OnPinchGestureTapped" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Button Grid.Row="0" 
+                                    Grid.Column="0" 
+                                    Text="R" FontAttributes="Bold" 
+                                    TextColor="White"
+                                    BackgroundColor="DeepPink" 
+                                    CornerRadius="50" 
+                                    VerticalOptions="End" 
+                                    HorizontalOptions="End" 
+                                    Margin="30" HeightRequest="60" 
+                                    WidthRequest="60" 
+                                    Padding="0" 
+                                    Opacity="0.6" 
+                                    x:Name="RateButton" Clicked="OnRateClicked"/>
+                        </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>

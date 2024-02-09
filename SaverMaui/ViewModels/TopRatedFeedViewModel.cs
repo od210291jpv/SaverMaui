@@ -2,22 +2,27 @@
 using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
-
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
-    public class FeedViewModel : BaseViewModel
+    public class TopRatedFeedViewModel : BaseViewModel
     {
-        public static FeedViewModel Instance { get; private set; }
+        public static TopRatedFeedViewModel Instance { get; private set; }
+
 
         private ObservableCollection<ImageRepresentationElement> contentCollection;
 
-        public ObservableCollection<ImageRepresentationElement> ContentCollection 
-        { 
+        public ObservableCollection<ImageRepresentationElement> ContentCollection
+        {
             get => this.contentCollection;
-            set 
+            set
             {
                 this.contentCollection = value;
                 OnPropertyChanged(nameof(ContentCollection));
@@ -29,29 +34,19 @@ namespace SaverMaui.ViewModels
         public ImageRepresentationElement CurrentContent
         {
             get => currentImage;
-            set => currentImage = value; 
+            set => currentImage = value;
         }
 
-        public ICommand ItemChangedCommand 
-        {
-            get;
-        }
 
-        public ICommand RateImageCommand 
-        { 
-            get;
-        }
 
-        public FeedViewModel()
+        public TopRatedFeedViewModel()
         {
             this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
             this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
 
-            this.ItemChangedCommand = new FeedItemChangedCommand(this);
-            this.RateImageCommand = new RateContentCommand(this);
 
             Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().ToArray();
+            Content[] allRelatedContent = _realm.All<Content>().Where(c => c.Rating > 0).OrderByDescending(c => c.Rating).ToArray();
 
             ObservableCollection<ImageRepresentationElement> allFeed = new();
 

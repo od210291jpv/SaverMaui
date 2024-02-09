@@ -44,7 +44,7 @@ namespace BananasGambler.Commands
         public async void Execute(object parameter)
         {
             this.viewModel.InitGameValues();
-
+            Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(100));
             if (GlobalData.GameStarted == false) 
             {
                 HttpClientService httpService = HttpClientService.GetInstance();

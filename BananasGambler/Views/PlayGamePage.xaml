@@ -28,7 +28,7 @@
             <Label Grid.Column="1" Grid.Row="0" Text="Select your bid" HorizontalOptions="Center" VerticalOptions="End" FontAttributes="Bold" TextColor="BlueViolet"/>
             <Picker Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Title="Bid Card" TextColor="BlueViolet" HorizontalTextAlignment="Center" ItemsSource="{Binding Cards, Mode=TwoWay}" ItemDisplayBinding="{Binding CardTitle}" SelectedItem="{Binding BidCard}">
             </Picker>
-            <ImageButton Grid.Column="1" Grid.Row="2" Source="playgame.svg" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding PlayCommand}">
+            <ImageButton Grid.Column="1" Grid.Row="2" x:Name="PlayButton" Source="playgame.svg" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding PlayCommand}">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="Common">
