@@ -1,4 +1,7 @@
-﻿using SaverMaui.Commands;
+﻿using Plugin.CurrentActivity;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
+using SaverMaui.Commands;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels

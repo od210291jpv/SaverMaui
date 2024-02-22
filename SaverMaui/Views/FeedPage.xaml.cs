@@ -25,8 +25,6 @@ public partial class FeedPage : ContentPage
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
-
-        //await Application.Current.MainPage.DisplayAlert("Done", $"Content added to favorites", "Ok");
     }
 
 	private async void OnPinchGestureTapped(object sender, EventArgs e) 

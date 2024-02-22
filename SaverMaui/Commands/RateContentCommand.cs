@@ -1,6 +1,9 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
+using System.Threading;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -22,8 +25,21 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
+            Realm _realm = Realm.GetInstance();
+            var all = _realm.All<Content>().ToArray();
+
+            var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(this.feedViewModel.CurrentContent.Source.ToString().Replace("Uri: ", "")));
+
+            var toast0 = Toast.Make($"Current content rate: {requiredContent.Rating}", ToastDuration.Short, 14);
+            await toast0.Show(new CancellationTokenSource().Token);
+
             string result = await Application.Current.MainPage.DisplayPromptAsync("Rate the content", "Please set from 1 to 5", "Ok", "Cancel");
-            
+
+            if (result == null) 
+            {
+                return;
+            }
+
             var isParsed = int.TryParse(result, out var parcedRate);
 
             if (!isParsed) 
@@ -32,14 +48,11 @@ namespace SaverMaui.Commands
                 return;
             }
 
-            Realm _realm = Realm.GetInstance();
-            var all = _realm.All<Content>().ToArray();
-
-            var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(this.feedViewModel.CurrentContent.Source.ToString().Replace("Uri: ", "")));
 
             _realm.Write(() => requiredContent.Rating = parcedRate);
 
-            await Application.Current.MainPage.DisplayAlert("Done!", "Thank you for the rate!", "Ok");
+            var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
+            await toast.Show(new CancellationTokenSource().Token);
         }
     }
 }
