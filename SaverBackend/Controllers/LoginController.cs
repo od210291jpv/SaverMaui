@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.SignalR;
 using SaverBackend.DTO;
+using SaverBackend.Hubs;
 using SaverBackend.Models;
 
 using StackExchange.Redis;
@@ -13,13 +14,15 @@ namespace SaverBackend.Controllers
     {
         private ApplicationContext dbContext;
         private ConnectionMultiplexer redis;
+        private IHubContext<MainNotificationsHub> hub;
         private IDatabase redisDb;
 
-        public LoginController(ApplicationContext context)
+        public LoginController(ApplicationContext context, IHubContext<MainNotificationsHub> hubcontext)
         {
             this.dbContext = context;
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-            this.redisDb = redis.GetDatabase();            
+            this.redisDb = redis.GetDatabase();       
+            this.hub = hubcontext;
         }
 
         [HttpPost("Login")]
@@ -57,6 +60,7 @@ namespace SaverBackend.Controllers
             
             this.redisDb.StringSet(userProfile.UserName, "Online");
             this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromSeconds(30));
+            await this.hub.Clients.All.SendAsync($"{profileInfo.UserName} just joined!! Say Hello!");
             return profileInfo;
         }
 
