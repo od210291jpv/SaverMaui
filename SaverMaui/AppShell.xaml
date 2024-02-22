@@ -37,6 +37,7 @@
 
     <FlyoutItem Title="Feed">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}" Title="MainFeed"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:TopRatedFeedPage}" Title="Top rated content"></ShellContent>
     </FlyoutItem>
 
     <FlyoutItem Title="Video">

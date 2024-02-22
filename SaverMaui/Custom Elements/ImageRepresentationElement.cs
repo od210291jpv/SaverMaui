@@ -30,5 +30,7 @@ namespace SaverMaui.Custom_Elements
         }
 
         public bool IsFavorite { get; set; }
+
+        public int Rating { get; set; } = 0;
     }
 }

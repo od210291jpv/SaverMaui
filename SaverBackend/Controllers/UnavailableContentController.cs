@@ -21,7 +21,7 @@ namespace SaverBackend.Controllers
         [HttpPost(Name = "GetUnavailableContent")]
         public IActionResult Index(RabbitMqMessage message)
         {
-            mqService.SendMessage(message);
+            mqService.SendMessage(message, "MyQueue");
 
             return Ok($"Message sent: {message.Topic}");
         }

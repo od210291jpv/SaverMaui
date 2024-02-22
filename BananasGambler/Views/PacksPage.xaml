@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BananasGambler.ViewModels"
+             x:Class="BananasGambler.Views.PacksPage"
+             Title="PacksPage">
+
+    <ContentPage.BindingContext>
+        <vm:PacksPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <FlexLayout BackgroundColor="Black">
+            <CollectionView ItemsSource="{Binding Packs}" SelectedItem="{Binding SelectedPack, Mode=TwoWay}" SelectionMode="Single">
+                <CollectionView.Header>
+                    <StackLayout BackgroundColor="White">
+                        <Label Text="My Packs" TextColor="Purple" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
+                    </StackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView BackgroundColor="Wheat">
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Open" BackgroundColor="Pink"  Clicked="OnCategoryOpen"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Grid HeightRequest="100">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Frame Grid.Column="0" Grid.Row="0" CornerRadius="0" Padding="0" VerticalOptions="FillAndExpand" Margin="0">
+                                    <Label Text="{Binding Path=Name}" TextColor="Purple" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </FlexLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

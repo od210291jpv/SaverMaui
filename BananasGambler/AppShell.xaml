@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BananasGambler.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BananasGambler.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <Tab Title="Login" Icon="login.svg">
+            <ShellContent
+                Title="Login"
+                ContentTemplate="{DataTemplate local:LoginPage}"
+                Route="MainPage"/>
+        </Tab>
+        <Tab Title="Profile" Icon="profile.svg">
+            <ShellContent
+                Title="Profile"
+                ContentTemplate="{DataTemplate local:ProfilePage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="Play" Icon="play.svg">
+            <ShellContent
+                Title="Play Game"
+                ContentTemplate="{DataTemplate local:PlayGamePage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="Cards" Icon="cards.svg">
+            <ShellContent
+                Title="My Cards"
+                ContentTemplate="{DataTemplate local:MyCardsPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="My Packs" Icon="cards.svg">
+            <ShellContent
+                Title="My Packs"
+                ContentTemplate="{DataTemplate local:PacksPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="Settings" Icon="settings.svg">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate local:LoginPage}"
+                Route="MainPage" />
+        </Tab>
+    </TabBar>
+
+</Shell>

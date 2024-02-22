@@ -37,12 +37,18 @@ namespace SaverMaui.ViewModels
             get;
         }
 
+        public ICommand RateImageCommand 
+        { 
+            get;
+        }
+
         public FeedViewModel()
         {
             this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
             this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
 
             this.ItemChangedCommand = new FeedItemChangedCommand(this);
+            this.RateImageCommand = new RateContentCommand(this);
 
             Realm _realm = Realm.GetInstance();
             Content[] allRelatedContent = _realm.All<Content>().ToArray();

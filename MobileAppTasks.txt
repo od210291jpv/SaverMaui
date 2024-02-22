@@ -1,0 +1,19 @@
+0. Registration
+	1. Get random checkin code on registration as a bonus (50 credits)
+1. Login and Logout
+2. Profile screen with:
+	1. Amount of funds
+	2. Amount of cards
+	3. Position in leaderboard
+	4. CheckInCodes
+3. Add funds
+4. By a card
+5. Show available cards
+	1. Show card rarity
+	2. Show card proce
+6. Play Game functionality:
+	1. Start game session
+	2. Choose bid card
+	3. Select value
+	4. Play (send data to backend)
+	5. By another attempt

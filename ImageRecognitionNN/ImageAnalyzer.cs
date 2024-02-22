@@ -1,0 +1,63 @@
+﻿using Flurl.Http;
+using ImageRecognitionNN.Enums;
+
+namespace ImageRecognitionNN
+{
+    public class ImageAnalyzer
+    {
+        private string directory = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory());
+
+
+        public async Task<KeyValuePair<string, decimal>[]> AnalyzeImageByUrl(string imageUri) 
+        {
+            await imageUri.DownloadFileAsync($"{this.directory}/data/");
+
+            var file = Directory.GetFiles($"{this.directory}/data/");
+            var result = this.AnalyzeImage(Path.GetFullPath(file.First()));
+            File.Delete(file.First());
+            return result;
+        }
+
+        public KeyValuePair<string, decimal>[] AnalyzeImage(string imagePath) 
+        {
+            var imageBytes = File.ReadAllBytes(imagePath);
+            ImageLearning.ModelInput sampleData = new ImageLearning.ModelInput()
+            {
+                ImageSource = imageBytes,
+            };
+
+            return ImageLearning.Predict(sampleData);
+        }
+
+        public void GetImagesByLabel(Labels label, string derectoryPath) 
+        {
+            var outputDir = $"{Directory.GetCurrentDirectory()}/{label}/Output";
+            Directory.CreateDirectory(outputDir);
+            var allFiles = Directory.GetFiles(derectoryPath);
+
+            int counter = 0;
+            int allFilestCount = allFiles.Length;
+
+            foreach (var item in allFiles)
+            {
+                counter++;
+
+                Console.WriteLine($"Processing: {counter}/{allFilestCount} file...");
+                var labels = this.AnalyzeImage(item);
+
+                if (labels.Length != 0) 
+                {
+                    var maxValue = labels.Select(label => label.Value).Max();
+                    var actualLabel = labels.Single(l => l.Value == maxValue);
+                    if (actualLabel.Key == label.ToString()) 
+                    {
+                        File.Copy(item, $"{outputDir}/{Path.GetFileName(item)}");
+                        Console.WriteLine($"Found matching file: {Path.GetFileName(item)}");
+                    }
+
+                }
+            }
+        }
+
+    }
+}

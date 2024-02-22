@@ -11,6 +11,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServiceClient", "Sig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveHost", "LiveHost\LiveHost.csproj", "{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E3228540-C34B-4E4E-AFC4-3BB15D71DFAF}"
+	ProjectSection(SolutionItems) = preProject
+		MobileAppTasks.txt = MobileAppTasks.txt
+		TaskList.txt = TaskList.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananasGamblerBackend", "BananasGamblerBackend\BananasGamblerBackend.csproj", "{122AB829-4E84-4592-AAB7-995DB585EFCF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananasGambler", "BananasGambler\BananasGambler.csproj", "{45ABFF48-11C4-4D6D-B83D-DE2057E64539}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognitionNN", "ImageRecognitionNN\ImageRecognitionNN.csproj", "{446B501A-F358-4B17-AEEE-7BD12A666478}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +47,20 @@ Global
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3318540A-B8B6-4EFA-9473-F2BEC08ACEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122AB829-4E84-4592-AAB7-995DB585EFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45ABFF48-11C4-4D6D-B83D-DE2057E64539}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{446B501A-F358-4B17-AEEE-7BD12A666478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446B501A-F358-4B17-AEEE-7BD12A666478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446B501A-F358-4B17-AEEE-7BD12A666478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446B501A-F358-4B17-AEEE-7BD12A666478}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,8 @@ using Realms;
 using SaverMaui.Models;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using SaverMaui.ViewModels;
+using CommunityToolkit.Maui.Markup;
 
 namespace SaverMaui.Views;
 
@@ -10,7 +12,7 @@ public partial class FeedPage : ContentPage
 	public FeedPage()
 	{
 		InitializeComponent();
-	}
+    }
 
 	private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
 	{
@@ -23,8 +25,6 @@ public partial class FeedPage : ContentPage
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
-
-        //await Application.Current.MainPage.DisplayAlert("Done", $"Content added to favorites", "Ok");
     }
 
 	private async void OnPinchGestureTapped(object sender, EventArgs e) 
@@ -39,8 +39,8 @@ public partial class FeedPage : ContentPage
         await toast.Show(cancellationTokenSource.Token);
     }
 
-	private void OnPinchGestureTapped(object sender, PinchGestureUpdatedEventArgs e)
-	{
-
-	}
+    private void OnRateClicked(object sender, EventArgs e)
+    {
+        FeedViewModel.Instance?.RateImageCommand.Execute(FeedViewModel.Instance);
+    }
 }

@@ -14,15 +14,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<RabbitMqListener>();
+builder.Services.AddHostedService<ContentDownloadService>();
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(
             ApplicationContext.ConnectionString,
             ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
 
+builder.Services.AddDbContext<BananasGamblerApplicationContext>(opt => 
+    opt.UseMySql(
+        BananasGamblerApplicationContext.ConnectionString,
+        ServerVersion.AutoDetect(BananasGamblerApplicationContext.ConnectionString)));
+
 builder.Configuration.AddJsonFile("appsettings.json");
 
 ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
+BananasGamblerApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["BananasGamblerDbConnection"];
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 

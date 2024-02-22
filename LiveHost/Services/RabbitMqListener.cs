@@ -2,7 +2,6 @@
 using LiveHost.DataBase.Models;
 using LiveHost.DataStructures;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
