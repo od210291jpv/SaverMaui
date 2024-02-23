@@ -1,11 +1,11 @@
-﻿using CommunityToolkit.Maui.Markup;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 
 using SaverMaui.Services.Helpers;
 using SaverMaui.SignalRModels;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Microsoft.Maui.Dispatching;
 
 namespace SaverMaui.ViewModels
 {
@@ -68,7 +68,7 @@ namespace SaverMaui.ViewModels
 
             hubConnection.Closed += async (error) =>
             {
-                SendLocalMessage("Connection Closed");
+                await SendMessage("Connection Closed");
                 IsConnected = false;
                 await Task.Delay(5000);
                 await Connect();
@@ -79,7 +79,13 @@ namespace SaverMaui.ViewModels
                 await Task.Run(() => SendLocalMessage(message));
             });
 
-            this.notifyClientsCommand.Execute(this.isConnected);
+            Task.Run(() =>
+            {
+                Application.Current?.Dispatcher.Dispatch(async () =>
+                await hubConnection.StartAsync());
+            });
+
+            //this.notifyClientsCommand.Execute(this.isConnected);
 
             Instance = this;
         }

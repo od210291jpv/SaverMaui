@@ -240,14 +240,7 @@ namespace SaverMaui.ViewModels
 
             Realm _realm = Realm.GetInstance();
 
-            var allCategories = _realm.All<Category>().OrderBy(c => c.Name).ToArray();
-
-            foreach (var cat in allCategories)
-            {
-                Categories.Add(cat);
-            }
-
-            this.CategoriesAmount = allCategories.Count();
+            this.CategoriesAmount = _realm.All<Category>().Count();
             this.contentAmount = _realm.All<Content>().Count();
             this.logFeedsEnabled = true;
         }

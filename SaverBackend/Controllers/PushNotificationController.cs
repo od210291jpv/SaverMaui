@@ -11,7 +11,7 @@ namespace SaverBackend.Controllers
     public class PushNotificationController : Controller
     {
         private ApplicationContext db;
-        private IHubContext<MainNotificationsHub> notificationsHubContext { get; set; }
+        private IHubContext<MainNotificationsHub> notificationsHubContext;
 
         public PushNotificationController(ApplicationContext database, IHubContext<MainNotificationsHub> hubcontext)
         {
@@ -22,9 +22,9 @@ namespace SaverBackend.Controllers
         [HttpPost(Name = "PushNotification")]
         public async Task<IActionResult> Index(PushNotificationDto pushNotification)
         {
-            await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", pushNotification);
+            await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", pushNotification.NotificationMessage);
             
-            return StatusCode(201);
+            return StatusCode(200);
         }
     }
 }

@@ -4,9 +4,10 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using SaverMaui.ViewModels;
 using CommunityToolkit.Maui.Markup;
+using System.Collections.ObjectModel;
+using SaverMaui.Custom_Elements;
 
 namespace SaverMaui.Views;
-
 public partial class FeedPage : ContentPage
 {
 	public FeedPage()
@@ -14,7 +15,7 @@ public partial class FeedPage : ContentPage
 		InitializeComponent();
     }
 
-	private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
+    private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
 	{
         Realm _realm = Realm.GetInstance();
 		var all = _realm.All<Content>().ToArray();

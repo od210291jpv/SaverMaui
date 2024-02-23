@@ -8,6 +8,7 @@ namespace SignalRServiceClient
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public List<string> Messages { get; set; } = new List<string>();
 
         public void OnPropertyChanged(string prop = "")
         {
@@ -63,12 +64,23 @@ namespace SignalRServiceClient
             this.hubConnection = new HubConnectionBuilder()
                 .WithUrl(uri)
                 .Build();
+
+            hubConnection.On<string>(methodName, async (message) =>
+            {
+                await Task.Run(() => this.Messages.Add(message));
+            });
+
+            Task.Run(() =>
+            {
+                Application.Current?.Dispatcher.Dispatch(async () =>
+                await hubConnection.StartAsync());
+            });
         }
 
         public async Task Connect()
         {
-            if (IsConnected)
-                return;
+            //if (IsConnected == true)
+            //    return;
             try
             {
                 await hubConnection.StartAsync();
