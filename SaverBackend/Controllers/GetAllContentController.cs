@@ -23,6 +23,7 @@ namespace SaverBackend.Controllers
 
             return allContent.Select(ct => new ContentDto() 
             {
+                Id = ct.Id,
                 CategoryId = ct.CategoryId,
                 ImageUri = ct.ImageUri,
                 Title = ct.Title

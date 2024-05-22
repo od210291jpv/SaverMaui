@@ -57,6 +57,7 @@ namespace SaverMaui.Commands
                 {
                     allFeed.Add(new ImageRepresentationElement()
                     {
+                        ContentId = cat.Id,
                         CategoryId = cat.CategoryId.Value,
                         Name = cat.Title,
                         Source = cat.ImageUri,

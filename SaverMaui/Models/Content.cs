@@ -4,6 +4,8 @@ namespace SaverMaui.Models
 {
     public class Content : RealmObject
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string ImageUri { get; set; }

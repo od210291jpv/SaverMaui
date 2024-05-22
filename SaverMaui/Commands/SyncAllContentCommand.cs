@@ -85,6 +85,7 @@ namespace SaverMaui.Commands
                 {
                     Content ct = new Content()
                     {
+                        Id = content.Id,
                         CategoryId = content.CategoryId,
                         ImageUri = content.ImageUri.Replace(" ", ""),
                         IsFavorite = false,

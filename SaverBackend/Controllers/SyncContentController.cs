@@ -120,5 +120,22 @@ namespace SaverBackend.Controllers
 
             return this.db.Contents.Where(c => c.ProfileId == user.Id).Select(c => c.Id).ToArray();
         }
+
+        [HttpGet("GetContentById")]
+        public async Task<ContentDto?> GetContentById(int contentId) 
+        {
+            var result = await this.db.Contents.SingleOrDefaultAsync(c => c.Id == contentId);
+            if (result is null) 
+            {
+                return default(ContentDto?);
+            }
+
+            return new ContentDto()
+            {
+                CategoryId = result.CategoryId,
+                ImageUri = result.ImageUri,
+                Title = result.Title
+            };
+        }
     }
 }
