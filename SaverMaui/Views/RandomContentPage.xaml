@@ -10,10 +10,12 @@
     </ContentPage.BindingContext>
 
         <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <FlexLayout>
+            <Image Source="{Binding CurrentImage.Source}" Aspect="AspectFit" IsAnimationPlaying="True">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                </Image.GestureRecognizers>
+            </Image>
+        </FlexLayout>
     </ContentPage.Content>
 </ContentPage>
