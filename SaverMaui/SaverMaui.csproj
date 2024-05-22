@@ -56,8 +56,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Remove="Views\RandomContentPage.xaml" />
 	  <MauiXaml Remove="Views\VideoManagementPage.xaml" />
 	  <MauiXaml Remove="Views\VideoPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Views\RandomContentPage.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
