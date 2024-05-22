@@ -100,7 +100,11 @@ namespace SaverBackend.Controllers
 
                 if (contentToBeAdded != null)
                 {
-                    user.FavoriteContent.Add(contentToBeAdded);
+                    if (await this.db.FavoriteContent.SingleOrDefaultAsync(f => f.FavoriteContentId == contentToBeAdded.Id && 
+                    f.ProfileId == user.Id) is null )
+                    {
+                        user.FavoriteContent.Add(contentToBeAdded);
+                    }
                 }
             }
 
@@ -118,7 +122,7 @@ namespace SaverBackend.Controllers
                 return Array.Empty<int>();
             }
 
-            return this.db.Contents.Where(c => c.ProfileId == user.Id).Select(c => c.Id).ToArray();
+            return this.db.FavoriteContent.Where(c => c.ProfileId == user.Id).Select(f => f.FavoriteContentId).ToArray();
         }
 
         [HttpGet("GetContentById")]
@@ -134,7 +138,8 @@ namespace SaverBackend.Controllers
             {
                 CategoryId = result.CategoryId,
                 ImageUri = result.ImageUri,
-                Title = result.Title
+                Title = result.Title,
+                Id = result.Id,
             };
         }
     }

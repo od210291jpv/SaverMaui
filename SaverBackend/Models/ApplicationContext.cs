@@ -18,6 +18,8 @@ namespace SaverBackend.Models
 
         public DbSet<VideoContent> Videos { get; set; }
 
+        public DbSet<ContentProfile> FavoriteContent { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
@@ -31,11 +33,14 @@ namespace SaverBackend.Models
                 .WithMany(t => t.PublishedCategories)
                 .HasForeignKey(p => p.ProfileId);
 
-            modelBuilder.Entity<Profile>()
-                .HasMany(e => e.FavoriteContent)
-                .WithOne(p => p.Profile)
-                .HasForeignKey(p => p.ProfileId)
-                .IsRequired(false);
+            modelBuilder.Entity<Content>()
+                .HasMany(e => e.Profile)
+                .WithMany(p => p.FavoriteContent);
+                //.UsingEntity("ContentProfile");
+            //.HasForeignKey(p => p.ProfileId)
+            //.IsRequired(false);
+
+            modelBuilder.Entity<Profile>().HasMany(p => p.Publications);
 
             modelBuilder.Entity<Profile>()
                 .HasMany(e => e.VideoContents)
