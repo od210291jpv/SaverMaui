@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaverBackend.Models
 {
-    [Table("contentprofile1")]
+    [Table("contentprofile")]
     public class ContentProfile
     {
         [Key]
