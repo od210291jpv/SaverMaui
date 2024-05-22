@@ -45,4 +45,9 @@ public partial class RandomContentPage : ContentPage
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
     }
+
+    private void OnRateClicked(object sender, EventArgs e)
+    {
+
+    }
 }
