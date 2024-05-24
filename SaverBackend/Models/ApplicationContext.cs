@@ -35,8 +35,8 @@ namespace SaverBackend.Models
 
             modelBuilder.Entity<Content>()
                 .HasMany(e => e.Profile)
-                .WithMany(p => p.FavoriteContent);
-                //.UsingEntity("ContentProfile");
+                .WithMany(p => p.FavoriteContent)
+                .UsingEntity<ContentProfile>();
             //.HasForeignKey(p => p.ProfileId)
             //.IsRequired(false);
 
