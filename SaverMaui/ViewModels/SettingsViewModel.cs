@@ -3,8 +3,10 @@ using Realms;
 
 using SaverMaui.Commands;
 using SaverMaui.Models;
+using System.Net.NetworkInformation;
 
 using System.Collections.ObjectModel;
+using SaverMaui.Services.Helpers;
 
 namespace SaverMaui.ViewModels
 {
@@ -142,6 +144,17 @@ namespace SaverMaui.ViewModels
             {
                 return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, obj =>
                 {
+
+                    if (this.SelectedCategory is null) 
+                    {
+                        Ping pingSender = new Ping();
+                        PingReply reply = await pingSender.SendPingAsync(UriHelper, 100);
+
+                        if (reply.Status == IPStatus.Success) 
+                        {
+
+                        }
+                    }
 
                     Content content = new Content()
                     {
