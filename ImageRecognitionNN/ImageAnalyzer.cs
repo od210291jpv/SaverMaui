@@ -5,7 +5,7 @@ namespace ImageRecognitionNN
 {
     public class ImageAnalyzer
     {
-        private string directory = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory());
+        private string directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 
         public async Task<KeyValuePair<string, decimal>[]> AnalyzeImageByUrl(string imageUri) 

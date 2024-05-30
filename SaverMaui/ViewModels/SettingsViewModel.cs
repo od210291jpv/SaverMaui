@@ -3,8 +3,12 @@ using Realms;
 
 using SaverMaui.Commands;
 using SaverMaui.Models;
+using System.Net.NetworkInformation;
 
 using System.Collections.ObjectModel;
+using SaverMaui.Services.Helpers;
+using RestSharp;
+using System.Web;
 
 namespace SaverMaui.ViewModels
 {
@@ -140,8 +144,10 @@ namespace SaverMaui.ViewModels
         {
             get
             {
-                return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, obj =>
+                return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, async obj =>
                 {
+
+
 
                     Content content = new Content()
                     {

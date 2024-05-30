@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SaverMaui.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SaverMaui.Services.Contracts
 {
@@ -18,5 +13,7 @@ namespace SaverMaui.Services.Contracts
 
         [JsonProperty("categoryId")]
         public Guid CategoryId { get; set; }
+
+        public int Id { get; set; }
     }
 }

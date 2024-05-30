@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaverBackend.Models
 {
@@ -17,6 +18,6 @@ namespace SaverBackend.Models
 
         public int? ProfileId { get; set; }
 
-        public Profile? Profile { get; set; }
+        public List<Profile> Profile { get; set; }
     }
 }

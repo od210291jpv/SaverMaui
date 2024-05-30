@@ -4,6 +4,8 @@ namespace SaverMaui.Services.Contracts.Content
 {
     public class ContentDto
     {
+        public int Id { get; set; }
+
         [JsonProperty("title")]
         public string Title { get; set; }
 

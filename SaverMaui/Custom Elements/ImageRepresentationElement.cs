@@ -8,6 +8,8 @@ namespace SaverMaui.Custom_Elements
 {
     public class ImageRepresentationElement : Image, ICustomElement
     {
+        public int ContentId { get; set; }
+
         public HttpStatusCode StatusCode 
         {
             get 

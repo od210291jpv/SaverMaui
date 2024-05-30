@@ -35,9 +35,10 @@
         <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}" Title="Most Popular Categories"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Feed">
+    <FlyoutItem Title="Feeds">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}" Title="MainFeed"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:TopRatedFeedPage}" Title="Top rated content"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:RandomContentPage}" Title="Random content"></ShellContent>
     </FlyoutItem>
 
     <FlyoutItem Title="Video">

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.RandomContentPage" 
+             Title="Random Content">
+
+    <ContentPage.BindingContext>
+        <vm:FeedRandomContentViewModel />
+    </ContentPage.BindingContext>
+
+        <ContentPage.Content>
+        <FlexLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Source="{Binding CurrentImage.Source}" Aspect="AspectFit" IsAnimationPlaying="True">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <Button Grid.Row="0" 
+                                    Grid.Column="0" 
+                                    Text="R" FontAttributes="Bold" 
+                                    TextColor="White"
+                                    BackgroundColor="DeepPink" 
+                                    CornerRadius="50" 
+                                    VerticalOptions="End" 
+                                    HorizontalOptions="End" 
+                                    Margin="30" HeightRequest="60" 
+                                    WidthRequest="60" 
+                                    Padding="0" 
+                                    Opacity="0.6" 
+                                    x:Name="RateButton" Clicked="OnRateClicked"/>
+            </Grid>
+
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

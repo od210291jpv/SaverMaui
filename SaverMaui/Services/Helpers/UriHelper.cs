@@ -3,10 +3,14 @@
     public static class UriHelper
     {
         public static string BaseIp = "192.168.88.252";
-        //public static string BaseIp = "localhost";
+        //public static string BaseIp = "192.168.88.33";
 
+        //public static int Port = 5000;
         public static int Port = 80;
         public static int SignalRPort = 80;
+
+        public static string ImageRecognitionHost = "192.168.88.33";
+        public static string ImageRecognitionApi = "http://192.168.88.33/RecognizeImage?imageUri=";
 
         public static string SendNotificationUrl = $"http://{BaseIp}:{SignalRPort}/notify";
 
