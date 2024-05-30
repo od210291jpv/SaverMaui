@@ -7,6 +7,8 @@ using System.Net.NetworkInformation;
 
 using System.Collections.ObjectModel;
 using SaverMaui.Services.Helpers;
+using RestSharp;
+using System.Web;
 
 namespace SaverMaui.ViewModels
 {
@@ -142,19 +144,10 @@ namespace SaverMaui.ViewModels
         {
             get
             {
-                return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, obj =>
+                return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, async obj =>
                 {
 
-                    if (this.SelectedCategory is null) 
-                    {
-                        Ping pingSender = new Ping();
-                        PingReply reply = await pingSender.SendPingAsync(UriHelper, 100);
 
-                        if (reply.Status == IPStatus.Success) 
-                        {
-
-                        }
-                    }
 
                     Content content = new Content()
                     {
