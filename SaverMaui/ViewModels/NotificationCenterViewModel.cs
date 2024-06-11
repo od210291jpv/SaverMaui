@@ -81,8 +81,8 @@ namespace SaverMaui.ViewModels
 
             Task.Run(() =>
             {
-                Application.Current?.Dispatcher.Dispatch(async () =>
-                await hubConnection.StartAsync());
+                //Application.Current?.Dispatcher.Dispatch(async () =>
+                //await hubConnection.StartAsync());
             });
 
             //this.notifyClientsCommand.Execute(this.isConnected);
