@@ -19,7 +19,7 @@ namespace LiveHost.Services
 
         public RabbitMqListener(IServiceScopeFactory serviceScopeFactory)
         {
-            var factory = new ConnectionFactory { HostName = "192.168.88.55", UserName = "pi", Password = "raspberry" };
+            var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "MyQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);

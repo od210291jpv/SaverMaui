@@ -112,6 +112,29 @@ namespace SaverBackend.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> RemoveFavoriteContent(string login, string password, int contentId) 
+        {
+            Profile? user = await this.db.Profiles.SingleOrDefaultAsync(p => p.UserName == login && p.Password == password);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var contentToBeRemoved = this.db.FavoriteContent.SingleOrDefault(u => u.ProfileId == user.Id && u.FavoriteContentId == contentId);
+
+            if (contentToBeRemoved is null) 
+            {
+                return NotFound("Content not found");
+            }
+
+            this.db.FavoriteContent.Remove(contentToBeRemoved);
+            var result = await this.db.SaveChangesAsync();
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public async Task<int[]> GetFavoriteContent(string login, string password) 

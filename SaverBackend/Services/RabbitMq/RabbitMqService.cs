@@ -14,7 +14,7 @@ namespace SaverBackend.Services.RabbitMq
 
         public void SendMessage(string message, string queue)
         {
-            var factory = new ConnectionFactory() { HostName = "192.168.88.55", UserName = "pi", Password = "raspberry" };
+            var factory = new ConnectionFactory() { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             using (var connection = factory.CreateConnection())
             using (IModel channel = connection.CreateModel())
             {

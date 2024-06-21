@@ -59,7 +59,7 @@ namespace SaverBackend.Controllers
             };
             
             this.redisDb.StringSet(userProfile.UserName, "Online");
-            this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromSeconds(30));
+            this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromMinutes(30));
             await this.hub.Clients.All.SendAsync($"{profileInfo.UserName} just joined!! Say Hello!");
             return profileInfo;
         }
