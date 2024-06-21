@@ -165,5 +165,21 @@ namespace SaverBackend.Controllers
                 Id = result.Id,
             };
         }
+
+        [HttpDelete("DeleteContent")]
+        public async Task<IActionResult> RemoveContent(int contentId) 
+        {
+            var content = await this.db.Contents.SingleOrDefaultAsync(c => c.Id == contentId);
+
+            if(content is null) 
+            {
+                return NotFound($"Content with id {contentId} doen not exists in db");
+            }
+
+            this.db.Contents.Remove(content);
+            await this.db.SaveChangesAsync();
+
+            return Ok(content);
+        }
     }
 }
