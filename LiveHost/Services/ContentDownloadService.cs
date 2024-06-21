@@ -20,7 +20,7 @@ namespace LiveHost.Services
         {
             this.serviceScopeFactory = serviceScopeFactory;
 
-            var factory = new ConnectionFactory { HostName = "192.168.88.55", UserName = "pi", Password = "raspberry" };
+            var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "PullContent", durable: false, exclusive: false, autoDelete: false, arguments: null);
