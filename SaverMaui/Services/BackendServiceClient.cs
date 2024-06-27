@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 using SaverMaui.Services.Interfaces;
+using SaverMaui.Services.ServiceActions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace SaverMaui.Services
 
         private readonly HttpClient httpClient;
         private readonly string hostIp;
+
+        public ContentServiceActions ContentActions 
+        { 
+            get => new ContentServiceActions();
+        }
 
         private BackendServiceClient(string hostIp)
         {
