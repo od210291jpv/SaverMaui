@@ -1,6 +1,4 @@
-using Realms;
 using SaverMaui.Models;
-using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
 

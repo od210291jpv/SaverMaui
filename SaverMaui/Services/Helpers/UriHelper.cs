@@ -80,5 +80,10 @@
         {
             return $"{BaseAddress}/VideoContent?userId={userId}";
         }
+
+        public static string DeleteContent(int contentId) 
+        {
+            return $"{BaseAddress}/SyncContent/DeleteContent?contentId={contentId}";
+        }
     }
 }
