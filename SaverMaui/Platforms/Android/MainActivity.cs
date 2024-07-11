@@ -13,6 +13,7 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(bundle);
         CrossCurrentActivity.Current.Init(this, bundle);
+        CrossFingerprint.SetCurrentActivityResolver(() => this);
 
     }
 }
