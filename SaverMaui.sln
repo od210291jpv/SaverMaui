@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BananasGambler", "BananasGa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognitionNN", "ImageRecognitionNN\ImageRecognitionNN.csproj", "{446B501A-F358-4B17-AEEE-7BD12A666478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "recImage", "recImage\recImage.csproj", "{E6980F57-F0F8-4DC6-9A20-47E0AFC9C73B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "recImage", "recImage\recImage.csproj", "{E6980F57-F0F8-4DC6-9A20-47E0AFC9C73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaverBackend.Db", "SaverBackend.Db\SaverBackend.Db.csproj", "{B499273C-D5D1-4846-984C-EA329F26CCC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{E6980F57-F0F8-4DC6-9A20-47E0AFC9C73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6980F57-F0F8-4DC6-9A20-47E0AFC9C73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6980F57-F0F8-4DC6-9A20-47E0AFC9C73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B499273C-D5D1-4846-984C-EA329F26CCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B499273C-D5D1-4846-984C-EA329F26CCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B499273C-D5D1-4846-984C-EA329F26CCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B499273C-D5D1-4846-984C-EA329F26CCC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

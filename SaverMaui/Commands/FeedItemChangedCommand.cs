@@ -25,13 +25,12 @@ namespace SaverMaui.Commands
             {
                 Environment.CurrentImageOnScreen = this.viewModel.CurrentContent;
 
-                NotificationCenterViewModel.GetInstance()?.SendLocalMessage($"Debug: " +
-                    $"Setting foreground image: {Environment.CurrentImageOnScreen.Id} \r\n");
+
                     
             }
             catch (Exception)
             {
-                NotificationCenterViewModel.GetInstance()?.SendLocalMessage($"Debug:");
+
             }
         }
     }

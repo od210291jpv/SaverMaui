@@ -1,4 +1,5 @@
 ﻿using Realms;
+
 using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
@@ -50,23 +51,18 @@ namespace SaverMaui.ViewModels
             this.ItemChangedCommand = new FeedItemChangedCommand(this);
             this.RateImageCommand = new RateContentCommand(this);
 
-            Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().ToArray();
+            Content[] allRelatedContent = Realm.GetInstance().All<Content>().ToArray();
 
-            ObservableCollection<ImageRepresentationElement> allFeed = new();
-
-            foreach (var cat in allRelatedContent.ToArray().Reverse())
+            foreach (var cont in allRelatedContent.Reverse())
             {
-                allFeed.Add(new ImageRepresentationElement()
+                this.ContentCollection.Add(new ImageRepresentationElement()
                 {
-                    CategoryId = cat.CategoryId.Value,
-                    Name = cat.Title,
-                    Source = cat.ImageUri,
-                    IsFavorite = cat.IsFavorite
+                    CategoryId = cont.CategoryId.Value,
+                    Name = cont.Title,
+                    Source = cont.ImageUri,
+                    IsFavorite = cont.IsFavorite
                 });
             }
-
-            this.ContentCollection = allFeed;
 
             Instance = this;
         }

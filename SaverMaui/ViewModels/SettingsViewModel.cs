@@ -3,12 +3,8 @@ using Realms;
 
 using SaverMaui.Commands;
 using SaverMaui.Models;
-using System.Net.NetworkInformation;
 
 using System.Collections.ObjectModel;
-using SaverMaui.Services.Helpers;
-using RestSharp;
-using System.Web;
 
 namespace SaverMaui.ViewModels
 {
@@ -42,8 +38,7 @@ namespace SaverMaui.ViewModels
         {
             get 
             {
-                Realm _realm = Realm.GetInstance();
-                return _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
+                return Realm.GetInstance().All<Category>().OrderBy(c => c.Name).ToObservableCollection();
             }
             set 
             {
@@ -254,14 +249,7 @@ namespace SaverMaui.ViewModels
         public void UpdateAllCategories()
         {
             this.Categories.Clear();
-
-            Realm _realm = Realm.GetInstance();
-            var allCategories = _realm.All<Category>().OrderBy(c => c.Name).ToArray();
-
-            foreach (var cat in allCategories)
-            {
-                Categories.Add(cat);
-            }
+            this.Categories = Realm.GetInstance().All<Category>().OrderBy(c => c.Name).ToObservableCollection();
         }
     }
 }
