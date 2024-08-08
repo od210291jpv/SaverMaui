@@ -4,7 +4,7 @@ namespace SaverBackend.Models
 {
     public class ApplicationContext : DbContext
     {
-        public static string ConnectionString;
+        public static string ConnectionString = "Server=192.168.88.252;Database=mobilesdb;Uid=user;Pwd=password;";
 
         public DbSet<Category> Categories { get; set; }
 
@@ -19,6 +19,8 @@ namespace SaverBackend.Models
         public DbSet<VideoContent> Videos { get; set; }
 
         public DbSet<ContentProfile> FavoriteContent { get; set; }
+
+        public DbSet<BrokenContent> BrokenContents { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

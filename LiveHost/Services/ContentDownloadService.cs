@@ -1,11 +1,9 @@
 ﻿using Flurl.Http;
-using LiveHost.DataBase;
-using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
+using SaverBackend.Models;
 using System.Text;
-using System.Threading.Channels;
 
 namespace LiveHost.Services
 {

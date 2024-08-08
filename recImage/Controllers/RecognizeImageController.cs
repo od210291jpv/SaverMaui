@@ -12,8 +12,9 @@ namespace recImage.Controllers
         {
 
             ImageAnalyzer nn = new ImageAnalyzer();
-            var category = await nn.AnalyzeImageByUrl(imageUri);
-            return category.First().Key;
+            ImageLearning.ModelOutput category = await nn.AnalyzeImageByUrl(imageUri);
+            //return category.First().Key;
+            return category.PredictedLabel;
         }
     }
 }

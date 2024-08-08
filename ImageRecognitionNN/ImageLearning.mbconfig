@@ -1,51 +1,67 @@
 ﻿{
-  "TrainingTime": 2147482,
   "Scenario": "ImageClassification",
   "DataSource": {
     "Type": "Folder",
     "Version": 1,
-    "FolderPath": "E:\\Repos\\ImageRecognitionNetwork\\ImageRecognitionNN\\ImageRecognitionNN\\DataModel\\data"
+    "FolderPath": "C:\\Users\\Paul\\OneDrive\\Документы\\data"
   },
   "Environment": {
     "Type": "LocalCPU",
     "Version": 1
   },
   "RunHistory": {
-    "Version": 1,
+    "Version": 3,
     "Type": "Result",
     "Trials": [
       {
-        "Version": 0,
+        "Version": 1,
         "Type": "Trial",
-        "TrainerName": "DNN + ResNet50",
-        "Score": 0.21269841269841269,
-        "RuntimeInSeconds": 326.0159912109375
+        "TrainerName": "ImageClassificationMulti",
+        "Score": 0.46643717728055079,
+        "RuntimeInSeconds": 715.942,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2",
+          "e0": {
+            "OutputColumnName": "Label",
+            "InputColumnName": "Label",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e1": {
+            "LabelColumnName": "Label",
+            "ScoreColumnName": "Score",
+            "FeatureColumnName": "ImageSource",
+            "Arch": "ResnetV250",
+            "BatchSize": 10,
+            "Epoch": 200
+          },
+          "e2": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          }
+        }
       }
     ],
-    "Pipeline": {
-      "parameter": {
-        "0": {
-          "OutputColumnName": "Label",
-          "InputColumnName": "Label"
-        },
-        "1": {
-          "LabelColumnName": "Label",
-          "ScoreColumnName": "Score",
-          "FeatureColumnName": "ImageSource"
-        },
-        "2": {
-          "OutputColumnName": "PredictedLabel",
-          "InputColumnName": "PredictedLabel"
-        }
-      },
-      "estimators": [
-        "MapValueToKey",
-        "ImageClassificationMulti",
-        "MapKeyToValue"
-      ]
+    "Estimators": {
+      "e0": "MapValueToKey",
+      "e1": "ImageClassificationMulti",
+      "e2": "MapKeyToValue"
     },
-    "MetricName": "MicroAccuracy"
+    "Schema": "e0 * e1 * e2",
+    "MetricName": "MicroAccuracy",
+    "ModelFilePath": "E:\\Repos\\mauiAPp\\SaverMaui\\ImageRecognitionNN\\ImageLearning.mlnet"
   },
   "Type": "TrainingConfig",
-  "Version": 2
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "ClassificationTrainingOption",
+    "TrainingTime": 0,
+    "OptimizeMetric": "MicroAccuracy",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "TrainValidateSplitValidationOption",
+      "SplitRatio": 0.2
+    }
+  }
 }

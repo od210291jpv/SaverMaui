@@ -29,6 +29,12 @@ namespace SaverMaui.Commands
                 return;
             }
 
+            if (this.viewModel.Login == null || this.viewModel.Login == "" || this.viewModel.Password == null || this.viewModel.Password == "") 
+            {
+                await Application.Current.MainPage.DisplayAlert("Done", $"Login or password cannot be empty", "Ok");
+                return;
+            }
+
             Environment.ProfileData = await BackendServiceClient
                 .GetInstance()
                 .LoginUserAsync(this.viewModel.Login, this.viewModel.Password);

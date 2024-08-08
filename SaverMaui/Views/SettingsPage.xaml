@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.SettingsPage"
-             Title="SettingsPage">
+             Title="SettingsPage" BackgroundColor="Black">
     <ContentPage.BindingContext>
         <vm:SettingsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" BackgroundColor="Black" VerticalOptions="Center">
-                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" BackgroundColor="Black" VerticalOptions="Center">
+            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -50,11 +50,11 @@
                     </Picker>
 
                     <Button Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="MediumSlateBlue" BorderWidth="2" BorderColor="White" TextColor="White" Text="Recognize image category with AI" CornerRadius="0"></Button>
-                    <Button Grid.Row="5" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Content" CornerRadius="0" Command="{Binding AddContentCommand}"/>
+                    <Button Grid.Row="5" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Content" CornerRadius="5" Command="{Binding AddContentCommand}"/>
 
                     <Label Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Entry Grid.Row="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
-                    <Button Grid.Row="8" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Submit New Category" CornerRadius="0" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
+                <Button Grid.Row="8" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Category" CornerRadius="5" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
 
                     <Label Grid.Row="9" Grid.Column="0" Text="Categories now:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Label Grid.Row="10" Grid.Column="1" Text="{Binding CategoriesAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
@@ -62,20 +62,20 @@
                     <Label Grid.Row="11" Grid.Column="0" Text="Content amt:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Label Grid.Row="12" Grid.Column="1" Text="{Binding ContentAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
 
-                    <Button Grid.Row="13" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Erase Empty Categories" FontAttributes="Bold" CornerRadius="0" Command="{Binding EraseEmptyCategoriesCommand}" />
+                <Button Grid.Row="13" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Erase Empty Categories" FontAttributes="Bold" CornerRadius="5" Command="{Binding EraseEmptyCategoriesCommand}" />
 
-                    <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Sync Content with backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding SyncContextCommand}"/>
-                    <Button Grid.Row="15" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Post all data to backend" FontAttributes="Bold" CornerRadius="0" Command="{Binding PostNewContentCommand}"/>
-                        
-                    <Button Grid.Row="16" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="0" Command="{Binding WipeAllDataCommand}"/>
-                    <Label Grid.Row="17" Grid.Column="0" Text="Log feeds content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Switch Grid.Row="18" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
-                    <Label Grid.Row="19" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Switch Grid.Row="20" Grid.Column="1" OnColor="DeepPink" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
+                <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Sync Content with backend" FontAttributes="Bold" CornerRadius="5" Command="{Binding SyncContextCommand}"/>
+                <Button Grid.Row="15" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Post all data to backend" FontAttributes="Bold" CornerRadius="5" Command="{Binding PostNewContentCommand}"/>
+
+                <Button Grid.Row="16" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="5" Command="{Binding WipeAllDataCommand}"/>
+                    <Label Grid.Row="17" IsVisible="false" Grid.Column="0" Text="Log feeds content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                <Switch IsVisible="false" Grid.Row="18" Grid.Column="1" OnColor="Orange" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
+                    <Label Grid.Row="19" IsVisible="false" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                <Switch IsVisible="false" Grid.Row="20" Grid.Column="1" OnColor="Orange" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
                 <Entry Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="enter feed url" Text="{Binding FeedUrl, Mode=TwoWay}"/>
-                <Button Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" TextColor="White" FontAttributes="Bold" CornerRadius="0" Text="Parse content for feed" Command="{Binding ParseFeedCommand}"/>
-                <Button Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="0" Command="{Binding CloseAppCommand}"/>
-                <Button Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="DeepPink" Text="Delete marked content" TextColor="White" FontAttributes="Bold" CornerRadius="0" Command="{Binding DeleteImagesCommand}"/>
+                <Button Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" FontAttributes="Bold" CornerRadius="5" Text="Parse content for feed" Command="{Binding ParseFeedCommand}"/>
+                <Button Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="OrangeRed" BorderColor="White" BorderWidth="1" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding CloseAppCommand}"/>
+                <Button Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" Text="Delete marked content" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding DeleteImagesCommand}"/>
             </Grid>
             </ScrollView>
     </ContentPage.Content>
