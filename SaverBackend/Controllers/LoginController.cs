@@ -80,11 +80,7 @@ namespace SaverBackend.Controllers
             
             var allContent = this.dbContext.Contents;
 
-            foreach (var content in allContent) 
-            {
-                var serialized = JsonConvert.SerializeObject(content);
-                await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), serialized);
-            }
+            allContent.AsParallel().Select(async c => await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), JsonConvert.SerializeObject(c)));
 
             this.redisDb.StringSet("content_synced", "true");
         }
