@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using SaverBackend.DTO;
 using SaverBackend.Hubs;
 using SaverBackend.Models;
@@ -16,12 +17,14 @@ namespace SaverBackend.Controllers
         private ConnectionMultiplexer redis;
         private IHubContext<MainNotificationsHub> hub;
         private IDatabase redisDb;
+        private IDatabase redisContentDb;
 
         public LoginController(ApplicationContext context, IHubContext<MainNotificationsHub> hubcontext)
         {
             this.dbContext = context;
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             this.redisDb = redis.GetDatabase();       
+            this.redisContentDb = redis.GetDatabase(1);       
             this.hub = hubcontext;
         }
 
@@ -61,7 +64,29 @@ namespace SaverBackend.Controllers
             this.redisDb.StringSet(userProfile.UserName, "Online");
             this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromMinutes(30));
             await this.hub.Clients.All.SendAsync($"{profileInfo.UserName} just joined!! Say Hello!");
+            await this.LoadContentToRedis();
+
             return profileInfo;
+        }
+
+        private async Task LoadContentToRedis() 
+        {
+            var isSynced = await this.redisDb.StringGetAsync("content_synced");
+            
+            if (isSynced == "true") 
+            {
+                return;
+            }
+            
+            var allContent = this.dbContext.Contents;
+
+            foreach (var content in allContent) 
+            {
+                var serialized = JsonConvert.SerializeObject(content);
+                await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), serialized);
+            }
+
+            this.redisDb.StringSet("content_synced", "true");
         }
 
         [HttpPost("Logout")]
