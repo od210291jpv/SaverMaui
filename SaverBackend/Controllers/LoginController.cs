@@ -72,15 +72,19 @@ namespace SaverBackend.Controllers
         private async Task LoadContentToRedis() 
         {
             var isSynced = await this.redisDb.StringGetAsync("content_synced");
-            
-            if (isSynced == "true") 
+
+            if (isSynced == "true")
             {
                 return;
             }
-            
+
             var allContent = this.dbContext.Contents;
 
-            allContent.AsParallel().Select(async c => await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), JsonConvert.SerializeObject(c)));
+
+            foreach (var content in allContent) 
+            {
+                await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), JsonConvert.SerializeObject(content));
+            }
 
             this.redisDb.StringSet("content_synced", "true");
         }

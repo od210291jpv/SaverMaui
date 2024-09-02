@@ -9,6 +9,8 @@ namespace SaverMaui.ViewModels
 {
     public class FavoriteContentViewModel : BaseViewModel
     {
+        public static FavoriteContentViewModel Instance;
+
         private ObservableCollection<ImageRepresentationElement> contentCollection;
         public ObservableCollection<ImageRepresentationElement> ContentCollection { get => contentCollection; set => contentCollection = value; }
 
@@ -44,6 +46,8 @@ namespace SaverMaui.ViewModels
                     IsFavorite = cat.IsFavorite
                 });
             }
+
+            Instance = this;
         }
     }
 }

@@ -1,11 +1,14 @@
-using Realms;
-using SaverMaui.Models;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using SaverMaui.ViewModels;
-using CommunityToolkit.Maui.Markup;
-using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
+using Realms;
 using SaverMaui.Custom_Elements;
+using SaverMaui.Models;
+using SaverMaui.Services;
+using SaverMaui.Services.Contracts;
+using SaverMaui.Services.ServiceExtensions;
+using SaverMaui.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace SaverMaui.Views;
 public partial class FeedPage : ContentPage
@@ -13,6 +16,30 @@ public partial class FeedPage : ContentPage
 	public FeedPage()
 	{
 		InitializeComponent();
+        this.Appearing += OnFeedAppearing;
+    }
+
+    private async void OnFeedAppearing(object sender, EventArgs e)
+    {
+        GetAllContentResponseModel[] allContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
+
+        var feeddata = new ObservableCollection<ImageRepresentationElement>();
+
+        if (FeedViewModel.Instance?.ContentCollection != null) 
+        {
+            foreach (var cont in allContent.OrderBy(i => i.Id)) 
+            {
+                feeddata.Add(new ImageRepresentationElement 
+                {
+                    CategoryId = cont.CategoryId,
+                    Name = cont.Title,
+                    Source = cont.ImageUri,
+                    //IsFavorite = false
+                });
+            }
+
+            FeedViewModel.Instance.ContentCollection = feeddata;
+        }
     }
 
     private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
@@ -20,24 +47,30 @@ public partial class FeedPage : ContentPage
         Realm _realm = Realm.GetInstance();
 		var all = _realm.All<Content>().ToArray();
 
-		var feed = all.Where(i => i.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+		var content = all.Where(i => i.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
 
-        _realm.Write(() => feed.IsFavorite = true);
+        if (content == null) 
+        {
+            _realm.Add(new Content 
+            {
+                CategoryId = content.CategoryId,
+                Id = content.Id,
+                ImageUri = content.ImageUri,
+                IsFavorite = content.IsFavorite,
+                Title = content.Title
+            });
+
+            content = all.Where(i => i.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        }
+
+        _realm.Write(() => content.IsFavorite = true);
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
     }
 
-	private async void OnPinchGestureTapped(object sender, EventArgs e) 
+	private void OnPinchGestureTapped(object sender, EventArgs e) 
 	{
-        Realm _realm = Realm.GetInstance();
-        var all = _realm.All<Content>().ToArray();
-
-        Environment.ImagesToDelete.Add(all.Where(c => c.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault().ImageUri);
-        
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        var toast = Toast.Make($"Content added to delete list", ToastDuration.Short, 14);
-        await toast.Show(cancellationTokenSource.Token);
     }
 
     private void OnRateClicked(object sender, EventArgs e)
