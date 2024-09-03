@@ -30,6 +30,8 @@ namespace SaverBackend.Controllers
         [HttpPost(Name = "SyncContent")]
         public async Task<IActionResult> SyncContent(ContentRepresentationData contentRepresentation)
         {
+            return StatusCode(200);
+
             if (contentRepresentation is not null) 
             {
                 foreach (var category in contentRepresentation.Categories) 
