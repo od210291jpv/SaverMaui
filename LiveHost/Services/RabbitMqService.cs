@@ -14,7 +14,7 @@ namespace LiveHost.Services
 
         public void SendMessage(string message)
         {
-            var factory = new ConnectionFactory() { HostName = "192.168.88.55", UserName = "pi", Password = "raspberry" };
+            var factory = new ConnectionFactory() { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {

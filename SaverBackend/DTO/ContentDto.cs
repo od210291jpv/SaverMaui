@@ -16,5 +16,9 @@ namespace SaverBackend.DTO
         public Guid? CategoryId { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+
+        public int? ProfileId { get; set; }
+ 
+        public object? Profile { get; set; }
     }
 }

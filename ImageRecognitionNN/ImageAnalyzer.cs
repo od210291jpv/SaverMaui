@@ -8,7 +8,7 @@ namespace ImageRecognitionNN
         private string directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 
-        public async Task<KeyValuePair<string, decimal>[]> AnalyzeImageByUrl(string imageUri) 
+        public async Task<ImageLearning.ModelOutput> AnalyzeImageByUrl(string imageUri) 
         {
             await imageUri.DownloadFileAsync($"{this.directory}/data/");
 
@@ -18,7 +18,7 @@ namespace ImageRecognitionNN
             return result;
         }
 
-        public KeyValuePair<string, decimal>[] AnalyzeImage(string imagePath) 
+        public ImageLearning.ModelOutput AnalyzeImage(string imagePath) 
         {
             var imageBytes = File.ReadAllBytes(imagePath);
             ImageLearning.ModelInput sampleData = new ImageLearning.ModelInput()
@@ -26,7 +26,8 @@ namespace ImageRecognitionNN
                 ImageSource = imageBytes,
             };
 
-            return ImageLearning.Predict(sampleData);
+            ImageLearning.ModelOutput result =  ImageLearning.Predict(sampleData);
+            return result;
         }
 
         public void GetImagesByLabel(Labels label, string derectoryPath) 
@@ -45,17 +46,17 @@ namespace ImageRecognitionNN
                 Console.WriteLine($"Processing: {counter}/{allFilestCount} file...");
                 var labels = this.AnalyzeImage(item);
 
-                if (labels.Length != 0) 
-                {
-                    var maxValue = labels.Select(label => label.Value).Max();
-                    var actualLabel = labels.Single(l => l.Value == maxValue);
-                    if (actualLabel.Key == label.ToString()) 
-                    {
-                        File.Copy(item, $"{outputDir}/{Path.GetFileName(item)}");
-                        Console.WriteLine($"Found matching file: {Path.GetFileName(item)}");
-                    }
+                //if (labels.Length != 0) 
+                //{
+                //    var maxValue = labels.Select(label => label.Value).Max();
+                //    var actualLabel = labels.Single(l => l.Value == maxValue);
+                //    if (actualLabel.Key == label.ToString()) 
+                //    {
+                //        File.Copy(item, $"{outputDir}/{Path.GetFileName(item)}");
+                //        Console.WriteLine($"Found matching file: {Path.GetFileName(item)}");
+                //    }
 
-                }
+                //}
             }
         }
 

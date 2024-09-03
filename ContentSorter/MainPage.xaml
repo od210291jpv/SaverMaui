@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContentSorter.MainPage">
+
+    <ScrollView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+
+            </Grid.RowDefinitions>
+
+            <Image Grid.Column="1" Grid.Row="0" x:Name="image"/>
+            <ScrollView Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Button Text="Next" x:Name="next"></Button>
+                    <Button Text="Blondes" x:Name="blondes"></Button>
+                    <Button Text="Brunettes" x:Name="brunettes"></Button>
+                    <Button Text="Sluts" x:Name="sluts"></Button>
+                    <Button Text="MILF" x:Name="milf"></Button>
+                    <Button Text="Cumface" x:Name="cumface"></Button>
+                    <Button Text="BJ" x:Name="bj"></Button>
+                    <Button Text="Curvys" x:Name="curvys"></Button>
+                    <Button Text="Lips" x:Name="Lips"></Button>
+                    <Button Text="Ass" x:Name="ass"></Button>
+                    <Button Text="Tits" x:Name="tits"></Button>
+                    <Button Text="Face" x:Name="face"></Button>
+                    <Button Text="Red" x:Name="red"></Button>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

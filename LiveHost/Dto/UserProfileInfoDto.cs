@@ -1,4 +1,4 @@
-﻿using LiveHost.DataBase.Models;
+﻿using SaverBackend.Models;
 
 namespace LiveHost.Dto
 {

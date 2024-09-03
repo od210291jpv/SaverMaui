@@ -5,13 +5,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="DataModel\SampleImages\" />
+    <Compile Remove="DataModel\SampleImages\**" />
+    <EmbeddedResource Remove="DataModel\SampleImages\**" />
+    <None Remove="DataModel\SampleImages\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataModel\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
-    <PackageReference Include="Microsoft.ML" Version="1.7.1" />
-    <PackageReference Include="Microsoft.ML.Vision" Version="1.7.1" />
+    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+    <PackageReference Include="Microsoft.ML.Vision" Version="3.0.1" />
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
     <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU" Version="2.2.0" />
     <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU-fragment1" Version="2.11.1" />
@@ -21,14 +26,7 @@
     <PackageReference Include="SciSharp.TensorFlow.Redist-Lite" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup Label="ImageLearning">
-    <None Include="ImageLearning.consumption.cs">
-      <DependentUpon>ImageLearning.mbconfig</DependentUpon>
-    </None>
-    <None Include="ImageLearning.training.cs">
-      <DependentUpon>ImageLearning.mbconfig</DependentUpon>
-    </None>
-    <None Include="ImageLearning.zip">
-      <DependentUpon>ImageLearning.mbconfig</DependentUpon>
+    <None Include="ImageLearning.mlnet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

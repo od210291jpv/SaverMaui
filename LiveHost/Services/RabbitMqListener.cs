@@ -1,10 +1,9 @@
-﻿using LiveHost.DataBase;
-using LiveHost.DataBase.Models;
-using LiveHost.DataStructures;
+﻿using LiveHost.DataStructures;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
+using SaverBackend.Models;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;

@@ -21,6 +21,8 @@ namespace SaverMaui.Commands
         private Action<object> execute;
         private SettingsViewModel viewModel;
 
+        private bool allowAdd = false;
+
         public AddContentCommand(SettingsViewModel vm, Action<object> _execute)
         {
             this.execute = _execute;
@@ -40,6 +42,12 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
+            if (allowAdd == false) 
+            {
+                await Application.Current.MainPage.DisplayAlert("Forbidden", $"Content adding is blocked now by administration", "Ok");
+                return;
+            }
+
             if (viewModel.SelectedCategory is null)
             {
                 Ping pingSender = new Ping();

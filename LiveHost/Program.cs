@@ -1,7 +1,7 @@
 using LiveHost.Configuration;
-using LiveHost.DataBase;
 using LiveHost.Services;
 using Microsoft.AspNetCore.HttpOverrides;
+using SaverBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,17 +19,17 @@ builder.Services.AddHostedService<ContentDownloadService>();
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseMySql(
             ApplicationContext.ConnectionString,
-            ServerVersion.AutoDetect(ApplicationContext.ConnectionString)));
+            ServerVersion.AutoDetect("Server=192.168.88.252;Database=mobilesdb;Uid=user;Pwd=password;")));
 
-builder.Services.AddDbContext<BananasGamblerApplicationContext>(opt => 
-    opt.UseMySql(
-        BananasGamblerApplicationContext.ConnectionString,
-        ServerVersion.AutoDetect(BananasGamblerApplicationContext.ConnectionString)));
+//builder.Services.AddDbContext<BananasGamblerApplicationContext>(opt => 
+//    opt.UseMySql(
+//        BananasGamblerApplicationContext.ConnectionString,
+//        ServerVersion.AutoDetect(BananasGamblerApplicationContext.ConnectionString)));
 
-builder.Configuration.AddJsonFile("appsettings.json");
+//builder.Configuration.AddJsonFile("appsettings.json");
 
-ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
-BananasGamblerApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["BananasGamblerDbConnection"];
+//ApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["DefaultConnection"];
+//BananasGamblerApplicationContext.ConnectionString = builder.Configuration.GetSection(nameof(ConnectionStrings))["BananasGamblerDbConnection"];
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 

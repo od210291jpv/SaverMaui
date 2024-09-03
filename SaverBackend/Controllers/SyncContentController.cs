@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-
+using Newtonsoft.Json;
 using SaverBackend.DTO;
 using SaverBackend.Hubs;
 using SaverBackend.Models;
+using StackExchange.Redis;
 
 namespace SaverBackend.Controllers
 {
@@ -13,10 +14,15 @@ namespace SaverBackend.Controllers
     public class SyncContentController : ControllerBase
     {
         private ApplicationContext db;
+        private ConnectionMultiplexer redis;
+        private IDatabase redisDb;
+
         private IHubContext<MainNotificationsHub> notificationsHubContext { get; set; }
 
         public SyncContentController(ApplicationContext database, IHubContext<MainNotificationsHub> hubcontext)
         {
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+            this.redisDb = redis.GetDatabase(1);
             this.db = database;
             this.notificationsHubContext = hubcontext;
         }
@@ -24,6 +30,8 @@ namespace SaverBackend.Controllers
         [HttpPost(Name = "SyncContent")]
         public async Task<IActionResult> SyncContent(ContentRepresentationData contentRepresentation)
         {
+            return StatusCode(200);
+
             if (contentRepresentation is not null) 
             {
                 foreach (var category in contentRepresentation.Categories) 
@@ -52,12 +60,16 @@ namespace SaverBackend.Controllers
                 {
                     if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0) 
                     {
-                        await db.Contents.AddAsync(new Models.Content()
+                        var newContent = new Content()
                         {
                             CategoryId = content.CategoryId,
                             ImageUri = content.ImageUri,
                             Title = content.Title,
-                        });
+                        };
+
+                        await db.Contents.AddAsync(newContent);
+
+                        await this.redisDb.StringSetAsync(newContent.Id.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
@@ -173,11 +185,12 @@ namespace SaverBackend.Controllers
 
             if(content is null) 
             {
-                return NotFound($"Content with id {contentId} doen not exists in db");
+                return NotFound($"Content with id {contentId} does not exists in db");
             }
 
             this.db.Contents.Remove(content);
             await this.db.SaveChangesAsync();
+            await this.redisDb.KeyDeleteAsync(contentId.ToString());
 
             return Ok(content);
         }

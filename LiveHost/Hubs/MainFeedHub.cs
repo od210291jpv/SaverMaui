@@ -1,7 +1,7 @@
-﻿using LiveHost.DataBase;
-using LiveHost.Dto;
+﻿using LiveHost.Dto;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using SaverBackend.Models;
 
 namespace LiveHost.Hubs
 {

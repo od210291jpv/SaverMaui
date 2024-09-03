@@ -7,6 +7,8 @@ using SaverBackend.Configuration;
 using SaverBackend.Hubs;
 using SaverBackend.Models;
 using SaverBackend.Services.RabbitMq;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,22 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+});
 
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Optimal;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Optimal;
+});
 
 builder.Configuration.AddJsonFile("appsettings.json");
 
@@ -33,9 +50,9 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddCoreAdmin("user");
 
-//builder.Services.AddApplicationInsightsTelemetry();
-
 var app = builder.Build();
+app.UseResponseCompression();
+
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
