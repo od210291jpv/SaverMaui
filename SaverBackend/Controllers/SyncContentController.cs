@@ -67,7 +67,7 @@ namespace SaverBackend.Controllers
 
                         await db.Contents.AddAsync(newContent);
 
-                        await this.redisDb.StringSetAsync(Guid.NewGuid().ToString(), JsonConvert.SerializeObject(newContent));
+                        await this.redisDb.StringSetAsync(newContent.Id.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
@@ -183,11 +183,12 @@ namespace SaverBackend.Controllers
 
             if(content is null) 
             {
-                return NotFound($"Content with id {contentId} doen not exists in db");
+                return NotFound($"Content with id {contentId} does not exists in db");
             }
 
             this.db.Contents.Remove(content);
             await this.db.SaveChangesAsync();
+            await this.redisDb.KeyDeleteAsync(contentId.ToString());
 
             return Ok(content);
         }

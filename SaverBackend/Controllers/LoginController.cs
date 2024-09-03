@@ -83,7 +83,7 @@ namespace SaverBackend.Controllers
 
             foreach (var content in allContent) 
             {
-                await this.redisContentDb.StringSetAsync(Guid.NewGuid().ToString(), JsonConvert.SerializeObject(content));
+                await this.redisContentDb.StringSetAsync(content.Id.ToString(), JsonConvert.SerializeObject(content));
             }
 
             this.redisDb.StringSet("content_synced", "true");

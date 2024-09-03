@@ -21,6 +21,15 @@ public partial class FeedPage : ContentPage
 
     private async void OnFeedAppearing(object sender, EventArgs e)
     {
+        if (Environment.Login == null || Environment.Password == null) 
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var toast = Toast.Make($"Only authorized users can access Live Feed", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
+
+            return;
+        }
+
         GetAllContentResponseModel[] allContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
 
         var feeddata = new ObservableCollection<ImageRepresentationElement>();
@@ -34,7 +43,6 @@ public partial class FeedPage : ContentPage
                     CategoryId = cont.CategoryId,
                     Name = cont.Title,
                     Source = cont.ImageUri,
-                    //IsFavorite = false
                 });
             }
 
