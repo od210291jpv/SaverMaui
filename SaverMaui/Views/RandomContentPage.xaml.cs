@@ -46,8 +46,35 @@ public partial class RandomContentPage : ContentPage
         await toast.Show(cancellationTokenSource.Token);
     }
 
-    private void OnRateClicked(object sender, EventArgs e)
+    private async void OnRateClicked(object sender, EventArgs e)
     {
+        Realm _realm = Realm.GetInstance();
+        var all = _realm.All<Content>().ToArray();
 
+        var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", "")));
+
+        var toast0 = Toast.Make($"Current content rate: {requiredContent.Rating}", ToastDuration.Short, 14);
+        await toast0.Show(new CancellationTokenSource().Token);
+
+        string result = await Application.Current.MainPage.DisplayPromptAsync("Rate the content", "Please set from 1 to 5", "Ok", "Cancel");
+
+        if (result == null)
+        {
+            return;
+        }
+
+        var isParsed = int.TryParse(result, out var parcedRate);
+
+        if (!isParsed)
+        {
+            await Application.Current.MainPage.DisplayAlert("Format error", "The value must be int", "Ok");
+            return;
+        }
+
+
+        _realm.Write(() => requiredContent.Rating = parcedRate);
+
+        var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
+        await toast.Show(new CancellationTokenSource().Token);
     }
 }

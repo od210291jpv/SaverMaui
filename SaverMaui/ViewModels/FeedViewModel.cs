@@ -51,19 +51,6 @@ namespace SaverMaui.ViewModels
             this.ItemChangedCommand = new FeedItemChangedCommand(this);
             this.RateImageCommand = new RateContentCommand(this);
 
-            //Content[] allRelatedContent = Realm.GetInstance().All<Content>().ToArray();
-
-            //foreach (var cont in allRelatedContent.Reverse())
-            //{
-            //    this.ContentCollection.Add(new ImageRepresentationElement()
-            //    {
-            //        CategoryId = cont.CategoryId.Value,
-            //        Name = cont.Title,
-            //        Source = cont.ImageUri,
-            //        IsFavorite = cont.IsFavorite
-            //    });
-            //}
-
             Instance = this;
         }
     }

@@ -1,6 +1,5 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Core.Extensions;
 using Realms;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
@@ -43,10 +42,29 @@ public partial class FeedPage : ContentPage
                     CategoryId = cont.CategoryId,
                     Name = cont.Title,
                     Source = cont.ImageUri,
+                    ContentId = cont.Id
                 });
             }
 
-            FeedViewModel.Instance.ContentCollection = feeddata;
+            if (FeedViewModel.Instance.ContentCollection.Count == 0) 
+            {
+                FeedViewModel.Instance.ContentCollection = feeddata;
+                return;
+            }
+
+            var con1 = FeedViewModel.Instance.ContentCollection.AsParallel().Select(i => i.ContentId).ToArray();
+            var con2 = feeddata.AsParallel().Select(i => i.ContentId).ToArray();
+
+            var nn = con1.Except(con2).ToArray();
+
+            if (nn.Length > 0) 
+            {
+                foreach (var i in nn) 
+                {
+                    FeedViewModel.Instance.ContentCollection.Add(feeddata.Single(c => c.ContentId == i));
+                }
+
+            }
         }
     }
 
