@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SaverBackend.DTO;
 using SaverBackend.Models;
 using StackExchange.Redis;
+using System.Net;
 
 namespace SaverBackend.Controllers
 {
@@ -26,10 +27,26 @@ namespace SaverBackend.Controllers
         {
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
 
-            var allContent = new List<ContentDto>();
-            var result = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<ContentDto>(this.redisDb.StringGet(k))).ToArray();
+            return allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<ContentDto>(this.redisDb.StringGet(k))).ToArray();
+        }
 
-            return result;
+        [HttpGet("searchResults")]
+        public string[] GetSearchResults() 
+        {
+            List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(2).ToList() ?? new List<RedisKey>();
+            var resultsDb = this.redis.GetDatabase(2);
+
+            return allKeys.AsParallel().Select(k => resultsDb.StringGet(k).ToString()).ToArray();
+        }
+
+        [HttpDelete("CleanResults")]
+        public HttpStatusCode CleanSerchResults() 
+        {
+            List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(2).ToList() ?? new List<RedisKey>();
+            var resultsDb = this.redis.GetDatabase(2);
+
+            allKeys.AsParallel().Select(k => resultsDb.StringGetDelete(k).ToString()).ToArray();
+            return HttpStatusCode.OK;
         }
     }
 }

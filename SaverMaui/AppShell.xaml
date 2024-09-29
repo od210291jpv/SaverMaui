@@ -42,6 +42,7 @@
     </FlyoutItem>
     <FlyoutItem Title="Administration">
         <ShellContent ContentTemplate="{DataTemplate local:ContentCleanupPage}" Title="RemoveContent"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:SearchResultsPage}" Title="Add Content"></ShellContent>
     </FlyoutItem>
 
     <FlyoutItem Title="Video">

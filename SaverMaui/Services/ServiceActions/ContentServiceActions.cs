@@ -29,5 +29,18 @@ namespace SaverMaui.Services.ServiceActions
 
             return response.StatusCode;
         }
+
+        public async Task<string[]> GetSearchResults() 
+        {
+            RestRequest request = new RestRequest(UriHelper.SearchResults, Method.Get);
+            var response = await this.client.ExecuteGetAsync<string[]>(request);
+
+            if (response.Data != null) 
+            {
+                return response.Data;
+            }
+
+            return Array.Empty<string>();
+        }
     }
 }

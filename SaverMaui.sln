@@ -29,6 +29,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverBackend.Db", "SaverBac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentSorter", "ContentSorter\ContentSorter.csproj", "{F3458190-7A71-4DE9-B049-1E1C50F6CB0D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContentParserBackend", "ContentParserBackend\ContentParserBackend.csproj", "{984281F8-0590-4074-B59B-FF9D824E68D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParsedContentViewer", "ParsedContentViewer\ParsedContentViewer.csproj", "{92C20D08-C4E7-403E-8EC6-A0D7CD049FB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{F3458190-7A71-4DE9-B049-1E1C50F6CB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3458190-7A71-4DE9-B049-1E1C50F6CB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3458190-7A71-4DE9-B049-1E1C50F6CB0D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{984281F8-0590-4074-B59B-FF9D824E68D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{984281F8-0590-4074-B59B-FF9D824E68D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{984281F8-0590-4074-B59B-FF9D824E68D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{984281F8-0590-4074-B59B-FF9D824E68D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92C20D08-C4E7-403E-8EC6-A0D7CD049FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92C20D08-C4E7-403E-8EC6-A0D7CD049FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92C20D08-C4E7-403E-8EC6-A0D7CD049FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92C20D08-C4E7-403E-8EC6-A0D7CD049FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

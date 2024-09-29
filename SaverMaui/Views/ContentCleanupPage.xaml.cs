@@ -21,10 +21,13 @@ public partial class ContentCleanupPage : ContentPage
         if (Environment.Password != null && Environment.Password != string.Empty && Environment.Login != null) 
         {
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentAsync();
+            var ordered = allContent.OrderBy(i => i.Id);
 
             if (allContent != null)
             {
-                foreach (var item in allContent)
+                ContentCleanupViewModel.Instance.ContentCollection.Clear();
+
+                foreach (var item in ordered)
                 {
                     ContentCleanupViewModel.Instance?.ContentCollection.Add(new Custom_Elements.ImageRepresentationElement()
                     {
