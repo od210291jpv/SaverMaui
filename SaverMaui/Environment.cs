@@ -15,6 +15,8 @@ namespace SaverMaui
 
         public static LoginResponse ProfileData;
 
+        public static string CurrectSearchResultItem = string.Empty;
+
         public static ImageRepresentationElement CurrentImageOnScreen;
 
         public static List<string> ImagesToDelete = new List<string>();

@@ -85,5 +85,10 @@
         {
             return $"{BaseAddress}/SyncContent/DeleteContent?contentId={contentId}";
         }
+
+        public static string SearchResults 
+        {
+            get => $"{BaseAddress}/GetAllContent/searchResults";
+        }
     }
 }

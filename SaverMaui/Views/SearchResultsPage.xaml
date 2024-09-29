@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.SearchResultsPage" 
+             Title="Search Results">
+    <ContentPage.BindingContext>
+        <vm:SearchResultsViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <FlexLayout>
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Url}" Aspect="AspectFit" IsAnimationPlaying="True"></Image>
+                            <Button Grid.Row="0" 
+                                    Grid.Column="0" 
+                                    Text="Add" FontAttributes="Bold" 
+                                    TextColor="White"
+                                    BackgroundColor="DeepPink" 
+                                    CornerRadius="50" 
+                                    VerticalOptions="End" 
+                                    HorizontalOptions="End" 
+                                    Margin="30" HeightRequest="60" 
+                                    WidthRequest="60" 
+                                    Padding="0" 
+                                    Opacity="0.6" 
+                                    x:Name="RateButton" Clicked="OnRateClicked"/>
+                        </Grid>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>
