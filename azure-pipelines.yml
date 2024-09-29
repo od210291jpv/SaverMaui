@@ -24,44 +24,9 @@ stages:
     - task: DotNetCoreCLI@0
       inputs:
         command: build
-        projects: SaverBackend/SaverBackend.csproj
+        projects: ContentParserBackend/ContentParserBackend.csproj
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)/s'
         artifact: 'BuildDrop'
         publishLocation: 'pipeline'
-
-- stage: DeployApplication
-  dependsOn: BuildApplication
-  jobs:
-  - deployment: deploy
-    displayName: 'Deploy code to raspberry pi'
-    pool:
-      name: MyPool
-      demands: dotnet
-    workspace:
-      clean: all
-    environment:
-      name: raspberry
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - bash: 'sudo service redis-server start' 
-            - bash: 'sudo rm -rf /var/www/saverbackend/BuildDrop'
-            - bash: 'sudo cp -r /home/pi/azureagent/_work/1/BuildDrop /var/www/saverbackend'
-            - task: Bash@3
-              inputs:
-                targetType: 'inline'
-                script: |
-                  # Write your commands here
-                  
-                  cd /var/www/saverbackend/BuildDrop/SaverBackend
-
-                  sudo dotnet publish --configuration Release
-                  
-                  sudo mv /home/pi/wwwroot/ /var/www/saverbackend/BuildDrop/SaverBackend/bin/Release/net6.0/
-
-                  
-                  sudo service nginx restart
-                  sudo service bananas restart
