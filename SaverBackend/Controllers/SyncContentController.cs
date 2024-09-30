@@ -82,11 +82,11 @@ namespace SaverBackend.Controllers
                             Title = content.Title,
                         };
 
-                        var id = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
+                        var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
 
-                        if (id != null) 
+                        if (contentFromDb != null) 
                         {
-                            await this.redisDb.StringSetAsync(id.Id.ToString(), JsonConvert.SerializeObject(newContent));
+                            await this.redisDb.StringSetAsync(contentFromDb.Id.ToString(), JsonConvert.SerializeObject(newContent));
                         }
                     }
                 }
