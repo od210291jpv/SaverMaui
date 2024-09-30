@@ -58,7 +58,7 @@ namespace SaverBackend.Controllers
                 {
                     if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0) 
                     {
-                        var newContent = new Content()
+                        Content newContent = new Content()
                         {
                             CategoryId = content.CategoryId,
                             ImageUri = content.ImageUri,
@@ -66,12 +66,30 @@ namespace SaverBackend.Controllers
                         };
 
                         await db.Contents.AddAsync(newContent);
-
-                        await this.redisDb.StringSetAsync(newContent.Id.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
                 int result = await db.SaveChangesAsync();
+
+                foreach (var content in contentRepresentation.Content) 
+                {
+                    if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0)
+                    {
+                        Content newContent = new Content()
+                        {
+                            CategoryId = content.CategoryId,
+                            ImageUri = content.ImageUri,
+                            Title = content.Title,
+                        };
+
+                        var id = this.db.Contents.FirstOrDefault(c => c.ImageUri == newContent.ImageUri)?.Id;
+
+                        if (id != null) 
+                        {
+                            await this.redisDb.StringSetAsync(newContent.Id.ToString(), JsonConvert.SerializeObject(newContent));
+                        }
+                    }
+                }
 
                 if (result > 0) 
                 {
