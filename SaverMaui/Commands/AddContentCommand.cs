@@ -21,7 +21,7 @@ namespace SaverMaui.Commands
         private Action<object> execute;
         private SettingsViewModel viewModel;
 
-        private bool allowAdd = false;
+        private bool allowAdd = true;
 
         public AddContentCommand(SettingsViewModel vm, Action<object> _execute)
         {

@@ -73,21 +73,18 @@ namespace SaverBackend.Controllers
 
                 foreach (var content in contentRepresentation.Content) 
                 {
-                    if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0)
+                    Content newContent = new Content()
                     {
-                        Content newContent = new Content()
-                        {
-                            CategoryId = content.CategoryId,
-                            ImageUri = content.ImageUri,
-                            Title = content.Title,
-                        };
+                        CategoryId = content.CategoryId,
+                        ImageUri = content.ImageUri,
+                        Title = content.Title,
+                    };
 
-                        var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
+                    var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
 
-                        if (contentFromDb != null) 
-                        {
-                            await this.redisDb.StringSetAsync(contentFromDb.Id.ToString(), JsonConvert.SerializeObject(newContent));
-                        }
+                    if (contentFromDb != null) 
+                    {
+                        await this.redisDb.StringSetAsync(contentFromDb.Id.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
