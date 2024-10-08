@@ -1,7 +1,9 @@
 ﻿
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+
 using Realms;
+
 using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.Services.Contracts;
@@ -23,7 +25,15 @@ namespace SaverMaui.Views
         private async void OnAppear(object sender, EventArgs e)
         {
             var searchResults = await BackendServiceClient.GetInstance().ContentActions.GetSearchResults();
-            var resultsSorted = searchResults.Order();
+
+            Realm _realm = Realm.GetInstance();
+
+            var cats = _realm.All<Category>().ToArray();
+            var reqCat = cats.FirstOrDefault(c => c.Name == "Rest");
+
+            var existingContent = _realm.All<Content>().Where(c => c.CategoryId == reqCat.CategoryId).ToArray().Select(c => c.ImageUri).ToArray();
+
+            var resultsSorted = searchResults.AsParallel().Where(c => existingContent.Contains(c.Replace("Uri: ", "")) == false).Order().ToArray();
 
             if (SearchResultsViewModel.Instance?.ContentCollection != null) 
             {
@@ -45,7 +55,6 @@ namespace SaverMaui.Views
             Realm _realm = Realm.GetInstance();
 
             var cats = _realm.All<Category>().ToArray();
-
             var reqCat = cats.FirstOrDefault(c => c.Name == "Rest");
 
             if (reqCat != null)
