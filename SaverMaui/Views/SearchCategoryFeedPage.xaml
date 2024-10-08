@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.SearchCategoryFeedPage"
+             Title="CategoryFeedPage">
+    <ContentPage.BindingContext>
+        <vm:SearchCategoryFeedViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <FlexLayout>
+            <CarouselView x:Name="Feed" ItemsSource="{Binding SearchResults}" CurrentItem="{Binding CurrentResult, Mode=TwoWay}" Loop="True" CurrentItemChanged="OnCurrentImageChanged">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Path=Url}" Margin="0">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>
