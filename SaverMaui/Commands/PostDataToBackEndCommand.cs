@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 
 using SaverMaui.Models;
 using SaverMaui.Services;
@@ -6,7 +8,7 @@ using SaverMaui.Services.Contracts;
 using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.Contracts.Content;
 using SaverMaui.Services.ServiceExtensions;
-
+using System.Net;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -77,27 +79,44 @@ namespace SaverMaui.Commands
                 }
             }
 
-            PostContentDataRequest request = new PostContentDataRequest()
+            PostContentDataRequest postCategoriesRequest = new PostContentDataRequest()
             {
                 Categories = allCategoriesDto.ToArray(),
-                Content = allContentDto.ToArray()
+                Content = Array.Empty<ContentDto>(),
             };
 
-            var result = await this.backendClient.PostAllContentDataAsync(request);
+            var result = await this.backendClient.PostAllContentDataAsync(postCategoriesRequest);
 
-            if (result == System.Net.HttpStatusCode.Created) 
+            int contentAmount = allContentDto.Count();
+            int skip = 0;
+            int take = 1000;
+
+
+            while (skip < contentAmount) 
             {
-                await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{allCategoriesDto.Count}, Content added {allContentDto.Count}", "Ok");
-            }
-            if (result == System.Net.HttpStatusCode.OK)
-            {
-                await Application.Current.MainPage.DisplayAlert("Done", $"No new categories or content was found!", "Ok");
+                PostContentDataRequest request = new PostContentDataRequest()
+                {
+                    Categories = Array.Empty<CategoryDto>(),
+                    Content = allContentDto.Skip(skip).Take(take).ToArray()
+                };
+
+                result = await this.backendClient.PostAllContentDataAsync(request);
+                skip += 1000;
+
+                CancellationTokenSource cancellationTokenSource2 = new CancellationTokenSource();
+                var toast2 = Toast.Make($"Syncing content: {skip}", ToastDuration.Short, 14);
+                await toast2.Show(cancellationTokenSource2.Token);
+
+                if (result != System.Net.HttpStatusCode.Created && result == System.Net.HttpStatusCode.OK)
+                {
+                    toast2 = Toast.Make($"Error occured!", ToastDuration.Short, 14);
+                    await toast2.Show(cancellationTokenSource2.Token);
+                }
             }
 
-            if(result != System.Net.HttpStatusCode.Created && result == System.Net.HttpStatusCode.OK) 
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Error occured!", "Ok");
-            }
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            var toast = Toast.Make($"Content syncronization finished", ToastDuration.Long, 14);
+            await toast.Show(cancellationTokenSource.Token);
         }
     }
 }
