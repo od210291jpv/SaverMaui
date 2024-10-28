@@ -40,7 +40,7 @@ namespace SaverMaui.ViewModels
 
             Realm _realm = Realm.GetInstance();
             Content[] allRelatedContent = _realm.All<Content>().ToArray();
-
+           
             foreach (var cat in allRelatedContent.Where(c => c.CategoryId.Value == Environment.SahredData.currentCategory.CategoryId).ToArray())
             {
                 ContentCollection.Add(new ImageRepresentationElement() 

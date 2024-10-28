@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
+using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Platform;
 
 namespace SaverMaui
 {
@@ -20,7 +22,20 @@ namespace SaverMaui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            return builder.Build();
-        }
+            #if __ANDROID__
+                    ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => PrependToMappingImageSource(handler, view));
+            #endif
+
+                        return builder.Build();
+                    }
+
+            #if __ANDROID__
+                public static void PrependToMappingImageSource(IImageHandler handler, Microsoft.Maui.IImage image)
+                {
+                    handler.PlatformView?.Clear();
+                }
+            #endif
     }
+
+
 }

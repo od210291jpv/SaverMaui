@@ -21,15 +21,21 @@ public partial class SearchCategoryFeedPage : ContentPage
         InitializeComponent();
 
         this.Appearing += OnAppear;
-        //this.Title = Environment.SahredData.currentCategory.Name;
+        this.Disappearing += OnDisappear;
+    }
+
+    private void OnDisappear(object sender, EventArgs e)
+    {
+        SearchCategoryFeedViewModel.instance?.SearchResults.Clear();
     }
 
     private void OnAppear(object sender, EventArgs e)
     {
         foreach (var content in Environment.CurrectSearchResultCategory.Value)
         {
-            SearchCategoryFeedViewModel.instance.SearchResults.Add(content);
+            SearchCategoryFeedViewModel.instance?.SearchResults.Add(content);
         }
+        this.Title = Environment.CurrectSearchResultCategory.Key;
     }
 
     private async void OnTapGestureRecognizerTapped(object sender, TappedEventArgs e)
@@ -50,8 +56,6 @@ public partial class SearchCategoryFeedPage : ContentPage
 
             _realm.Write(() => _realm.Add<Content>(content));
 
-            var backendClient = BackendServiceClient.GetInstance();
-
             PostContentDataRequest request = new PostContentDataRequest()
             {
                 Categories = Array.Empty<CategoryDto>(),
@@ -64,7 +68,7 @@ public partial class SearchCategoryFeedPage : ContentPage
                 }}
             };
 
-            await backendClient.PostAllContentDataAsync(request);
+            _ = await BackendServiceClient.GetInstance().PostAllContentDataAsync(request);
 
             await Application.Current.MainPage.DisplayAlert("Ok", $"Content added", "Ok");
         }

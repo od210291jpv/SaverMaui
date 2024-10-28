@@ -20,7 +20,7 @@ public partial class FavoriteContentPage : ContentPage
 
         if (FavoriteContentViewModel.Instance != null) 
         {
-            foreach (var cat in allRelatedContent)
+            foreach (Content cat in allRelatedContent)
             {
                 FavoriteContentViewModel.Instance.ContentCollection.Add(new ImageRepresentationElement()
                 {

@@ -7,7 +7,7 @@ namespace SaverMaui.ViewModels
 {
     public class SearchCategoryFeedViewModel : BaseViewModel
     {
-        public static SearchCategoryFeedViewModel instance { get; private set; }
+        public static SearchCategoryFeedViewModel? instance { get; private set; }
 
         private ObservableCollection<SearchResult> searchResults;
 

@@ -47,7 +47,7 @@ namespace SaverMaui.Commands
             {
                 var rCategory = _realm.All<Category>().Single(ct => ct.CategoryId == Environment.SahredData.currentCategory.CategoryId);
 
-                await BackendServiceClient
+                _ = await BackendServiceClient
                     .GetInstance()
                     .UpdateCategoryStatisticsAsync(
                     requiredCategory.CategoryId,

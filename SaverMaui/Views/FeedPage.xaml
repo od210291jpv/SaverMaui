@@ -20,7 +20,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
+                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True" x:Name="Img">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
                                     <PinchGestureRecognizer PinchUpdated="OnPinchGestureTapped" />

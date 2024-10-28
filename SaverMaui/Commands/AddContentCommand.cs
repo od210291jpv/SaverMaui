@@ -55,10 +55,8 @@ namespace SaverMaui.Commands
 
                 if (reply.Status == IPStatus.Success)
                 {
-                    RestClient client = new RestClient();
                     var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(this.viewModel.ContentUri)}";
-                    var request = new RestRequest(ur, Method.Get);
-                    var resp = await client.ExecuteGetAsync<string>(request);
+                    var resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
 
                     bool answer = await Application.Current.MainPage.DisplayAlert("Suggestion",
                         $"The most suitable category for the content to be saved is:{resp.Content}. Would you like to use this category?", "Yes", "No");
@@ -73,21 +71,18 @@ namespace SaverMaui.Commands
 
                         if (reqCat != null)
                         {
-                            Content content = new Content()
+                            _realm.Write(() => _realm.Add(new Content()
                             {
                                 CategoryId = reqCat.CategoryId,
                                 ImageUri = this.viewModel.ContentUri,
                                 Title = this.viewModel.ContentTitle
-                            };
-
-                            _realm.Write(() => _realm.Add<Content>(content));
+                            }));
                         }
                         else 
                         {
                             await Application.Current.MainPage.DisplayAlert("Error", $"Required category {resp.Content} does not exist!", "Ok");
                         }
                     }
-
                 }
                 return;
             }

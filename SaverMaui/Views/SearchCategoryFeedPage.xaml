@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView x:Name="Feed" ItemsSource="{Binding SearchResults}" CurrentItem="{Binding CurrentResult, Mode=TwoWay}" Loop="True" CurrentItemChanged="OnCurrentImageChanged">
+            <CarouselView x:Name="Feed" ItemsSource="{Binding SearchResults}" CurrentItem="{Binding CurrentResult, Mode=TwoWay}" Loop="False" CurrentItemChanged="OnCurrentImageChanged">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Image Source="{Binding Path=Url}" Margin="0">

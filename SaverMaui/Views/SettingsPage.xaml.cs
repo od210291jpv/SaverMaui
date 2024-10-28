@@ -1,7 +1,3 @@
-using Realms;
-using SaverMaui.Models;
-using SaverMaui.ViewModels;
-
 namespace SaverMaui.Views;
 
 public partial class SettingsPage : ContentPage
@@ -13,17 +9,11 @@ public partial class SettingsPage : ContentPage
     }
 
     private void OnPageLoaded(object sender, EventArgs e)
+    {        
+    }
+
+    private void Handle_Toggled(object sender, ToggledEventArgs e)
     {
-        //var vm = SettingsViewModel.GetInstance();
-        //Realm _realm = Realm.GetInstance();
-
-        //var allCategories = _realm.All<Category>().OrderBy(c => c.Name).ToArray();
-
-
-        //foreach (var cat in allCategories)
-        //{
-        //    vm.categories.Add(cat);
-        //}
-        
+        Environment.SearchResultsResfresh = e.Value;
     }
 }

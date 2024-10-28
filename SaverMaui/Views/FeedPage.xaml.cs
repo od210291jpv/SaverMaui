@@ -29,13 +29,14 @@ public partial class FeedPage : ContentPage
             return;
         }
 
-        GetAllContentResponseModel[] allContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
+        var notSortedAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
+        GetAllContentResponseModel[] allContent = notSortedAllContent.OrderBy(c => c.DateCreated).ToArray();
 
         var feeddata = new ObservableCollection<ImageRepresentationElement>();
 
         if (FeedViewModel.Instance?.ContentCollection != null) 
         {
-            foreach (var cont in allContent.OrderBy(i => i.Id)) 
+            foreach (var cont in allContent) 
             {
                 feeddata.Add(new ImageRepresentationElement 
                 {
@@ -59,7 +60,7 @@ public partial class FeedPage : ContentPage
 
             if (nn.Length > 0) 
             {
-                foreach (var i in nn) 
+                foreach (var i in nn.Order())
                 {
                     FeedViewModel.Instance.ContentCollection.Add(feeddata.Single(c => c.ContentId == i));
                 }

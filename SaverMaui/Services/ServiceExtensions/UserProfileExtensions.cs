@@ -39,7 +39,8 @@ namespace SaverMaui.Services.ServiceExtensions
         public static async Task<bool> IsUserLoggedInAsync(this IHttpServiceClient serviceClient, string login) 
         {
             var response = await serviceClient.GetRequestAsync(UriHelper.GetLoginStatus(login));
-            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+
+            return response.StatusCode == HttpStatusCode.OK;
         }
     }
 }

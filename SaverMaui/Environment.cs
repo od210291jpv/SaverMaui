@@ -23,6 +23,8 @@ namespace SaverMaui
 
         public static List<string> ImagesToDelete = new List<string>();
 
+        public static bool SearchResultsResfresh { get; internal set; }
+
         public static class SahredData
         {
             public static Category currentCategory;
