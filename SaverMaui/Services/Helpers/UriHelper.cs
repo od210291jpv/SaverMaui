@@ -56,9 +56,9 @@
             return $"{BaseAddress}/Login/Logout?login={login}&password={password}";
         }
 
-        public static string GetLoginStatus(string login) 
+        public static string GetLoginStatus(string login, string password) 
         {
-            return $"{BaseAddress}/Login/GetLoginStatus?login={login}";
+            return $"{BaseAddress}/Login/GetLoginStatus?login={login}&password={password}";
         }
 
         public static string RegisterUser 

@@ -107,9 +107,15 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet("GetLoginStatus")]
-        public async Task<bool> GetLoginState(string login) 
+        public async Task<bool> GetLoginState(string login, string password) 
         {
+            var credsAreCorrect = this.dbContext.Profiles.Where(pr => pr.UserName == login && pr.Password == password).ToArray().Length == 1;
             var loginData = await this.redisDb.StringGetAsync(login);
+
+            if (credsAreCorrect == false) 
+            {
+                return false;
+            }
 
             if (loginData.HasValue == false) 
             {

@@ -27,7 +27,7 @@ namespace SaverMaui.Commands
         {
             await BackendServiceClient.GetInstance().LogoutUserAsync();
 
-            if (await BackendServiceClient.GetInstance().IsUserLoggedInAsync(Environment.Login) == false)
+            if (await BackendServiceClient.GetInstance().IsUserLoggedInAsync(Environment.Login, Environment.Password) == false)
             {
                 Environment.Login = null;
                 Environment.Password = null;
