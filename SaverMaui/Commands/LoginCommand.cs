@@ -57,7 +57,7 @@ namespace SaverMaui.Commands
                 
                 Environment.Login = this.viewModel.Login;
                 Environment.Password = this.viewModel.Password;
-                Environment.ProfileId = Environment.ProfileData.ProfileId;
+                //Environment.ProfileId = Environment.ProfileData.ProfileId;
                 await Shell.Current.GoToAsync("///Settings");
             }
             else 
