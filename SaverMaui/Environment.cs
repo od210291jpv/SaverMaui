@@ -15,11 +15,15 @@ namespace SaverMaui
 
         public static LoginResponse ProfileData;
 
-        public static string CurrectSearchResultItem = string.Empty;
+        public static KeyValuePair<string, SearchResult[]> CurrectSearchResultCategory;
 
         public static ImageRepresentationElement CurrentImageOnScreen;
 
+        public static string CurrectSearchResultItem  = "";
+
         public static List<string> ImagesToDelete = new List<string>();
+
+        public static bool SearchResultsResfresh { get; internal set; }
 
         public static class SahredData
         {

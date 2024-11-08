@@ -1,16 +1,11 @@
-﻿
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-
-using Realms;
-
-using SaverMaui.Models;
+using SaverMaui.Commands;
+using SaverMaui.Custom_Elements;
 using SaverMaui.Services;
-using SaverMaui.Services.Contracts;
-using SaverMaui.Services.Contracts.Category;
-using SaverMaui.Services.Contracts.Content;
-using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace SaverMaui.Views
 {
@@ -24,26 +19,33 @@ namespace SaverMaui.Views
 
         private async void OnAppear(object sender, EventArgs e)
         {
-            var searchResults = await BackendServiceClient.GetInstance().ContentActions.GetSearchResults();
+            if (Environment.Login == null | Environment.Login == string.Empty) 
+            {
+                CancellationTokenSource cts = new CancellationTokenSource();
 
-            Realm _realm = Realm.GetInstance();
+                var tst = Toast.Make($"Please login to review the search results", ToastDuration.Short, 14);
+                await tst.Show(cts.Token);
+            }
 
-            var cats = _realm.All<Category>().ToArray();
-            var reqCat = cats.FirstOrDefault(c => c.Name == "Rest");
+            if (Environment.SearchResultsResfresh == false)
+            {
+                return;
+            }
 
-            var existingContent = _realm.All<Content>().Where(c => c.CategoryId == reqCat.CategoryId).ToArray().Select(c => c.ImageUri).ToArray();
+            string[] searchResults = await BackendServiceClient.GetInstance().ContentActions.GetSearchResults();
 
-            var resultsSorted = searchResults.AsParallel().Where(c => existingContent.Contains(c.Replace("Uri: ", "")) == false).Order().ToArray();
+            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
 
             if (SearchResultsViewModel.Instance?.ContentCollection != null) 
             {
                 SearchResultsViewModel.Instance.ClearContent();
             }
 
-            foreach (var searchResult in resultsSorted)
+            foreach (var g in sotredGroupped) 
             {
-                SearchResultsViewModel.Instance?.ContentCollection.Add(new Custom_Elements.SearchResult() { Url = searchResult });
+                SearchResultsViewModel.Instance?.ContentCollection.Add(g);
             }
+
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             var toast = Toast.Make($"Content found: {searchResults.Length}", ToastDuration.Short, 14);
@@ -52,44 +54,34 @@ namespace SaverMaui.Views
 
         private async void OnRateClicked(object sender, EventArgs e)
         {
-            Realm _realm = Realm.GetInstance();
 
-            var cats = _realm.All<Category>().ToArray();
-            var reqCat = cats.FirstOrDefault(c => c.Name == "Rest");
+        }
+        private ICommand navigateToSearchCategoryFeedCommand;
 
-            if (reqCat != null)
+        public ICommand NavigateToSearchCategoryFeedCommand 
+        {
+            get 
             {
-                Content content = new Content()
-                {
-                    CategoryId = reqCat.CategoryId,
-                    ImageUri = Environment.CurrectSearchResultItem,
-                    Title = "Sexy"
-                };
+                return this.navigateToSearchCategoryFeedCommand ?? (new NavigateToSearchResultsFeedCommand(SearchResultsViewModel.Instance));
+            } 
+        }
 
-                _realm.Write(() => _realm.Add<Content>(content));
+        private ObservableCollection<KeyValuePair<string, SearchResult[]>> GetGrouppedSearchResults(string[] results)
+        {
+            var fullResults = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
+            var res = results.GroupBy((s) => s.Split("/").Last().Split("_").First()).ToArray();
 
-                var backendClient = BackendServiceClient.GetInstance();
-
-                PostContentDataRequest request = new PostContentDataRequest()
-                {
-                    Categories = Array.Empty<CategoryDto>(),
-                    Content = new ContentDto[] { new ContentDto
-                    {
-                        CategoryId = reqCat.CategoryId,
-                        DateCreated = DateTime.Now,
-                        Title = "Sexy",
-                        ImageUri = Environment.CurrectSearchResultItem
-                    }}
-                };
-
-                await backendClient.PostAllContentDataAsync(request);
-
-                await Application.Current.MainPage.DisplayAlert("Ok", $"Content added", "Ok");
-            }
-            else
+            foreach (var r in res) 
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Required category  does not exist!", "Ok");
+                fullResults.Add(new KeyValuePair<string, SearchResult[]>(r.Key, r.Select(i => new SearchResult() { Name = r.Key, Url = i }).ToArray()));
             }
+
+            return fullResults;
+        }
+
+        private void OnCategoryOpen(object sender, EventArgs e)
+        {
+            this.NavigateToSearchCategoryFeedCommand.Execute(SearchResultsViewModel.Instance);
         }
     }
 }

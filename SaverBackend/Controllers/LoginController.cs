@@ -29,11 +29,11 @@ namespace SaverBackend.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<UserProfileInfoDto> Index(string login, string password)
+        public async Task<IActionResult> Index(string login, string password)
         {
             if (this.dbContext.Profiles.Where(pr => pr.UserName == login && pr.Password == password).ToArray().Length != 1) 
             {
-                return new UserProfileInfoDto() { Error = "Unauthorized" };
+                return Unauthorized();
             }
 
             Profile userProfile = this.dbContext.Profiles.Single(pr => pr.UserName ==  login && pr.Password == password);
@@ -66,7 +66,7 @@ namespace SaverBackend.Controllers
             await this.hub.Clients.All.SendAsync($"{profileInfo.UserName} just joined!! Say Hello!");
             await this.LoadContentToRedis();
 
-            return profileInfo;
+            return Ok();
         }
 
         private async Task LoadContentToRedis() 
@@ -107,9 +107,15 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet("GetLoginStatus")]
-        public async Task<bool> GetLoginState(string login) 
+        public async Task<bool> GetLoginState(string login, string password) 
         {
+            var credsAreCorrect = this.dbContext.Profiles.Where(pr => pr.UserName == login && pr.Password == password).ToArray().Length == 1;
             var loginData = await this.redisDb.StringGetAsync(login);
+
+            if (credsAreCorrect == false) 
+            {
+                return false;
+            }
 
             if (loginData.HasValue == false) 
             {

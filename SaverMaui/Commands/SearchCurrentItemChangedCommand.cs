@@ -21,7 +21,7 @@ namespace SaverMaui.Commands
 
         public void Execute(object parameter)
         {
-            Environment.CurrectSearchResultItem = vm.CurrentContent.Url;
+            Environment.CurrectSearchResultCategory = vm.CurrentCategory;
         }
     }
 }

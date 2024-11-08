@@ -37,6 +37,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                     <RowDefinition/>
                     </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -76,6 +77,8 @@
                 <Button Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" FontAttributes="Bold" CornerRadius="5" Text="Parse content for feed" Command="{Binding ParseFeedCommand}"/>
                 <Button Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="OrangeRed" BorderColor="White" BorderWidth="1" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding CloseAppCommand}"/>
                 <Button Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" Text="Delete marked content" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding DeleteImagesCommand}"/>
+                <Switch Grid.Row="25" Grid.Column="1" OnColor="Orange" IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}" Toggled="Handle_Toggled">
+                </Switch>
             </Grid>
             </ScrollView>
     </ContentPage.Content>

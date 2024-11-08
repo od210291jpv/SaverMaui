@@ -1,6 +1,7 @@
 ﻿using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
@@ -9,9 +10,9 @@ namespace SaverMaui.ViewModels
     {
         public static SearchResultsViewModel Instance;
 
-        private ObservableCollection<SearchResult> contentCollection;
+        private ObservableCollection<KeyValuePair<string, SearchResult[]>> contentCollection;
 
-        public ObservableCollection<SearchResult> ContentCollection
+        public ObservableCollection<KeyValuePair<string, SearchResult[]>> ContentCollection
         {
             get => this.contentCollection;
             set
@@ -25,27 +26,29 @@ namespace SaverMaui.ViewModels
         {
             try 
             {
-                this.ContentCollection = new ObservableCollection<SearchResult>();
-
+                this.ContentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
             }
             catch { }
         }
 
-        private SearchResult currentImage;
+        private KeyValuePair<string, SearchResult[]> currentCategory;
 
 
-        public SearchResult CurrentContent
+        public KeyValuePair<string, SearchResult[]> CurrentCategory
         {
-            get => currentImage;
-            set => currentImage = value;
+            get => currentCategory;
+            set => currentCategory = value;
         }
 
         public ICommand ItemChangedCommand { get; }
 
         public SearchResultsViewModel()
         {
-            this.ContentCollection = new ObservableCollection<SearchResult>();
-            this.contentCollection = new ObservableCollection<SearchResult>();
+            this.ContentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
+            this.contentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
+
+            this.currentCategory = new();
+            this.CurrentCategory = new();
             this.ItemChangedCommand = new SearchCurrentItemChangedCommand(this);
             Instance = this;
         }

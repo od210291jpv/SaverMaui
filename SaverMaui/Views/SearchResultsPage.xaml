@@ -10,34 +10,38 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
-                <CarouselView.ItemTemplate>
+            <CollectionView ItemsSource="{Binding ContentCollection}" SelectedItem="{Binding CurrentCategory}" BackgroundColor="Black" SelectionMode="Single">
+                <CollectionView.Header>
+                    <StackLayout BackgroundColor="Gray">
+                        <Label Text="Categories" TextColor="White" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
+                    </StackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Url}" Aspect="AspectFit" IsAnimationPlaying="True"></Image>
-                            <Button Grid.Row="0" 
-                                    Grid.Column="0" 
-                                    Text="Add" FontAttributes="Bold" 
-                                    TextColor="White"
-                                    BackgroundColor="DeepPink" 
-                                    CornerRadius="50" 
-                                    VerticalOptions="End" 
-                                    HorizontalOptions="End" 
-                                    Margin="30" HeightRequest="60" 
-                                    WidthRequest="60" 
-                                    Padding="0" 
-                                    Opacity="0.6" 
-                                    x:Name="RateButton" Clicked="OnRateClicked"/>
-                        </Grid>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnCategoryOpen"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Grid HeightRequest="100">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Frame Grid.Column="0" Grid.Row="0" BorderColor="DeepPink" CornerRadius="0" Padding="0"  BackgroundColor="DeepPink" VerticalOptions="FillAndExpand" Margin="0">
+                                    <Label Text="{Binding Path=Key}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </FlexLayout>
     </ContentPage.Content>
 </ContentPage>

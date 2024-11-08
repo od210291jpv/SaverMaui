@@ -73,6 +73,9 @@
 	  <MauiXaml Update="Views\CategoriesPageV2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\SearchCategoryFeedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\CategoryFeedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -146,6 +149,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\SearchCategoryFeedPage.xaml.cs">
+	    <DependentUpon>SearchCategoryFeedPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\NotificationCenterPage.xaml.cs">
 	    <DependentUpon>NotificationCenterPage.xaml</DependentUpon>
 	  </Compile>

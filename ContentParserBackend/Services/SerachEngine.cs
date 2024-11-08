@@ -48,16 +48,19 @@ namespace ContentParserBackend.Services
 
                 var pageContent = pageWithContent.DocumentNode.SelectNodes("//div[@class = 'previzako']");
 
-                foreach (var cnt in pageContent)
+                if (pageContent != null) 
                 {
-                    var cc = new HtmlDocument();
-                    cc.LoadHtml(cnt.InnerHtml);
-
-                    var link = cc.DocumentNode.SelectSingleNode("/a")?.GetAttributeValue("href", "");
-
-                    if (link != null && link.ToLower().Contains(keyword.ToLower()))
+                    foreach (var cnt in pageContent)
                     {
-                        this.results.Add(link);
+                        var cc = new HtmlDocument();
+                        cc.LoadHtml(cnt.InnerHtml);
+
+                        var link = cc.DocumentNode.SelectSingleNode("/a")?.GetAttributeValue("href", "");
+
+                        if (link != null && link.ToLower().Contains(keyword.ToLower()))
+                        {
+                            this.results.Add(link);
+                        }
                     }
                 }
             }

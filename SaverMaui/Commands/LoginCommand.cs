@@ -39,7 +39,7 @@ namespace SaverMaui.Commands
                 .GetInstance()
                 .LoginUserAsync(this.viewModel.Login, this.viewModel.Password);
 
-            bool isLoggedIn = await BackendServiceClient.GetInstance().IsUserLoggedInAsync(this.viewModel.Login);
+            bool isLoggedIn = await BackendServiceClient.GetInstance().IsUserLoggedInAsync(this.viewModel.Login, this.viewModel.Password);
 
             if (this.viewModel.Login == "xxx" && this.viewModel.Password == "xxx") 
             {
@@ -57,7 +57,7 @@ namespace SaverMaui.Commands
                 
                 Environment.Login = this.viewModel.Login;
                 Environment.Password = this.viewModel.Password;
-                Environment.ProfileId = Environment.ProfileData.ProfileId;
+                //Environment.ProfileId = Environment.ProfileData.ProfileId;
                 await Shell.Current.GoToAsync("///Settings");
             }
             else 

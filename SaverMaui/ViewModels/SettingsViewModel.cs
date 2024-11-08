@@ -122,6 +122,16 @@ namespace SaverMaui.ViewModels
             set { logCategoriesEnabled = value; OnPropertyChanged(nameof(LogCategoriesEnabled)); }
         }
 
+        public bool refreshSearchResults;
+
+        public bool RefreshSearchResults 
+        { 
+            get => this.refreshSearchResults;
+            set 
+            {
+                this.refreshSearchResults = value; OnPropertyChanged(nameof(RefreshSearchResults));
+            } }
+
         private AddCategoryCommand addCategoryCommand;
 
         public AddCategoryCommand AddCategoryCommand

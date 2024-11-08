@@ -15,5 +15,8 @@ namespace SaverMaui.Services.Contracts
         public Guid CategoryId { get; set; }
 
         public int Id { get; set; }
+
+        [JsonProperty("dateCreated")]
+        public DateTime DateCreated { get; set; }
     }
 }

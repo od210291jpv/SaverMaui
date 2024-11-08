@@ -13,11 +13,21 @@
             <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentImage}" Loop="True" CurrentItemChangedCommand="{Binding LogImageLoadCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Path=Source}" Margin="0">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                            </Image.GestureRecognizers>
-                        </Image>
+                        <Grid x:Name="ContentGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=Source}" Margin="0">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
