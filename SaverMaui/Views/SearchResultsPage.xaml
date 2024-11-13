@@ -10,38 +10,28 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CollectionView ItemsSource="{Binding ContentCollection}" SelectedItem="{Binding CurrentCategory}" BackgroundColor="Black" SelectionMode="Single">
-                <CollectionView.Header>
-                    <StackLayout BackgroundColor="Gray">
-                        <Label Text="Categories" TextColor="White" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
-                    </StackLayout>
-                </CollectionView.Header>
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentCategory}" VerticalScrollBarVisibility="Always">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3"/>
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnCategoryOpen"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <Grid HeightRequest="100">
+                        <Frame BorderColor="Orange" BackgroundColor="Black">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Frame Grid.Column="0" Grid.Row="0" BorderColor="DeepPink" CornerRadius="0" Padding="0"  BackgroundColor="DeepPink" VerticalOptions="FillAndExpand" Margin="0">
-                                    <Label Text="{Binding Path=Key}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
-                                </Frame>
+                                <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Value[0].Url}" Aspect="AspectFit" IsAnimationPlaying="False">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCategoryOpen" NumberOfTapsRequired="2" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" FontSize="25" VerticalOptions="Start" FontAttributes="Bold" TextColor="White" Text="{Binding Path=Key}"/>
                             </Grid>
-                        </SwipeView>
+                        </Frame>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
         </FlexLayout>
     </ContentPage.Content>
 </ContentPage>

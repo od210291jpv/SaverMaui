@@ -21,7 +21,9 @@ public partial class ContentCleanupPage : ContentPage
         if (Environment.Password != null && Environment.Password != string.Empty && Environment.Login != null) 
         {
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentAsync();
-            var ordered = allContent.OrderBy(i => i.DateCreated);
+            var ordered = allContent.OrderBy(i => i.DateCreated).ToArray();
+            var l = ordered.Last();
+            var f = ordered.First();
 
             if (allContent != null)
             {
