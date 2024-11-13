@@ -1,7 +1,5 @@
-﻿using SaverMaui.Commands;
-using SaverMaui.Custom_Elements;
+﻿using SaverMaui.Custom_Elements;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
@@ -21,15 +19,11 @@ namespace SaverMaui.ViewModels
 
         public SearchResult CurrentResult { get => currentResult; set => currentResult = value; }
 
-
-        public ICommand CurrentImageChanged { get; }
-
         public SearchCategoryFeedViewModel()
         {
             this.SearchResults = new ObservableCollection<SearchResult>();
             this.Title = Environment.CurrectSearchResultCategory.Key;
 
-            this.CurrentImageChanged = new SearchResultCategoryImageChangedCommand(this);
 
             instance = this;
         }

@@ -26,18 +26,34 @@
                             </Image.GestureRecognizers>
                         </Image>
                         <Button Grid.Row="0" 
-                    Grid.Column="0" 
-                    Text="R" FontAttributes="Bold" 
-                    TextColor="White"
-                    BackgroundColor="DeepPink" 
-                    CornerRadius="50" 
-                    VerticalOptions="End" 
-                    HorizontalOptions="End" 
-                    Margin="30" HeightRequest="60" 
-                    WidthRequest="60" 
-                    Padding="0" 
-                    Opacity="0.6" 
-                    x:Name="RateButton" Clicked="OnRateClicked"/>
+                            Grid.Column="0" 
+                            Text="R" FontAttributes="Bold" 
+                            TextColor="White"
+                            BackgroundColor="Orange" 
+                            CornerRadius="50" 
+                            VerticalOptions="End" 
+                            HorizontalOptions="End" 
+                            Margin="30" HeightRequest="60" 
+                            WidthRequest="60" 
+                            Padding="0" 
+                            Opacity="0.6" 
+                            x:Name="RateButton" Clicked="OnRateClicked"/>
+                        <Button Grid.Row="0" 
+                                Grid.Column="0"
+                                Text="D"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="DeepPink"
+                                CornerRadius="50"
+                                VerticalOptions="End"
+                                HorizontalOptions="Start"
+                                Margin="30"
+                                HeightRequest="60"
+                                WidthRequest="60"
+                                Padding="0"
+                                Opacity="0.6"
+                                x:Name="DeleteButton"
+                                Clicked="OnDeleteClicked"/>
                     </Grid>
                 </FlexLayout>
             </ScrollView>

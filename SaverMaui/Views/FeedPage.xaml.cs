@@ -7,7 +7,6 @@ using SaverMaui.Services;
 using SaverMaui.Services.Contracts;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace SaverMaui.Views;
 public partial class FeedPage : ContentPage
@@ -32,39 +31,44 @@ public partial class FeedPage : ContentPage
         var notSortedAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
         GetAllContentResponseModel[] allContent = notSortedAllContent.OrderBy(c => c.DateCreated).ToArray();
 
-        var feeddata = new ObservableCollection<ImageRepresentationElement>();
-
-        if (FeedViewModel.Instance?.ContentCollection != null) 
+        if (FeedViewModel.Instance.ContentCollection.Count == 0) 
         {
             foreach (var cont in allContent) 
             {
-                feeddata.Add(new ImageRepresentationElement 
-                {
-                    CategoryId = cont.CategoryId,
-                    Name = cont.Title,
-                    Source = cont.ImageUri,
-                    ContentId = cont.Id
-                });
+                FeedViewModel.Instance.ContentCollection.Add(
+                    new ImageRepresentationElement
+                    {
+                        CategoryId = cont.CategoryId,
+                        Name = cont.Title,
+                        Source = cont.ImageUri,
+                        ContentId = cont.Id
+                    });
             }
 
-            if (FeedViewModel.Instance.ContentCollection.Count == 0) 
+            return;
+        }
+
+        if (allContent[allContent.Length - 1].Id != FeedViewModel.Instance.ContentCollection.Last().ContentId) 
+        {
+            var newContent = FeedViewModel.Instance.ContentCollection.AsParallel()
+                .Select(i => i.ContentId)
+                .Except(allContent.AsParallel()
+                .Select(i => i.Id))
+                .ToArray();
+
+            foreach (var i in newContent)
             {
-                FeedViewModel.Instance.ContentCollection = feeddata;
-                return;
-            }
+                var c = allContent.Single(c => c.Id == i);
 
-            var con1 = FeedViewModel.Instance.ContentCollection.AsParallel().Select(i => i.ContentId).ToArray();
-            var con2 = feeddata.AsParallel().Select(i => i.ContentId).ToArray();
-
-            var nn = con1.Except(con2).ToArray();
-
-            if (nn.Length > 0) 
-            {
-                foreach (var i in nn.Order())
-                {
-                    FeedViewModel.Instance.ContentCollection.Add(feeddata.Single(c => c.ContentId == i));
-                }
-
+                FeedViewModel.Instance
+                    .ContentCollection
+                    .Add(new ImageRepresentationElement
+                    {
+                        CategoryId = c.CategoryId,
+                        Name = c.Title,
+                        Source = c.ImageUri,
+                        ContentId = c.Id
+                    });
             }
         }
     }
@@ -72,6 +76,7 @@ public partial class FeedPage : ContentPage
     private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
 	{
         Realm _realm = Realm.GetInstance();
+
 		var all = _realm.All<Content>().ToArray();
 
 		var content = all.Where(i => i.ImageUri.ToString().Contains(Environment.CurrentImageOnScreen.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
@@ -94,10 +99,6 @@ public partial class FeedPage : ContentPage
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
-    }
-
-	private void OnPinchGestureTapped(object sender, EventArgs e) 
-	{
     }
 
     private void OnRateClicked(object sender, EventArgs e)

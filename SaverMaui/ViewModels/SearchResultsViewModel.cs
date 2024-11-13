@@ -1,7 +1,6 @@
 ﻿using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
@@ -49,7 +48,6 @@ namespace SaverMaui.ViewModels
 
             this.currentCategory = new();
             this.CurrentCategory = new();
-            this.ItemChangedCommand = new SearchCurrentItemChangedCommand(this);
             Instance = this;
         }
     }

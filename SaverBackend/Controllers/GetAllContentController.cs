@@ -30,6 +30,36 @@ namespace SaverBackend.Controllers
             return allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<ContentDto>(this.redisDb.StringGet(k))).ToArray();
         }
 
+        [HttpGet("GetAllContentPaged")]
+        public async Task<ContentDto[]> GetAllContentPaged(short page = 0, short pageSize = 200) 
+        {
+            int howManyToSkip = 0;
+            
+            if (page > 0) 
+            {
+                howManyToSkip = pageSize * page;
+            }
+
+            RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).Skip(howManyToSkip).Take(pageSize).ToArray();
+
+            List<ContentDto> results = new(allKeys.Length);
+
+            foreach (RedisKey key in allKeys) 
+            {
+                var redisValue = await this.redisDb.StringGetAsync(key);
+                if (redisValue.HasValue) 
+                {
+                    var deserialized = JsonConvert.DeserializeObject<ContentDto>(redisValue);
+                    if (deserialized != null) 
+                    {
+                        results.Add(deserialized);
+                    }
+                }
+            }
+
+            return results.ToArray();
+        }
+
         [HttpGet("searchResults")]
         public string[] GetSearchResults() 
         {

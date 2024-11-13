@@ -21,12 +21,6 @@ public partial class SearchCategoryFeedPage : ContentPage
         InitializeComponent();
 
         this.Appearing += OnAppear;
-        this.Disappearing += OnDisappear;
-    }
-
-    private void OnDisappear(object sender, EventArgs e)
-    {
-        SearchCategoryFeedViewModel.instance?.SearchResults.Clear();
     }
 
     private void OnAppear(object sender, EventArgs e)
@@ -43,7 +37,7 @@ public partial class SearchCategoryFeedPage : ContentPage
         Realm _realm = Realm.GetInstance();
 
         var cats = _realm.All<Category>().ToArray();
-        var reqCat = cats.FirstOrDefault(c => c.Name == "Rest");
+        var reqCat = cats.FirstOrDefault(c => c.Name == "Sluts");
 
         if (reqCat != null)
         {
@@ -76,10 +70,5 @@ public partial class SearchCategoryFeedPage : ContentPage
         {
             await Application.Current.MainPage.DisplayAlert("Error", $"Required category  does not exist!", "Ok");
         }
-    }
-
-    private void OnCurrentImageChanged(object sender, CurrentItemChangedEventArgs e)
-    {
-        //Environment.CurrectSearchResultItem = SearchCategoryFeedViewModel.instance.CurrentResult.Url;
     }
 }

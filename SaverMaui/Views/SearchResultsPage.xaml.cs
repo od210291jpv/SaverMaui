@@ -34,14 +34,14 @@ namespace SaverMaui.Views
 
             string[] searchResults = await BackendServiceClient.GetInstance().ContentActions.GetSearchResults();
 
-            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
+            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key).ToArray();
 
             if (SearchResultsViewModel.Instance?.ContentCollection != null) 
             {
                 SearchResultsViewModel.Instance.ClearContent();
             }
 
-            foreach (var g in sotredGroupped) 
+            foreach (KeyValuePair<string, SearchResult[]> g in sotredGroupped) 
             {
                 SearchResultsViewModel.Instance?.ContentCollection.Add(g);
             }
@@ -52,10 +52,6 @@ namespace SaverMaui.Views
             await toast.Show(cancellationTokenSource.Token);
         }
 
-        private async void OnRateClicked(object sender, EventArgs e)
-        {
-
-        }
         private ICommand navigateToSearchCategoryFeedCommand;
 
         public ICommand NavigateToSearchCategoryFeedCommand 
@@ -79,7 +75,7 @@ namespace SaverMaui.Views
             return fullResults;
         }
 
-        private void OnCategoryOpen(object sender, EventArgs e)
+        private void OnCategoryOpen(object sender, TappedEventArgs e)
         {
             this.NavigateToSearchCategoryFeedCommand.Execute(SearchResultsViewModel.Instance);
         }

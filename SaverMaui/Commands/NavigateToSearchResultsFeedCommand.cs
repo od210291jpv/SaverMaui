@@ -17,7 +17,7 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public async void Execute(object parameter)
