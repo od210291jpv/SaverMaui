@@ -3,11 +3,6 @@ using CommunityToolkit.Maui.Core;
 using Realms;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -35,7 +30,7 @@ namespace SaverMaui.Commands
                 {
                     foreach (var cat in categoriesToDelete)
                     {
-                        _realm.Write(() => _realm.Remove(cat));
+                        await _realm.WriteAsync(() => _realm.Remove(cat));
                     }
 
                     CategoriesViewModel.Instance.UpdateAllCategories();

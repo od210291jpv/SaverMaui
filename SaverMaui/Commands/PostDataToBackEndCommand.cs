@@ -66,15 +66,30 @@ namespace SaverMaui.Commands
 
             var allExistingContent = await this.backendClient.GetAllContentAsync();
 
-            foreach (var content in allContent) 
+            //foreach (var content in allContent) 
+            //{
+            //    if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(content.ImageUri)) 
+            //    {
+            //        allContentDto.Add(new ContentDto()
+            //        {
+            //            CategoryId = content.CategoryId,
+            //            ImageUri = content.ImageUri,
+            //            Title = content.Title
+            //        });
+            //    }
+            //}
+
+            var contentAmt = allContent.Length;
+
+            for (int i = 0; i >= contentAmt; i++) 
             {
-                if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(content.ImageUri)) 
+                if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(allContent[i].ImageUri))
                 {
                     allContentDto.Add(new ContentDto()
                     {
-                        CategoryId = content.CategoryId,
-                        ImageUri = content.ImageUri,
-                        Title = content.Title
+                        CategoryId = allContent[i].CategoryId,
+                        ImageUri = allContent[i].ImageUri,
+                        Title = allContent[i].Title
                     });
                 }
             }

@@ -78,7 +78,7 @@ namespace SaverBackend.Controllers
                 return;
             }
 
-            var allContent = this.dbContext.Contents;
+            var allContent = this.dbContext.Contents.ToArray();
 
 
             foreach (var content in allContent) 

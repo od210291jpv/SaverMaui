@@ -74,7 +74,10 @@ namespace SaverMaui.Commands
                     AmountOfFavorites = cat.AmountOfFavorites != null ? cat.AmountOfFavorites.Value : 0,
                 };
 
-                realmInstance.Write(() => realmInstance.Add<Category>(category));
+                await realmInstance.WriteAsync(() => 
+                { 
+                    realmInstance.Add(category);
+                });
             }
 
             int syncedContent = 0;

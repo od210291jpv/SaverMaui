@@ -38,10 +38,10 @@ namespace SaverMaui.Commands
 
             if (requiredCategory.IsFavorite == false) 
             {
-                _realm.Write(() => requiredCategory.AmountOfFavorites += 1);
+                await _realm.WriteAsync(() => requiredCategory.AmountOfFavorites += 1);
             }
 
-            _realm.Write(() => requiredCategory.IsFavorite = !requiredCategory.IsFavorite);
+            await _realm.WriteAsync(() => requiredCategory.IsFavorite = !requiredCategory.IsFavorite);
 
             try
             {

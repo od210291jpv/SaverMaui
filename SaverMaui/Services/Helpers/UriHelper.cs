@@ -21,6 +21,11 @@
             get => $"{BaseAddress}/GetAllContent";
         }
 
+        public static string GetPaginatedContent(short page = 0, short size = 200) 
+        {
+            return $"{BaseAddress}/GetAllContent/GetAllContentPaged?page={page}&pageSize={size}";
+        }
+
         public static string GetAllCategories 
         {
             get => $"{BaseAddress}/GetCategories";

@@ -1,12 +1,11 @@
-﻿using CommunityToolkit.Maui.Core;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using Realms;
+using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
-using SaverMaui.ViewModels;
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using SaverMaui.Services;
-using SaverMaui.Commands;
+using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
 
@@ -82,11 +81,16 @@ public partial class RandomContentPage : ContentPage
 
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
-        await BackendServiceClient.GetInstance().ContentActions.DeleteContentAsync(ContentCleanupViewModel.Instance.CurrentContent.ContentId);
+        if (FeedRandomContentViewModel.Instance is null) 
+        {
+            return;
+        }
+
+        await BackendServiceClient.GetInstance().ContentActions.DeleteContentAsync(FeedRandomContentViewModel.Instance.CurrentImage.ContentId);
 
         Realm _realm = Realm.GetInstance();
 
-        var img = _realm.All<Content>().ToArray().Where(i => i.ImageUri.ToString().Contains(ContentCleanupViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        var img = _realm.All<Content>().ToArray().Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
 
         if (img != null)
         {

@@ -32,9 +32,9 @@ namespace SaverMaui.Commands
             return false;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            this.realmInstance.Write(() =>
+            await this.realmInstance.WriteAsync(() =>
             this.realmInstance.Add<WebContent>(new WebContent()
             {
                 Id = Guid.NewGuid(),

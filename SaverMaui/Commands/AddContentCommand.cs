@@ -71,7 +71,7 @@ namespace SaverMaui.Commands
 
                         if (reqCat != null)
                         {
-                            _realm.Write(() => _realm.Add(new Content()
+                            await _realm.WriteAsync(() => _realm.Add(new Content()
                             {
                                 CategoryId = reqCat.CategoryId,
                                 ImageUri = this.viewModel.ContentUri,
