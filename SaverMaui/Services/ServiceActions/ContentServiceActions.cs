@@ -22,6 +22,19 @@ namespace SaverMaui.Services.ServiceActions
             return Array.Empty<ContentDto>();
         }
 
+        public async Task<ContentDto[]> GetAllContentWithPaginationAsync(short page, short size) 
+        {
+            RestRequest request = new RestRequest(UriHelper.GetPaginatedContent(page, size));
+
+            var result = await this.client.ExecuteGetAsync<ContentDto[]>(request);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                return result.Data;
+            }
+
+            return Array.Empty<ContentDto>();
+        }
+
         public async Task<HttpStatusCode> DeleteContentAsync(int contentId) 
         {
             RestRequest request = new RestRequest(UriHelper.DeleteContent(contentId), Method.Delete);
@@ -41,6 +54,18 @@ namespace SaverMaui.Services.ServiceActions
             }
 
             return Array.Empty<string>();
+        }
+
+        public async Task<RestResponse> SearchContent(string keyword) 
+        {
+            var response = await this.client.ExecuteGetAsync(new RestRequest(UriHelper.SearchContent(keyword), Method.Get));
+            return response;
+        }
+
+        public async Task<RestResponse> DeleteSearchResults() 
+        {
+            var response = await this.client.ExecuteAsync(new RestRequest(UriHelper.CleanSearchResults, Method.Delete));
+            return response;
         }
     }
 }

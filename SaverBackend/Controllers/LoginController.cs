@@ -69,6 +69,12 @@ namespace SaverBackend.Controllers
             return Ok();
         }
 
+        [HttpGet("/SyncRedis")]
+        public async Task SyncRedis() 
+        {
+            await LoadContentToRedis();
+        }
+
         private async Task LoadContentToRedis() 
         {
             var isSynced = await this.redisDb.StringGetAsync("content_synced");
@@ -78,8 +84,7 @@ namespace SaverBackend.Controllers
                 return;
             }
 
-            var allContent = this.dbContext.Contents;
-
+            var allContent = this.dbContext.Contents.ToArray();
 
             foreach (var content in allContent) 
             {

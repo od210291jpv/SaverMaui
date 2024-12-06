@@ -21,6 +21,11 @@
             get => $"{BaseAddress}/GetAllContent";
         }
 
+        public static string GetPaginatedContent(short page = 0, short size = 200) 
+        {
+            return $"{BaseAddress}/GetAllContent/GetAllContentPaged?page={page}&pageSize={size}";
+        }
+
         public static string GetAllCategories 
         {
             get => $"{BaseAddress}/GetCategories";
@@ -89,6 +94,16 @@
         public static string SearchResults 
         {
             get => $"{BaseAddress}/GetAllContent/searchResults";
+        }
+
+        public static string SearchContent(string keyword) 
+        {
+            return $"http://192.168.88.252:5011/Parse?keyword={keyword}";    
+        }
+
+        public static string CleanSearchResults 
+        {
+            get => $"{BaseAddress}/GetAllContent/CleanResults";
         }
     }
 }

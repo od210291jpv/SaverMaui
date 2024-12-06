@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}">
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent, Mode=TwoWay}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -22,6 +22,22 @@
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
                             </Image>
+                            <Button Grid.Row="0" 
+                                Grid.Column="0"
+                                Text="D"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="DeepPink"
+                                CornerRadius="50"
+                                VerticalOptions="End"
+                                HorizontalOptions="Start"
+                                Margin="30"
+                                HeightRequest="60"
+                                WidthRequest="60"
+                                Padding="0"
+                                Opacity="0.6"
+                                x:Name="DeleteButton"
+                                Clicked="OnDeleteClicked"/>
                         </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>

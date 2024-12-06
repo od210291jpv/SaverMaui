@@ -13,7 +13,7 @@
             <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid x:Name="MainGrid">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>

@@ -202,8 +202,17 @@ namespace SaverBackend.Controllers
             }
 
             this.db.Contents.Remove(content);
-            await this.db.SaveChangesAsync();
-            await this.redisDb.KeyDeleteAsync(contentId.ToString());
+            var deleteDbResult =  await this.db.SaveChangesAsync();
+            var deleteRedisResult = await this.redisDb.KeyDeleteAsync(contentId.ToString());
+
+            if (deleteDbResult == 0) 
+            {
+                return BadRequest("Coudn't delete the content from the DB");
+            }
+            if (deleteRedisResult == false) 
+            {
+                return BadRequest("Couldn't delete the content from Redis");
+            }
 
             return Ok(content);
         }

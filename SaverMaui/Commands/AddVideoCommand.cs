@@ -34,7 +34,7 @@ namespace SaverMaui.Commands
                 VideoUri = this.viewModel.AddVideoUrl
             };
 
-            _realm.Write(() => _realm.Add(video));
+            await _realm.WriteAsync(() => _realm.Add(video));
 
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             var toast = Toast.Make($"New Video Added", ToastDuration.Short, 14);

@@ -1,14 +1,5 @@
-﻿using Realms;
-using SaverMaui.Commands;
-using SaverMaui.Custom_Elements;
-using SaverMaui.Models;
-using System;
-using System.Collections.Generic;
+﻿using SaverMaui.Custom_Elements;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
@@ -29,39 +20,22 @@ namespace SaverMaui.ViewModels
             }
         }
 
-        private ImageRepresentationElement currentImage;
+        private ImageRepresentationElement currentContent;
 
         public ImageRepresentationElement CurrentContent
         {
-            get => currentImage;
-            set => currentImage = value;
+            get => currentContent;
+            set 
+            {
+                this.currentContent = value;
+                OnPropertyChanged(nameof(CurrentContent));
+            }
         }
-
-
 
         public TopRatedFeedViewModel()
         {
             this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
             this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
-
-
-            Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().Where(c => c.Rating > 0).OrderByDescending(c => c.Rating).ToArray();
-
-            ObservableCollection<ImageRepresentationElement> allFeed = new();
-
-            foreach (var cat in allRelatedContent.ToArray().Reverse())
-            {
-                allFeed.Add(new ImageRepresentationElement()
-                {
-                    CategoryId = cat.CategoryId.Value,
-                    Name = cat.Title,
-                    Source = cat.ImageUri,
-                    IsFavorite = cat.IsFavorite
-                });
-            }
-
-            this.ContentCollection = allFeed;
 
             Instance = this;
         }

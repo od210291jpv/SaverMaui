@@ -43,7 +43,7 @@ namespace SaverMaui.Commands
             };
 
             Realm _realm = Realm.GetInstance();
-            _realm.Write(() => _realm.Add(category));
+            await _realm.WriteAsync(() => _realm.Add(category));
 
             this.viewModel.Categories = _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
 
