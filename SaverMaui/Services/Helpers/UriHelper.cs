@@ -95,5 +95,15 @@
         {
             get => $"{BaseAddress}/GetAllContent/searchResults";
         }
+
+        public static string SearchContent(string keyword) 
+        {
+            return $"http://192.168.88.252:5011/Parse?keyword={keyword}";    
+        }
+
+        public static string CleanSearchResults 
+        {
+            get => $"{BaseAddress}/GetAllContent/CleanResults";
+        }
     }
 }

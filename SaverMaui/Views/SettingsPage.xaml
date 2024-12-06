@@ -38,6 +38,10 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                     <RowDefinition/>
                     </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -77,8 +81,13 @@
                 <Button Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" FontAttributes="Bold" CornerRadius="5" Text="Parse content for feed" Command="{Binding ParseFeedCommand}"/>
                 <Button Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="OrangeRed" BorderColor="White" BorderWidth="1" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding CloseAppCommand}"/>
                 <Button Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" Text="Delete marked content" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding DeleteImagesCommand}"/>
+                <Label Grid.Row="25" Grid.Column="0" Text="Refresh search results" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Start"/>
                 <Switch Grid.Row="25" Grid.Column="1" OnColor="Orange" IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}" Toggled="Handle_Toggled">
                 </Switch>
+                <Label Grid.Row="26" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontAttributes="Bold" Text="Search For A Content"/>
+                <Entry Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalOptions="Center" PlaceholderColor="Gray" Placeholder="Keyword" x:Name="SearchInput" Text="{Binding SearchRequest, Mode=TwoWay}"/>
+                <Button Grid.Row="28" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" FontAttributes="Bold" CornerRadius="5" Text="Search" Command="{Binding SearchContent}"/>
+                <Button Grid.Row="29" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="OrangeRed" BorderColor="White" FontAttributes="Bold" TextColor="White" Text="Clean Search Results" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="5" BorderWidth="1" Command="{Binding CleanSearchResults}"/>
             </Grid>
             </ScrollView>
     </ContentPage.Content>

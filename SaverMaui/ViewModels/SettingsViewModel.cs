@@ -134,6 +134,18 @@ namespace SaverMaui.ViewModels
 
         private AddCategoryCommand addCategoryCommand;
 
+        private string searchRequest = string.Empty;
+
+        public string SearchRequest 
+        { 
+            get => this.searchRequest;
+            set 
+            {
+                this.searchRequest = value;
+                OnPropertyChanged(nameof(SearchRequest));
+            }
+        }
+
         public AddCategoryCommand AddCategoryCommand
         {
             get
@@ -243,6 +255,20 @@ namespace SaverMaui.ViewModels
         public DeleteImagesCommand DeleteImagesCommand 
         {
             get => this.deleteImagesCommand ?? (this.deleteImagesCommand = new DeleteImagesCommand());
+        }
+
+        private SearchContentCommand searchContent;
+
+        public SearchContentCommand SearchContent 
+        {
+            get => this.searchContent ?? (this.searchContent = new SearchContentCommand(this));
+        }
+
+        private CleanSearchResultsCommand cleanSearchResults;
+
+        public CleanSearchResultsCommand CleanSearchResults
+        {
+            get => this.cleanSearchResults ?? (this.cleanSearchResults = new CleanSearchResultsCommand());
         }
 
         public SettingsViewModel()

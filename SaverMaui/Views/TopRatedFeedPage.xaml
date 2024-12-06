@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}">
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent, Mode=TwoWay}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

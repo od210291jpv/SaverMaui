@@ -23,15 +23,17 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet(Name = "GetAllContent")]
-        public async Task<ContentDto[]> Index()
+        public async Task<Content[]> Index()
         {
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
 
-            return allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<ContentDto>(this.redisDb.StringGet(k))).ToArray();
+            var all =  allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).ToArray();
+
+            return all;
         }
 
         [HttpGet("GetAllContentPaged")]
-        public async Task<ContentDto[]> GetAllContentPaged(short page = 0, short pageSize = 200) 
+        public async Task<Content[]> GetAllContentPaged(short page = 0, short pageSize = 200) 
         {
             int howManyToSkip = 0;
             
@@ -42,14 +44,14 @@ namespace SaverBackend.Controllers
 
             RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).Skip(howManyToSkip).Take(pageSize).ToArray();
 
-            List<ContentDto> results = new(allKeys.Length);
+            List<Content> results = new(allKeys.Length);
 
             foreach (RedisKey key in allKeys) 
             {
                 var redisValue = await this.redisDb.StringGetAsync(key);
                 if (redisValue.HasValue) 
                 {
-                    var deserialized = JsonConvert.DeserializeObject<ContentDto>(redisValue);
+                    var deserialized = JsonConvert.DeserializeObject<Content>(redisValue);
                     if (deserialized != null) 
                     {
                         results.Add(deserialized);
