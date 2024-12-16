@@ -4,7 +4,7 @@ using System;
 
 namespace ContentParserBackend.Services
 {
-    public class SerachEngine
+    public class SerachEngine : ISerachEngine
     {
         private List<string> results;
         private Uri baseUrl;
@@ -48,7 +48,7 @@ namespace ContentParserBackend.Services
 
                 var pageContent = pageWithContent.DocumentNode.SelectNodes("//div[@class = 'previzako']");
 
-                if (pageContent != null) 
+                if (pageContent != null)
                 {
                     foreach (var cnt in pageContent)
                     {

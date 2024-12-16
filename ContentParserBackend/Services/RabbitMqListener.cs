@@ -5,10 +5,7 @@ using RabbitMQ.Client.Events;
 using RestSharp;
 using StackExchange.Redis;
 using System.Data;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading.Channels;
-using System.Web;
 
 namespace ContentParserBackend.Services
 {
@@ -38,7 +35,7 @@ namespace ContentParserBackend.Services
                 var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-
+                
                 foreach (char c in alpha)
                 {
                     SerachEngine parser = new($"https://fapomania.com/onlyfans/{c}/");
@@ -49,7 +46,7 @@ namespace ContentParserBackend.Services
                     var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
                     var redisDb = redis.GetDatabase(2);
 
-                    foreach (var rl in resultLinks) 
+                    foreach (var rl in resultLinks)
                     {
                         await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
                     }
@@ -61,8 +58,9 @@ namespace ContentParserBackend.Services
             _channel.BasicConsume("ParceContentQueue", false, consumer);
 
             return Task.CompletedTask;
-
         }
+
+
 
         public static List<string> PullImagesLinks(List<string> urls, string keyword)
         {
@@ -79,7 +77,7 @@ namespace ContentParserBackend.Services
                 var imgLinks = doc.DocumentNode.SelectNodes("//div[@class = 'previzakoimag']/img")?.Select(i => i.GetAttributeValue("src", "")).Where(e => e != "").Select(i => i.Replace("_300px", "")).ToList();
                 if (imgLinks is not null) 
                 {
-                    links.AddRange(imgLinks.Where(l => l != null && l.Contains(keyword) == true));
+                    links.AddRange(imgLinks.Where(l => l != null && l.ToLower().Contains(keyword.ToLower()) == true));
                 }
             }
 

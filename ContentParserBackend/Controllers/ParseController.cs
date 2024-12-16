@@ -16,9 +16,17 @@ namespace ContentParserBackend.Controllers
         }
 
         [HttpGet()]
-        public HttpStatusCode Index(string keyword)
+        public HttpStatusCode Index(string keyword, int parserId = 1)
         {
-            this.mqService.SendMessage(keyword, "ParceContentQueue");
+            if (parserId == 1)
+            {
+                this.mqService.SendMessage($"{keyword}:{parserId}", "ParcePediaContentQueue");
+            }
+            else 
+            {
+                this.mqService.SendMessage($"{keyword}:{parserId}", "ParceContentQueue");
+            }
+
             return HttpStatusCode.OK;
         }
     }
