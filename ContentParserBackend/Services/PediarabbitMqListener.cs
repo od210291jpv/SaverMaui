@@ -35,33 +35,25 @@ namespace ContentParserBackend.Services
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
-
                 var parserId = keyword.Split(":")?[1];
                 var expectedKeyword = keyword.Split(":")?[0] ?? keyword;
 
-                if (parserId is not null)
+                foreach (char c in alpha)
                 {
-                    if (parserId == "2")
+                    PediaSearchEngine parser = new PediaSearchEngine($"https://fapopedia.net/list/{c}/");
+                    var result = await parser.ParseAsync(expectedKeyword);
+                    var parsedRsults = await PullPediaImageLinks(result, expectedKeyword);
+
+
+                    var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+                    var redisDb = redis.GetDatabase(3);
+
+                    foreach (var rl in parsedRsults)
                     {
-                        foreach (char c in alpha)
-                        {
-                            PediaSearchEngine parser = new PediaSearchEngine($"https://fapopedia.net/list/{c}/");
-                            var result = await parser.ParseAsync(expectedKeyword);
-                            var parsedRsults = await PullPediaImageLinks(result, expectedKeyword);
-
-
-                            var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-                            var redisDb = redis.GetDatabase(2);
-
-                            foreach (var rl in parsedRsults)
-                            {
-                                await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
-                            }
-                        }
-
-                        _channel.BasicAck(ea.DeliveryTag, false);
+                        await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
                     }
                 }
+
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 

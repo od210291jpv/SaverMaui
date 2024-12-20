@@ -86,11 +86,12 @@ public partial class RandomContentPage : ContentPage
             return;
         }
 
-        await BackendServiceClient.GetInstance().ContentActions.DeleteContentAsync(FeedRandomContentViewModel.Instance.CurrentImage.ContentId);
-
         Realm _realm = Realm.GetInstance();
+        var all = _realm.All<Content>().ToArray();
 
-        var img = _realm.All<Content>().ToArray().Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        Content img = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+
+        var response = await BackendServiceClient.GetInstance().ContentActions.DeleteContentAsync(img.Id);
 
         if (img != null)
         {

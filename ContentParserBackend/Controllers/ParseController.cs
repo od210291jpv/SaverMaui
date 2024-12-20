@@ -18,7 +18,7 @@ namespace ContentParserBackend.Controllers
         [HttpGet()]
         public HttpStatusCode Index(string keyword, int parserId = 1)
         {
-            if (parserId == 1)
+            if (parserId == 2)
             {
                 this.mqService.SendMessage($"{keyword}:{parserId}", "ParcePediaContentQueue");
             }
