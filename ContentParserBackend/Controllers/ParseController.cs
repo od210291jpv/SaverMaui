@@ -24,7 +24,7 @@ namespace ContentParserBackend.Controllers
             }
             else 
             {
-                this.mqService.SendMessage($"{keyword}:{parserId}", "ParceContentQueue");
+                this.mqService.SendMessage($"{keyword}", "ParceContentQueue");
             }
 
             return HttpStatusCode.OK;
