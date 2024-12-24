@@ -52,28 +52,25 @@ public partial class FeedPage : ContentPage
         var notSortedAllAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
         GetAllContentResponseModel[] allNewContent = notSortedAllAllContent.OrderBy(c => c.DateCreated).ToArray();
 
-        if (allNewContent[allNewContent.Length - 1].Id != FeedViewModel.Instance.ContentCollection.Last().ContentId) 
+        int[] newContent = FeedViewModel.Instance.ContentCollection.AsParallel()
+            .Select(i => i.ContentId)
+            .Except(allNewContent.AsParallel()
+            .Select(i => i.Id))
+            .ToArray();
+
+        foreach (var i in newContent)
         {
-            var newContent = FeedViewModel.Instance.ContentCollection.AsParallel()
-                .Select(i => i.ContentId)
-                .Except(allNewContent.AsParallel()
-                .Select(i => i.Id))
-                .ToArray();
+            GetAllContentResponseModel c = allNewContent.Single(c => c.Id == i);
 
-            foreach (var i in newContent)
-            {
-                var c = allNewContent.Single(c => c.Id == i);
-
-                FeedViewModel.Instance
-                    .ContentCollection
-                    .Add(new ImageRepresentationElement
-                    {
-                        CategoryId = c.CategoryId,
-                        Name = c.Title,
-                        Source = c.ImageUri,
-                        ContentId = c.Id
-                    });
-            }
+            FeedViewModel.Instance
+                .ContentCollection
+                .Add(new ImageRepresentationElement
+                {
+                    CategoryId = c.CategoryId,
+                    Name = c.Title,
+                    Source = c.ImageUri,
+                    ContentId = c.Id
+                });
         }
     }
 
