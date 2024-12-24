@@ -4,25 +4,24 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RestSharp;
 using StackExchange.Redis;
-using System.Data;
 using System.Text;
 
 namespace ContentParserBackend.Services
 {
-    public class RabbitMqListener : BackgroundService
+    public class PediarabbitMqListener : BackgroundService
     {
         private IConnection _connection;
         private IModel _channel;
         private readonly IServiceScopeFactory serviceScopeFactory;
         private string keyword = string.Empty;
 
-        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory)
+        public PediarabbitMqListener(IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "ParceContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: "ParcePediaContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -35,18 +34,21 @@ namespace ContentParserBackend.Services
                 var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-                
+
+                var parserId = keyword.Split(":")?[1];
+                var expectedKeyword = keyword.Split(":")?[0] ?? keyword;
+
                 foreach (char c in alpha)
                 {
-                    SerachEngine parser = new($"https://fapomania.com/onlyfans/{c}/");
-                    var result = await parser.ParseAsync(keyword);
+                    PediaSearchEngine parser = new PediaSearchEngine($"https://fapopedia.net/list/{c}/");
+                    var result = await parser.ParseAsync(expectedKeyword);
+                    var parsedRsults = await PullPediaImageLinks(result, expectedKeyword);
 
-                    var resultLinks = PullImagesLinks(result, keyword);
 
                     var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-                    var redisDb = redis.GetDatabase(2);
+                    var redisDb = redis.GetDatabase(3);
 
-                    foreach (var rl in resultLinks)
+                    foreach (var rl in parsedRsults)
                     {
                         await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
                     }
@@ -55,33 +57,34 @@ namespace ContentParserBackend.Services
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            _channel.BasicConsume("ParceContentQueue", false, consumer);
+            _channel.BasicConsume("ParcePediaContentQueue", false, consumer);
 
             return Task.CompletedTask;
         }
 
-
-
-        public static List<string> PullImagesLinks(List<string> urls, string keyword)
+        public async static Task<List<string>> PullPediaImageLinks(List<string> urls, string keyword)
         {
             RestClient client = new RestClient();
 
             List<string> links = new List<string>();
 
+            string xpath = "//div[@class = 'shrt-pc']/img";
+
             foreach (string url in urls)
             {
                 HtmlDocument doc = new HtmlDocument();
-                var dt = client.ExecuteGet<string>(new RestRequest(url, Method.Get)).Content;
-                doc.LoadHtml(dt);
+                var dt = await client.ExecuteGetAsync<string>(new RestRequest(url, Method.Get));
+                doc.LoadHtml(dt.Content ?? "");
 
-                var imgLinks = doc.DocumentNode.SelectNodes("//div[@class = 'previzakoimag']/img")?.Select(i => i.GetAttributeValue("src", "")).Where(e => e != "").Select(i => i.Replace("_300px", "")).ToList();
-                if (imgLinks is not null) 
+                var link = doc.DocumentNode.SelectNodes(xpath)?.Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
+
+                if (link != null)
                 {
-                    links.AddRange(imgLinks.Where(l => l != null && l.ToLower().Contains(keyword.ToLower()) == true));
+                    links.AddRange(link);
                 }
             }
 
-            return links;
+            return links.Distinct().Where(l => l.Contains(keyword) == true).ToList();
         }
     }
 }

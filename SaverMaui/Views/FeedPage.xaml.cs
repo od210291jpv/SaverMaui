@@ -1,6 +1,8 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+
 using Realms;
+
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services;
@@ -28,11 +30,11 @@ public partial class FeedPage : ContentPage
             return;
         }
 
-        var notSortedAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
-        GetAllContentResponseModel[] allContent = notSortedAllContent.OrderBy(c => c.DateCreated).ToArray();
-
         if (FeedViewModel.Instance.ContentCollection.Count == 0) 
         {
+            var notSortedAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
+            GetAllContentResponseModel[] allContent = notSortedAllContent.OrderBy(c => c.DateCreated).ToArray();
+
             foreach (var cont in allContent) 
             {
                 FeedViewModel.Instance.ContentCollection.Add(
@@ -44,32 +46,31 @@ public partial class FeedPage : ContentPage
                         ContentId = cont.Id
                     });
             }
-
             return;
         }
 
-        if (allContent[allContent.Length - 1].Id != FeedViewModel.Instance.ContentCollection.Last().ContentId) 
+        var notSortedAllAllContent = await BackendServiceClient.GetInstance().GetAllContentAsync();
+        GetAllContentResponseModel[] allNewContent = notSortedAllAllContent.OrderBy(c => c.DateCreated).ToArray();
+
+        int[] newContent = FeedViewModel.Instance.ContentCollection.AsParallel()
+            .Select(i => i.ContentId)
+            .Except(allNewContent.AsParallel()
+            .Select(i => i.Id))
+            .ToArray();
+
+        foreach (var i in newContent)
         {
-            var newContent = FeedViewModel.Instance.ContentCollection.AsParallel()
-                .Select(i => i.ContentId)
-                .Except(allContent.AsParallel()
-                .Select(i => i.Id))
-                .ToArray();
+            GetAllContentResponseModel c = allNewContent.Single(c => c.Id == i);
 
-            foreach (var i in newContent)
-            {
-                var c = allContent.Single(c => c.Id == i);
-
-                FeedViewModel.Instance
-                    .ContentCollection
-                    .Add(new ImageRepresentationElement
-                    {
-                        CategoryId = c.CategoryId,
-                        Name = c.Title,
-                        Source = c.ImageUri,
-                        ContentId = c.Id
-                    });
-            }
+            FeedViewModel.Instance
+                .ContentCollection
+                .Add(new ImageRepresentationElement
+                {
+                    CategoryId = c.CategoryId,
+                    Name = c.Title,
+                    Source = c.ImageUri,
+                    ContentId = c.Id
+                });
         }
     }
 

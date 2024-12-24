@@ -5,7 +5,6 @@ using SaverMaui.SignalRModels;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Microsoft.Maui.Dispatching;
 
 namespace SaverMaui.ViewModels
 {
@@ -79,14 +78,10 @@ namespace SaverMaui.ViewModels
                 await Task.Run(() => SendLocalMessage(message));
             });
 
-            Task.Run(() =>
+            if (Environment.Login != null && Environment.Password != null) 
             {
-                //Application.Current?.Dispatcher.Dispatch(async () =>
-                //await hubConnection.StartAsync());
-            });
-
-            //this.notifyClientsCommand.Execute(this.isConnected);
-
+            }
+            
             Instance = this;
         }
 
