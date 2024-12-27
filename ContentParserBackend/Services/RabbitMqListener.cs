@@ -34,7 +34,7 @@ namespace ContentParserBackend.Services
             {
                 var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+                char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
                 
                 foreach (char c in alpha)
                 {

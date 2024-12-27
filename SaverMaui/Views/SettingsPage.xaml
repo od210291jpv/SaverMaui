@@ -51,15 +51,15 @@
                     <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Content Item:" FontAttributes="Bold"/>
                     <Entry Grid.Row="1" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Name" Text="{Binding ContentTitle}"/>
                     <Entry Grid.Row="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Uri" Text="{Binding ContentUri}"/>
-                    <Picker BackgroundColor="Black" Grid.Row="3" Grid.ColumnSpan="2" TextColor="White" Title="Select Category:" TitleColor="White" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}">
+                    <Picker BackgroundColor="Black" Grid.Row="3" Grid.ColumnSpan="2" TextColor="White" IsVisible="false" Title="Select Category:" TitleColor="White" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}">
                     </Picker>
 
                     <Button Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="MediumSlateBlue" BorderWidth="2" BorderColor="White" TextColor="White" Text="Recognize image category with AI" CornerRadius="0"></Button>
                     <Button Grid.Row="5" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Content" CornerRadius="5" Command="{Binding AddContentCommand}"/>
 
-                    <Label Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Entry Grid.Row="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
-                <Button Grid.Row="8" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Category" CornerRadius="5" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
+                    <Label Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" IsVisible="false" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                    <Entry Grid.Row="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" IsVisible="false" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
+                    <Button Grid.Row="8" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Category" IsVisible="false" CornerRadius="5" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
 
                     <Label Grid.Row="9" Grid.Column="0" Text="Categories now:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
                     <Label Grid.Row="10" Grid.Column="1" Text="{Binding CategoriesAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
