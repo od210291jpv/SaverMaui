@@ -45,7 +45,6 @@ public partial class ContentCleanupPage : ContentPage
 
                 InitialLoad = false;
             }
-
         }
     }
 

@@ -59,7 +59,9 @@ namespace SaverBackend.Controllers
                 }
             }
 
-            return results.ToArray();
+            var sorted = results.OrderBy(r => r.Id).Reverse();
+
+            return sorted.ToArray();
         }
 
         [HttpGet("searchResults")]

@@ -10,7 +10,7 @@
         public static int SignalRPort = 80;
 
         public static string ImageRecognitionHost = "192.168.88.20";
-        public static string ImageRecognitionApi = "http://192.168.88.20/RecognizeImage?imageUri=";
+        public static string ImageRecognitionApi = $"http://{BaseIp}/RecognizeImage?imageUri=";
 
         public static string SendNotificationUrl = $"http://{BaseIp}:{SignalRPort}/notify";
 
