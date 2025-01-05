@@ -41,14 +41,15 @@ namespace SaverMaui.Commands
                 return;
             }
 
-            CategoryDto[] popularCategories = await BackendServiceClient.GetInstance().GetMostPopularCategories(50);
+            CategoryDto[] popularCategories = await BackendServiceClient.GetInstance().GetMostPopularCategories(this.realmInstance.All<Category>().ToArray().Length);
 
             this.viewModel.MostPopularCategories.Clear();
             var allRealmCats = this.realmInstance.All<Category>();
 
             foreach (var category in popularCategories) 
             {
-                this.viewModel.MostPopularCategories.Add(allRealmCats.Single(ct => ct.CategoryId == category.CategoryId));
+                var cat = this.realmInstance.All<Category>().First(ct => ct.CategoryId == category.CategoryId);
+                this.viewModel.MostPopularCategories.Add(cat);
             }
 
             this.viewModel.IsDataRefreshing = false;

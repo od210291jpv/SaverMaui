@@ -6,8 +6,6 @@ using Realms;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services;
-using SaverMaui.Services.Contracts;
-using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
@@ -33,7 +31,7 @@ public partial class FeedPage : ContentPage
             return;
         }
 
-        Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
+        Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 300);
 
         var ordered = allContent.OrderBy(i => i.Id).ToArray();
 
@@ -41,7 +39,7 @@ public partial class FeedPage : ContentPage
         {
             FeedViewModel.Instance.ContentCollection.Clear();
 
-            foreach (var item in ordered)
+            foreach (var item in allContent)
             {
                 FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                 {
