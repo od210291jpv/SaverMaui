@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RestSharp;
 using SaverBackend.DTO;
 using SaverBackend.Hubs;
 using System.Text;
@@ -31,10 +32,17 @@ namespace SaverBackend.Services.RabbitMq
             consumer.Received += async (ch, ea) =>
             {
                 var pushMessage = Encoding.UTF8.GetString(ea.Body.ToArray());
-                await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", new PushNotificationDto 
+
+                RestClient client = new RestClient();
+                await client.ExecutePostAsync(new RestRequest("http://192.168.88.252/PushNotification", Method.Post).AddJsonBody<PushNotificationDto>(new PushNotificationDto() 
                 {
-                    NotificationMessage = pushMessage
-                });
+                    NotificationMessage = pushMessage,
+                }));
+
+                //await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", new PushNotificationDto 
+                //{
+                //    NotificationMessage = pushMessage
+                //});
 
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
