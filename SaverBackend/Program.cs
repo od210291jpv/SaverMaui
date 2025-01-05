@@ -20,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+builder.Services.AddHostedService<NotificationsListener>();
 
 builder.Services.AddResponseCompression(options =>
 {

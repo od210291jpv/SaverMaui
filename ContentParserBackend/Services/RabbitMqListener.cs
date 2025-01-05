@@ -6,6 +6,7 @@ using RestSharp;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace ContentParserBackend.Services
 {
@@ -15,14 +16,16 @@ namespace ContentParserBackend.Services
         private IModel _channel;
         private readonly IServiceScopeFactory serviceScopeFactory;
         private string keyword = string.Empty;
+        private readonly IRabbitMqService mqService;
 
-        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory)
+        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory, IRabbitMqService rabbit)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "ParceContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            this.mqService = rabbit;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -38,6 +41,7 @@ namespace ContentParserBackend.Services
                 
                 foreach (char c in alpha)
                 {
+                    mqService.SendMessage($"Parsing {c} character for https://fapomania.com/onlyfans/{c} link", "NotificationsQueue");
                     SerachEngine parser = new($"https://fapomania.com/onlyfans/{c}/");
                     var result = await parser.ParseAsync(keyword);
 
