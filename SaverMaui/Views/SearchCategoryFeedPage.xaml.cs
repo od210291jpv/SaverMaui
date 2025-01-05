@@ -1,11 +1,15 @@
+using Newtonsoft.Json;
 using Realms;
+using RestSharp;
 using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.Services.Contracts;
 using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.Contracts.Content;
+using SaverMaui.Services.Helpers;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
+using System.Web;
 
 namespace SaverMaui.Views;
 
@@ -36,8 +40,14 @@ public partial class SearchCategoryFeedPage : ContentPage
     {
         Realm _realm = Realm.GetInstance();
 
-        var cats = _realm.All<Category>().ToArray();
-        var reqCat = cats.FirstOrDefault(c => c.Name == "Sluts");
+        var catss = await BackendServiceClient.GetInstance().GetAllCategoriesAsync();
+
+        var ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url;
+
+        var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(ImageUri)}";
+        var resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
+
+        var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
 
         if (reqCat != null)
         {
@@ -64,7 +74,7 @@ public partial class SearchCategoryFeedPage : ContentPage
 
             _ = await BackendServiceClient.GetInstance().PostAllContentDataAsync(request);
 
-            await Application.Current.MainPage.DisplayAlert("Ok", $"Content added", "Ok");
+            await Application.Current.MainPage.DisplayAlert("Ok", $"Content added into the category: {reqCat.Name}", "Ok");
         }
         else
         {

@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" Loop="False" CurrentItemChanged="OnCurrentItemChanged">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="MainGrid">

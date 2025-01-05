@@ -50,40 +50,36 @@ namespace SaverMaui.Commands
 
             if (viewModel.SelectedCategory is null)
             {
-                Ping pingSender = new Ping();
-                PingReply reply = await pingSender.SendPingAsync(UriHelper.ImageRecognitionHost, 1000);
 
-                if (reply.Status == IPStatus.Success)
+                var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(this.viewModel.ContentUri)}";
+                var resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
+
+                bool answer = await Application.Current.MainPage.DisplayAlert("Suggestion",
+                    $"The most suitable category for the content to be saved is:{resp.Content}. Would you like to use this category?", "Yes", "No");
+                if (answer == true) 
                 {
-                    var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(this.viewModel.ContentUri)}";
-                    var resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
+                    Realm _realm = Realm.GetInstance();
 
-                    bool answer = await Application.Current.MainPage.DisplayAlert("Suggestion",
-                        $"The most suitable category for the content to be saved is:{resp.Content}. Would you like to use this category?", "Yes", "No");
-                    if (answer == true) 
+                    var cats = _realm.All<Category>().ToArray();
+                    var expectedCat = JsonConvert.DeserializeObject<string>(resp.Content);
+
+                    var reqCat = cats.FirstOrDefault(c => c.Name == expectedCat);
+
+                    if (reqCat != null)
                     {
-                        Realm _realm = Realm.GetInstance();
-
-                        var cats = _realm.All<Category>().ToArray();
-                        var expectedCat = JsonConvert.DeserializeObject<string>(resp.Content);
-
-                        var reqCat = cats.FirstOrDefault(c => c.Name == expectedCat);
-
-                        if (reqCat != null)
+                        await _realm.WriteAsync(() => _realm.Add(new Content()
                         {
-                            await _realm.WriteAsync(() => _realm.Add(new Content()
-                            {
-                                CategoryId = reqCat.CategoryId,
-                                ImageUri = this.viewModel.ContentUri,
-                                Title = this.viewModel.ContentTitle
-                            }));
-                        }
-                        else 
-                        {
-                            await Application.Current.MainPage.DisplayAlert("Error", $"Required category {resp.Content} does not exist!", "Ok");
-                        }
+                            CategoryId = reqCat.CategoryId,
+                            ImageUri = this.viewModel.ContentUri,
+                            Title = this.viewModel.ContentTitle
+                        }));
+                    }
+                    else 
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Required category {resp.Content} does not exist!", "Ok");
                     }
                 }
+                
                 return;
             }
 

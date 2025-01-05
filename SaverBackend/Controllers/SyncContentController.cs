@@ -90,14 +90,6 @@ namespace SaverBackend.Controllers
 
                 if (result > 0) 
                 {
-                    var randomRecommendedCategory = contentRepresentation
-                        .Categories
-                        .Select(ct => ct.Name)
-                        .ToArray()[new Random().Next(0, contentRepresentation.Categories.Length - 1)];
-
-                    await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", "Looks like we have some new cool content for you!\n Check your feed for tasty updates!");
-                    await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", $"Also Take a look at new hotty-notty content category '{randomRecommendedCategory.ToUpper()}', \n dont' forget to add to Favorites if you like it =)");
-
                     return StatusCode(201);
                 }
 
