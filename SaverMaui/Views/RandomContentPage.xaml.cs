@@ -17,10 +17,20 @@ public partial class RandomContentPage : ContentPage
         this.Appearing += OnPageAppearing;
     }
 
-    private async void OnPageAppearing(object sender, EventArgs e)
+    private void OnPageAppearing(object sender, EventArgs e)
     {
         Realm _realm = Realm.GetInstance();
-        var all = _realm.All<Content>().ToArray();
+        var all = _realm.All<Content>().Where(c => c.Rating < 1).ToArray();
+        
+        if (all.Length == 0) 
+        {
+            all = _realm.All<Content>().ToArray();
+        }
+
+        if (all.Length <= 1) 
+        {
+            return;
+        }
 
         var randomContent = all[new Random().Next(0, all.Length - 1)];
         if (FeedRandomContentViewModel.Instance != null) 
