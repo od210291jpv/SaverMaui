@@ -117,7 +117,7 @@ public partial class ProfilePage : ContentPage
     {
         var progressValue = notification.Message.Split(":").Last();
         double result;
-        var parsed = double.TryParse(progressValue, out result);
+        var parsed = double.TryParse(progressValue, System.Globalization.CultureInfo.InvariantCulture, out result);
 
         if (parsed == true) 
         {

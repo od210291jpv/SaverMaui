@@ -67,6 +67,8 @@ namespace ContentParserBackend.Services
                     mqService.SendMessage($"Search Progress:{progress}", "NotificationsQueue");
                 }
 
+                progress = 0;
+
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 
