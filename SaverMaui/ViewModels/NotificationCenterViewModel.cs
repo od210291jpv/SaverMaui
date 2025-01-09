@@ -5,6 +5,7 @@ using SaverMaui.SignalRModels;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reactive.Subjects;
 
 namespace SaverMaui.ViewModels
 {
@@ -13,6 +14,8 @@ namespace SaverMaui.ViewModels
         private static NotificationCenterViewModel Instance;
 
         HubConnection hubConnection;
+
+        public ISubject<Notification> Notifications = new Subject<Notification>();
 
         public string Message { get; set; }
 
@@ -75,14 +78,21 @@ namespace SaverMaui.ViewModels
 
             hubConnection.On<string>("SendNotificationsAsync", async (message) =>
             {
-                await Task.Run(() => SendLocalMessage(message));
+                this.Notifications.OnNext(new Notification() { Message = message });
             });
+
+            this.Notifications.Subscribe(OnNewNotification);
 
             if (Environment.Login != null && Environment.Password != null) 
             {
             }
             
             Instance = this;
+        }
+
+        public void OnNewNotification(Notification notification) 
+        {
+            this.SendLocalMessage(notification.Message);
         }
 
         public static NotificationCenterViewModel GetInstance() 

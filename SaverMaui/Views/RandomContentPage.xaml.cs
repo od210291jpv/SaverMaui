@@ -17,7 +17,7 @@ public partial class RandomContentPage : ContentPage
         this.Appearing += OnPageAppearing;
     }
 
-    private void OnPageAppearing(object sender, EventArgs e)
+    private async void OnPageAppearing(object sender, EventArgs e)
     {
         Realm _realm = Realm.GetInstance();
         var all = _realm.All<Content>().Where(c => c.Rating < 1).ToArray();
@@ -41,6 +41,9 @@ public partial class RandomContentPage : ContentPage
                 Source = randomContent.ImageUri,
                 Name = randomContent.Title
             };
+
+            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().Single(c => c.CategoryId == randomContent.CategoryId).Name}", ToastDuration.Short, 14);
+            await toast0.Show(new CancellationTokenSource().Token);
         }
     }
 

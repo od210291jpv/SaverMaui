@@ -1,10 +1,15 @@
 using Realms;
 using SaverMaui.Models;
+using SaverMaui.SignalRModels;
+using SaverMaui.ViewModels;
+using System.Reactive.Linq;
 
 namespace SaverMaui.Views;
 
 public partial class ProfilePage : ContentPage
 {
+    private bool IsProgressSubscribed { get; set; }
+
 	public ProfilePage()
 	{
 		InitializeComponent();
@@ -21,7 +26,7 @@ public partial class ProfilePage : ContentPage
         Realm _realm = Realm.GetInstance();
         var allCats = _realm.All<Category>();
 
-        this.TotalContentAmount.Text = $"{_realm.All<Content>().ToArray().Length}";
+        this.TotalContentAmount.Text = $"{_realm.All<Content>().ToArray().Length}/{_realm.All<Content>().Where(c => c.Rating > 0).Count()}";
 
         var assCat = allCats.Single(c => c.Name == "Ass");
         var totalAssContent = _realm.All<Content>().Where(c => c.CategoryId == assCat.CategoryId).ToArray();
@@ -100,5 +105,23 @@ public partial class ProfilePage : ContentPage
         var ratedTits = titsContent.Where(c => c.Rating > 0).ToArray();
 
         this.TotalTitsAmount.Text = $"{titsContent.Length}/{ratedTits.Length}";
+
+        if (this.IsProgressSubscribed == false) 
+        {
+            NotificationCenterViewModel.GetInstance()?.Notifications.Where(n => n.Message.Contains("Search Progress:")).Subscribe(OnProgressUpdatedFiltered);
+            this.IsProgressSubscribed = true;
+        }
+    }
+
+    public async void OnProgressUpdatedFiltered(Notification notification) 
+    {
+        var progressValue = notification.Message.Split(":").Last();
+        double result;
+        var parsed = double.TryParse(progressValue, out result);
+
+        if (parsed == true) 
+        {
+            await this.SearchProgress.ProgressTo(result, 500, Easing.Linear);
+        }
     }
 }
