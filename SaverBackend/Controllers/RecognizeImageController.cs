@@ -25,7 +25,7 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet("FilterByCategory")]
-        public async Task<HttpStatusCode> FilterFoundImagesByCategory(string category) 
+        public HttpStatusCode FilterFoundImagesByCategory(string category) 
         {
             this.mqService.SendMessage(category, "FilterContentQueue");
             return HttpStatusCode.OK;
