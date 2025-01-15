@@ -39,11 +39,6 @@ namespace SaverBackend.Services.RabbitMq
                     NotificationMessage = pushMessage,
                 }));
 
-                //await this.notificationsHubContext.Clients.All.SendAsync("SendNotificationsAsync", new PushNotificationDto 
-                //{
-                //    NotificationMessage = pushMessage
-                //});
-
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
 
