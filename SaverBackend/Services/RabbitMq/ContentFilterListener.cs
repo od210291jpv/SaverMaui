@@ -23,7 +23,7 @@ namespace SaverBackend.Services.RabbitMq
             _channel.QueueDeclare(queue: "FilterContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             var redisDb = redis.GetDatabase(2);
@@ -73,6 +73,8 @@ namespace SaverBackend.Services.RabbitMq
             };
 
             _channel.BasicConsume("FilterContentQueue", false, consumer);
+
+            return Task.CompletedTask;
         }
     }
 }
