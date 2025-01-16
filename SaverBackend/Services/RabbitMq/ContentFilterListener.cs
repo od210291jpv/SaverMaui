@@ -6,6 +6,7 @@ using RabbitMQ.Client.Events;
 using RestSharp;
 using SaverBackend.DTO;
 using StackExchange.Redis;
+using System;
 using System.Text;
 
 namespace SaverBackend.Services.RabbitMq
@@ -14,13 +15,15 @@ namespace SaverBackend.Services.RabbitMq
     {
         private IConnection _connection;
         private IModel _channel;
+        private readonly IRabbitMqService mqService;
 
-        public ContentFilterListener()
+        public ContentFilterListener(IRabbitMqService mqService)
         {
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "FilterContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            this.mqService = mqService;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +37,6 @@ namespace SaverBackend.Services.RabbitMq
             _ = allKeys.AsParallel().Select(k => redisDb.StringGetDelete(k).ToString()).ToArray();
 
             ImageAnalyzer nn = new ImageAnalyzer();
-            RestClient client = new RestClient();
 
             stoppingToken.ThrowIfCancellationRequested();
 
@@ -43,8 +45,8 @@ namespace SaverBackend.Services.RabbitMq
             {
                 var category = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                //string[] filteredContent = allContent.AsParallel().Where(c => nn.AnalyzeImageByUrl(c).Result.PredictedLabel.ToLower() == category.ToLower()).ToArray();
                 string[] filteredContent = Array.Empty<string>();
+                int counter = 0;
 
                 foreach (var item in allContent) 
                 {
@@ -52,18 +54,11 @@ namespace SaverBackend.Services.RabbitMq
                     if (label.PredictedLabel.ToLower() == category.ToLower()) 
                     {
                         await redisDb.StringSetAsync(Guid.NewGuid().ToString(), item);
-
-                        await client.ExecutePostAsync(new RestRequest("http://192.168.88.252/PushNotification", Method.Post).AddJsonBody<PushNotificationDto>(new PushNotificationDto()
-                        {
-                            NotificationMessage = $"Filtered countent found: {item}",
-                        }));
+                        counter++;
+                        mqService.SendMessage($"Item found:{item}", "NotificationsQueue");
+                        mqService.SendMessage($"Items processed:{counter}/{allContent.Length}", "NotificationsQueue");
                     }
                 }
-
-                await client.ExecutePostAsync(new RestRequest("http://192.168.88.252/PushNotification", Method.Post).AddJsonBody<PushNotificationDto>(new PushNotificationDto()
-                {
-                    NotificationMessage = $"Filtering done",
-                }));
 
                 _channel.BasicAck(ea.DeliveryTag, false);
 
