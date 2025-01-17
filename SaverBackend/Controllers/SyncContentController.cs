@@ -63,6 +63,7 @@ namespace SaverBackend.Controllers
                             CategoryId = content.CategoryId,
                             ImageUri = content.ImageUri,
                             Title = content.Title,
+                            Rating = content.Rating,
                         };
 
                         await db.Contents.AddAsync(newContent);

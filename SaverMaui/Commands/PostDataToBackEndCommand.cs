@@ -41,7 +41,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            var allContent = this.realmInstance.All<Content>().ToArray();
+            var allContent = this.realmInstance.All<Content>().Where(c => c.Rating > 0).ToArray();
             var allCategories = this.realmInstance.All<Category>().ToArray();
 
             var allCategoriesDto = new List<CategoryDto>();
@@ -81,7 +81,7 @@ namespace SaverMaui.Commands
 
             var contentAmt = allContent.Length;
 
-            for (int i = 0; i >= contentAmt; i++) 
+            for (int i = 0; i <= contentAmt - 1; i++) 
             {
                 if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(allContent[i].ImageUri))
                 {
@@ -89,7 +89,8 @@ namespace SaverMaui.Commands
                     {
                         CategoryId = allContent[i].CategoryId,
                         ImageUri = allContent[i].ImageUri,
-                        Title = allContent[i].Title
+                        Title = allContent[i].Title,
+                        Rating = (short)allContent[i].Rating,
                     });
                 }
             }

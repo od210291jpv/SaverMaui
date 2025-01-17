@@ -6,14 +6,14 @@ using System.Text;
 
 namespace SaverBackend.Services.RabbitMq
 {
-    public class InitContentInfoListener : BackgroundService
+    public class ContentInfoListener : BackgroundService
     {
         private readonly IServiceScopeFactory serviceScopeFactory;
         private IConnection _connection;
         private IModel _channel;
         private readonly IRabbitMqService mqService;
 
-        public InitContentInfoListener(IRabbitMqService mqService, IServiceScopeFactory serviceScopeFactory)
+        public ContentInfoListener(IRabbitMqService mqService, IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };

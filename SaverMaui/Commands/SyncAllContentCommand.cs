@@ -92,7 +92,7 @@ namespace SaverMaui.Commands
                         CategoryId = content.CategoryId,
                         ImageUri = content.ImageUri.Replace(" ", ""),
                         IsFavorite = false,
-                        Title = content.Title
+                        Title = content.Title,
                     };
 
                     realmInstance.Write(() => realmInstance.Add<Content>(ct));
