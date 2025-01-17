@@ -18,8 +18,10 @@ namespace SaverMaui.Services.Contracts.Content
         [JsonProperty("dateCreated")]
         public DateTime DateCreated { get; set; }
 
+        [JsonProperty("rating")]
         public short Rating { get; set; } = 0;
 
+        [JsonProperty("cost")]
         public decimal Cost { get; set; } = 0.0m;
     }
 }
