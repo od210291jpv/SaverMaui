@@ -21,7 +21,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 builder.Services.AddHostedService<NotificationsListener>();
-builder.Services.AddHostedService<ContentFilterListener>();
+builder.Services.AddScoped<InitContentInfoListener>();
+builder.Services.AddScoped<ContentFilterListener>();
 
 builder.Services.AddResponseCompression(options =>
 {

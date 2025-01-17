@@ -28,6 +28,32 @@ namespace SaverBackend.Controllers
             this.hub = hubcontext;
         }
 
+        [HttpGet("ProfileInfo")]
+        public UserProfileInfoDto GetProfileInfo(string login, string password) 
+        {
+            if (this.dbContext.Profiles.Where(pr => pr.UserName == login && pr.Password == password).ToArray().Length != 1)
+            {
+                return new UserProfileInfoDto();
+            }
+
+            Profile userProfile = this.dbContext.Profiles.Single(pr => pr.UserName == login && pr.Password == password);
+
+            UserProfileInfoDto profileInfo = new UserProfileInfoDto()
+            {
+                UserName = userProfile.UserName,
+                FavoriteCategories = userProfile.FavoriteCategories,
+                Friends = userProfile.Friends,
+                Groups = userProfile.Groups,
+                IsOnline = true,
+                ProfileId = userProfile.ProfileId,
+                Publications = userProfile.Publications,
+                Funds = userProfile.Funds,
+                Id = userProfile.Id,
+            };
+
+            return profileInfo;
+        }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Index(string login, string password)
         {
@@ -58,12 +84,12 @@ namespace SaverBackend.Controllers
                 IsOnline = true,
                 ProfileId = userProfile.ProfileId,
                 Publications = userProfile.Publications,
-                PublishedCategories = publishedCategoriesDto
+                PublishedCategories = publishedCategoriesDto,
+                Funds = userProfile.Funds,
             };
             
             this.redisDb.StringSet(userProfile.UserName, "Online");
             this.redisDb.KeyExpire(userProfile.UserName, TimeSpan.FromMinutes(30));
-            await this.hub.Clients.All.SendAsync($"{profileInfo.UserName} just joined!! Say Hello!");
             await this.LoadContentToRedis();
 
             return Ok();

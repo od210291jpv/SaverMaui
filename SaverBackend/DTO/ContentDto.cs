@@ -20,5 +20,9 @@ namespace SaverBackend.DTO
         public int? ProfileId { get; set; }
  
         public object? Profile { get; set; }
+
+        public short Rating { get; set; } = 0;
+
+        public decimal Cost { get; set; } = 0.0m;
     }
 }

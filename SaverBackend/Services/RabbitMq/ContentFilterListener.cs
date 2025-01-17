@@ -1,12 +1,8 @@
 ﻿
 using ImageRecognitionNN;
-using Microsoft.AspNetCore.Http;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RestSharp;
-using SaverBackend.DTO;
 using StackExchange.Redis;
-using System;
 using System.Text;
 
 namespace SaverBackend.Services.RabbitMq

@@ -17,7 +17,7 @@ namespace SaverBackend.Controllers
         public GetCategoryStatistics(ApplicationContext database)
         {
             this.db = database;
-            this.redis = ConnectionMultiplexer.Connect("192.168.0.101:6379");
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");
             this.redisDb = redis.GetDatabase();
         }
 
