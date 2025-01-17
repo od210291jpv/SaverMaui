@@ -100,7 +100,7 @@ namespace SaverBackend.Controllers
         {
             Profile? result = await this.db
                 .Profiles
-                .SingleOrDefaultAsync(pr =>
+                .FirstOrDefaultAsync(pr =>
                 pr.PublishedCategories != null &&
                 pr.PublishedCategories.Select(c => c.CategoryId)
                 .ToArray()

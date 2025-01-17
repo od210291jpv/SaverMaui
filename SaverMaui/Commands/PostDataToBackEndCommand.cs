@@ -41,7 +41,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            var allContent = this.realmInstance.All<Content>().Where(c => c.Rating > 0).ToArray();
+            var allContent = this.realmInstance.All<Content>().Where(c => c.ImageUri != "" && c.ImageUri != null).ToArray();
             var allCategories = this.realmInstance.All<Category>().ToArray();
 
             var allCategoriesDto = new List<CategoryDto>();
@@ -49,20 +49,20 @@ namespace SaverMaui.Commands
 
             var allExistingsCategories = await this.backendClient.GetAllCategoriesAsync();
 
-            foreach (var cat in allCategories)
-            {
-                if (!allExistingsCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
-                {
-                    allCategoriesDto.Add(new CategoryDto()
-                    {
-                        Name = cat.Name,
-                        CategoryId = cat.CategoryId,
-                        AmountOfFavorites = cat.AmountOfFavorites,
-                        AmountOfOpenings = cat.AmountOfOpenings,
-                        PublisherProfileId = Environment.ProfileId
-                    });
-                }
-            }
+            //foreach (var cat in allCategories)
+            //{
+            //    if (!allExistingsCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
+            //    {
+            //        allCategoriesDto.Add(new CategoryDto()
+            //        {
+            //            Name = cat.Name,
+            //            CategoryId = cat.CategoryId,
+            //            AmountOfFavorites = cat.AmountOfFavorites,
+            //            AmountOfOpenings = cat.AmountOfOpenings,
+            //            PublisherProfileId = Environment.ProfileId
+            //        });
+            //    }
+            //}
 
             var allExistingContent = await this.backendClient.GetAllContentAsync();
 
