@@ -1,4 +1,6 @@
-﻿using Realms;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using Realms;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.ViewModels;
@@ -23,12 +25,22 @@ namespace SaverMaui.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             this.viewModel.IsRefreshing = true;
 
             Realm _realm = Realm.GetInstance();
-            var all = _realm.All<Content>().ToArray();
+            var all = _realm.All<Content>().Where(c => c.Rating < 1).ToArray();
+
+            if (all.Length == 0)
+            {
+                all = _realm.All<Content>().ToArray();
+            }
+
+            if (all.Length <= 1)
+            {
+                return;
+            }
 
             var randomContent = all[new Random().Next(0, all.Length - 1)];
             if (FeedRandomContentViewModel.Instance != null)
@@ -39,6 +51,9 @@ namespace SaverMaui.Commands
                     Source = randomContent.ImageUri,
                     Name = randomContent.Title
                 };
+
+                var toast0 = Toast.Make($"Content category: {_realm.All<Category>().Single(c => c.CategoryId == randomContent.CategoryId).Name}", ToastDuration.Short, 14);
+                await toast0.Show(new CancellationTokenSource().Token);
             }
 
             this.viewModel.IsRefreshing = false;

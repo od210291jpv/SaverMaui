@@ -6,6 +6,7 @@ using RestSharp;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace ContentParserBackend.Services
 {
@@ -15,14 +16,16 @@ namespace ContentParserBackend.Services
         private IModel _channel;
         private readonly IServiceScopeFactory serviceScopeFactory;
         private string keyword = string.Empty;
+        private readonly IRabbitMqService mqService;
 
-        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory)
+        public RabbitMqListener(IServiceScopeFactory serviceScopeFactory, IRabbitMqService rabbit)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "ParceContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            this.mqService = rabbit;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,6 +33,9 @@ namespace ContentParserBackend.Services
             stoppingToken.ThrowIfCancellationRequested();
 
             var consumer = new EventingBasicConsumer(_channel);
+            double progress = 0;
+            double step = 0.03846153846;
+
             consumer.Received += async (ch, ea) =>
             {
                 var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
@@ -38,10 +44,16 @@ namespace ContentParserBackend.Services
                 
                 foreach (char c in alpha)
                 {
+                    mqService.SendMessage($"Parsing {c} character for request {keyword} https://fapomania.com/onlyfans/{c} link", "NotificationsQueue");
                     SerachEngine parser = new($"https://fapomania.com/onlyfans/{c}/");
                     var result = await parser.ParseAsync(keyword);
 
                     var resultLinks = PullImagesLinks(result, keyword);
+
+                    if (resultLinks.Count() > 0) 
+                    {
+                        mqService.SendMessage($"For request {keyword} https://fapomania.com/onlyfans/{c} found {resultLinks.Count()} results", "NotificationsQueue");
+                    }
 
                     var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
                     var redisDb = redis.GetDatabase(2);
@@ -50,7 +62,12 @@ namespace ContentParserBackend.Services
                     {
                         await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
                     }
+
+                    progress += step;
+                    mqService.SendMessage($"Search Progress:{progress}", "NotificationsQueue");
                 }
+
+                progress = 0;
 
                 _channel.BasicAck(ea.DeliveryTag, false);
             };
