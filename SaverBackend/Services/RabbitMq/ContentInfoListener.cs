@@ -11,16 +11,14 @@ namespace SaverBackend.Services.RabbitMq
         private readonly IServiceScopeFactory serviceScopeFactory;
         private IConnection _connection;
         private IModel _channel;
-        private readonly IRabbitMqService mqService;
 
-        public ContentInfoListener(IRabbitMqService mqService, IServiceScopeFactory serviceScopeFactory)
+        public ContentInfoListener(IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "InitContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-            this.mqService = mqService;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
