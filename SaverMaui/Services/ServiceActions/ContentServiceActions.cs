@@ -67,5 +67,11 @@ namespace SaverMaui.Services.ServiceActions
             var response = await this.client.ExecuteAsync(new RestRequest(UriHelper.CleanSearchResults, Method.Delete));
             return response;
         }
+
+        public async Task<ContentDto> RateContent(int contentId, int profileId, short rate) 
+        {
+            var response = await this.client.ExecuteGetAsync<ContentDto>(new RestRequest(UriHelper.RateContent(contentId, rate, profileId), Method.Get));
+            return response.Data;
+        }
     }
 }

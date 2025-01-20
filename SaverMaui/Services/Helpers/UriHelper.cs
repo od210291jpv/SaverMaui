@@ -105,5 +105,10 @@
         {
             get => $"{BaseAddress}/GetAllContent/CleanResults";
         }
+
+        public static string RateContent(int contentId, short rating, int profileId) 
+        {
+            return $"{BaseAddress}/Content/UpdateContentRating?contentId={contentId}&rating={rating}&profileId={profileId}";
+        }
     }
 }
