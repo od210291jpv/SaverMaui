@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SaverBackend.Models;
 using SaverBackend.Services.RabbitMq;
+using StackExchange.Redis;
 
 namespace SaverBackend.Controllers
 {
@@ -11,11 +13,17 @@ namespace SaverBackend.Controllers
     {
         private ApplicationContext db;
         private IRabbitMqService mqService;
+        private ConnectionMultiplexer redis;
+        private IDatabase redisDb;
+        private IDatabase redisContentDb;
 
         public ContentController(ApplicationContext db, IRabbitMqService mq)
         {
             this.db = db;
             this.mqService = mq;
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+            this.redisDb = redis.GetDatabase();
+            this.redisContentDb = redis.GetDatabase(1);
         }
 
         [HttpGet("UpdateContentRating")]
@@ -28,6 +36,17 @@ namespace SaverBackend.Controllers
             }
 
             content.Rating = rating;
+            var contentEntry = await this.redisContentDb.StringGetAsync(contentId.ToString());
+
+            if (contentEntry.HasValue == true) 
+            {
+                var deserializedContent = JsonConvert.DeserializeObject<Content>(contentEntry);
+                if (deserializedContent is not null) 
+                {
+                    deserializedContent.Rating = rating;
+                    await this.redisContentDb.StringSetAsync(contentId.ToString(), JsonConvert.SerializeObject(deserializedContent));
+                }
+            }
 
             if (profileId is not null) 
             {

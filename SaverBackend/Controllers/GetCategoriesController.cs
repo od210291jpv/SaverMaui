@@ -31,6 +31,7 @@ namespace SaverBackend.Controllers
                 {
                     Name = ct.Name,
                     CategoryId = ct.CategoryId,
+                    Id = ct.Id,
                     AmountOfFavorites = ct.AmountOfFavorites,
                     AmountOfOpenings = ct.AmountOfOpenings,
                     PublisherProfileId = profileId,
@@ -38,6 +39,13 @@ namespace SaverBackend.Controllers
             }
 
             return results.ToArray();
+        }
+
+        [HttpGet("categoryContent")]
+        public async Task<Content[]> GetCategoryContent(Guid categoryId) 
+        {
+            var result = await this.db.Contents.Where(c => c.CategoryId == categoryId).ToArrayAsync();
+            return result;
         }
 
         [HttpPost(Name = "GetPopularCategories")]

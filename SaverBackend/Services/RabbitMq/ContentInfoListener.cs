@@ -1,7 +1,9 @@
 ﻿
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using SaverBackend.Models;
+using StackExchange.Redis;
 using System.Text;
 
 namespace SaverBackend.Services.RabbitMq
@@ -11,6 +13,9 @@ namespace SaverBackend.Services.RabbitMq
         private readonly IServiceScopeFactory serviceScopeFactory;
         private IConnection _connection;
         private IModel _channel;
+        private ConnectionMultiplexer redis;
+        private IDatabase redisDb;
+        private IDatabase redisContentDb;
 
         public ContentInfoListener(IServiceScopeFactory serviceScopeFactory)
         {
@@ -19,6 +24,9 @@ namespace SaverBackend.Services.RabbitMq
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "InitContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+            this.redisDb = redis.GetDatabase();
+            this.redisContentDb = redis.GetDatabase(1);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -39,7 +47,17 @@ namespace SaverBackend.Services.RabbitMq
 
                     foreach (var c in content)
                     {
-                        c.Cost = new Random().Next(120, 1500);
+                        var cost = new Random().Next(120, 1500);
+                        c.Cost = cost;
+                        var redisEntry = await this.redisContentDb.StringGetAsync(c.Id.ToString());
+
+                        if (redisEntry.HasValue == true) 
+                        {
+                            var redisContent = JsonConvert.DeserializeObject<Content>(redisEntry);
+                            redisContent.Cost = cost;
+
+                            await this.redisContentDb.StringSetAsync(c.Id.ToString(), JsonConvert.SerializeObject(redisContent));
+                        }
                     }
 
                     await context.SaveChangesAsync();
