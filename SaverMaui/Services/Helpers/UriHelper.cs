@@ -110,5 +110,10 @@
         {
             return $"{BaseAddress}/Content/UpdateContentRating?contentId={contentId}&rating={rating}&profileId={profileId}";
         }
+
+        public static string GetCategoryContent(Guid categoryId) 
+        {
+            return $"{BaseAddress}//GetCategories/categoryContent?categoryId={categoryId}";
+        }
     }
 }

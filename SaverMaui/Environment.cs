@@ -2,6 +2,7 @@
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services.Contracts.Profile;
+using SaverMaui.Services.Contracts.Category;
 
 namespace SaverMaui
 {
@@ -27,7 +28,7 @@ namespace SaverMaui
 
         public static class SahredData
         {
-            public static Category currentCategory;
+            public static CategoryDto currentCategory;
 
             public static WebContent currentWebContent;
         }

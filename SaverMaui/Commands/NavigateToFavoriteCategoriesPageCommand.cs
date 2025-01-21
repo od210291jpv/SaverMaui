@@ -27,7 +27,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Environment.SahredData.currentCategory = this._vm.SelectedFavoriteCategory;
+            //Environment.SahredData.currentCategory = this._vm.SelectedFavoriteCategory;
 
             var category = Realm.GetInstance().All<Category>().Single(c => c.CategoryId == this._vm.SelectedFavoriteCategory.CategoryId);
 

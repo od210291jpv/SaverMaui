@@ -52,8 +52,6 @@ public partial class FeedPage : ContentPage
 
             InitialLoad = false;
         }
-
-
     }
 
     public async void OnCurrentItemChanged(object sender, CurrentItemChangedEventArgs e)

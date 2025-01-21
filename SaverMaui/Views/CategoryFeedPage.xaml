@@ -10,7 +10,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentImage}" Loop="True" CurrentItemChangedCommand="{Binding LogImageLoadCommand}">
+            <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" Loop="True">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:Name="ContentGrid">
@@ -22,7 +22,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=Source}" Margin="0">
+                            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=ImageUri}" Margin="0">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
                                 </Image.GestureRecognizers>

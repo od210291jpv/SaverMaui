@@ -1,56 +1,34 @@
-﻿using Realms;
-using SaverMaui.Commands;
-using SaverMaui.Custom_Elements;
-using SaverMaui.Models;
+﻿using SaverMaui.Custom_Elements;
+using SaverMaui.Services.Contracts.Content;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
     public class CategoryFeedViewModel : BaseViewModel
     {
-        private static CategoryFeedViewModel instance;
+        public static CategoryFeedViewModel Instance { get; private set; }
 
-        public static CategoryFeedViewModel GetInstance()
-        {
-            if (instance is null)
+        private ObservableCollection<ContentDto> contentCollection;
+
+        public ObservableCollection<ContentDto> ContentCollection 
+        { 
+            get => this.contentCollection;
+            set
             {
-                instance = new CategoryFeedViewModel();
+                this.contentCollection = value;
+                OnPropertyChanged(nameof(ContentCollection));
             }
-
-            return instance;
         }
-
-        private ObservableCollection<ImageRepresentationElement> contentCollection;
-        public ObservableCollection<ImageRepresentationElement> ContentCollection { get => contentCollection; set => contentCollection = value; }
 
         private ImageRepresentationElement currentImage;
 
         public ImageRepresentationElement CurrentImage { get => currentImage; set => currentImage = value; }
 
-        public ICommand LogImageLoadCommand 
-        { 
-            get;
-        }
-
         public CategoryFeedViewModel()
         {
-            this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
-            this.LogImageLoadCommand = new CategoryFeedCarouselItemChangedCommand(this);
-
-            Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().ToArray();
-           
-            foreach (var cat in allRelatedContent.Where(c => c.CategoryId.Value == Environment.SahredData.currentCategory.CategoryId).ToArray())
-            {
-                ContentCollection.Add(new ImageRepresentationElement() 
-                {
-                    CategoryId = cat.CategoryId.Value,
-                    Name = cat.Title,
-                    Source = cat.ImageUri,
-                    IsFavorite = cat.IsFavorite
-                });
-            }
+            this.ContentCollection = new ObservableCollection<ContentDto>();
+            this.contentCollection = new ObservableCollection<ContentDto>();
+            Instance = this;
         }
     }
 }

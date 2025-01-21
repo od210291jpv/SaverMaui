@@ -20,6 +20,11 @@ namespace SaverMaui.Services
             get => new ContentServiceActions();
         }
 
+        public CategoryServiceActions CategoriesActions 
+        { 
+            get => new CategoryServiceActions();
+        }
+
         private BackendServiceClient(string hostIp)
         {
             this.httpClient = new HttpClient();

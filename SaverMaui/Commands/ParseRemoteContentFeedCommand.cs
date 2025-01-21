@@ -48,9 +48,6 @@ namespace SaverMaui.Commands
 
             realmInstance.Write(() => realmInstance.Add(category));
 
-            CategoriesViewModel.Instance?.UpdateAllCategories();
-            SettingsViewModel.GetInstance().UpdateAllCategories();
-
             SettingsViewModel.GetInstance().CategoriesAmount += 1;
 
             foreach (var img in images) 

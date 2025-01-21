@@ -33,14 +33,12 @@ namespace SaverMaui.Commands
                         await _realm.WriteAsync(() => _realm.Remove(cat));
                     }
 
-                    CategoriesViewModel.Instance.UpdateAllCategories();
                     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                     var toast = Toast.Make($"Categories where deleted", ToastDuration.Short, 14);
                     await toast.Show(cancellationTokenSource.Token);
                 }
                 else
                 {
-                    CategoriesViewModel.Instance.UpdateAllCategories();
                     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                     var toast = Toast.Make($"Operation aborted", ToastDuration.Short, 14);
                     await toast.Show(cancellationTokenSource.Token);
@@ -48,7 +46,6 @@ namespace SaverMaui.Commands
             }
             else
             {
-                CategoriesViewModel.Instance.UpdateAllCategories();
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 var toast = Toast.Make($"No empty categories where found", ToastDuration.Short, 14);
                 await toast.Show(cancellationTokenSource.Token);
