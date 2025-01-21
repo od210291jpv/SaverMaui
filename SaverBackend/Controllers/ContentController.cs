@@ -104,5 +104,15 @@ namespace SaverBackend.Controllers
             await this.db.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpGet("GetRatedContent")]
+        public async Task<Content[]> GetRatedContent(short? rate) 
+        {
+            var targetRating = rate != null ? rate.Value : 0;
+            var ratedContentIds = await this.db.Contents.Where(c => c.Rating > targetRating).Select(c => c.Id).ToArrayAsync();
+            var result = ratedContentIds.Select(i => this.redisContentDb.StringGet(i.ToString()));
+            var deserializedResult = result.Where(r => r.HasValue == true).Select(r => JsonConvert.DeserializeObject<Content>(r.ToString())).OrderBy(c => c?.Rating).ToArray();
+            return deserializedResult;
+        }
     }
 }
