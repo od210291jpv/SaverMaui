@@ -22,6 +22,18 @@ namespace SaverMaui.Services.ServiceActions
             return Array.Empty<ContentDto>();
         }
 
+        public async Task<ContentDto[]> GetRatedContent(short rate = 0) 
+        {
+            var response = await this.client.ExecuteAsync(new(UriHelper.GetRatedContent(rate), Method.Get));
+
+            if (response.StatusCode == HttpStatusCode.OK) 
+            {
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ContentDto[]>(response.Content);
+                return result;
+            }
+            return Array.Empty<ContentDto>();
+        }
+
         public async Task<ContentDto[]> GetAllContentWithPaginationAsync(short page, short size) 
         {
             RestRequest request = new RestRequest(UriHelper.GetPaginatedContent(page, size));

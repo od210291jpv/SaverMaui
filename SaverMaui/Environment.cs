@@ -14,6 +14,8 @@ namespace SaverMaui
 
         public static Guid ProfileId;
 
+        public static int ProfileIntId;
+
         public static LoginResponse ProfileData;
 
         public static KeyValuePair<string, SearchResult[]> CurrectSearchResultCategory;

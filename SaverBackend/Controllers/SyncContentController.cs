@@ -181,6 +181,8 @@ namespace SaverBackend.Controllers
                 ImageUri = result.ImageUri,
                 Title = result.Title,
                 Id = result.Id,
+                Cost = result.Cost,
+                Rating = result.Rating,
             };
         }
 

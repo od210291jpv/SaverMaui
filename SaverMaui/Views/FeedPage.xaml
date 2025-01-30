@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             xmlns:vd="clr-namespace:SaverMaui.Custom_Elements"
              x:Class="SaverMaui.Views.FeedPage"
+             xmlns:local="clr-namespace:SaverMaui.ViewModels"
+             x:DataType="local:FeedViewModel"
              Title="FeedPage">
     <ContentPage.BindingContext>
         <vm:FeedViewModel />
@@ -12,7 +15,7 @@
         <FlexLayout>
             <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" Loop="False" CurrentItemChanged="OnCurrentItemChanged">
                 <CarouselView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="vd:ImageRepresentationElement">
                         <Grid x:Name="MainGrid">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>

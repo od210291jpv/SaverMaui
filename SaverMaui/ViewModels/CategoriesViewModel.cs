@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using Realms;
-using SaverMaui.Commands;
-using SaverMaui.Models;
-using SaverMaui.Services;
+﻿using SaverMaui.Commands;
 using SaverMaui.Services.Contracts.Category;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

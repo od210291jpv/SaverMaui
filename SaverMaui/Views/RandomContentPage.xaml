@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.RandomContentPage" 
+             xmlns:local="clr-namespace:SaverMaui.ViewModels"
+             x:DataType="local:FeedRandomContentViewModel"
              Title="Random Content">
 
     <ContentPage.BindingContext>

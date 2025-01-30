@@ -31,7 +31,7 @@ namespace SaverMaui.Commands
 
             if (this.viewModel.Login == null || this.viewModel.Login == "" || this.viewModel.Password == null || this.viewModel.Password == "") 
             {
-                await Application.Current.MainPage.DisplayAlert("Done", $"Login or password cannot be empty", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ahh!", $"Login or password cannot be empty", "Ok");
                 return;
             }
 
@@ -53,6 +53,8 @@ namespace SaverMaui.Commands
 
             if (isLoggedIn == true)
             {
+                Services.Contracts.Profile.ProfileInfoResponseDto profileInfo = await BackendServiceClient.GetInstance().UserActions.GetProfileInfo(this.viewModel.Login, this.viewModel.Password);
+                Environment.ProfileIntId = profileInfo.Id;
                 await Application.Current.MainPage.DisplayAlert("Done", $"You logged in!!", "Ok");
                 
                 Environment.Login = this.viewModel.Login;

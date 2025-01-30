@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             xmlns:vd="clr-namespace:SaverMaui.Services.Contracts.Category"
              x:Class="SaverMaui.Views.CategoriesPage"
+             xmlns:local="clr-namespace:SaverMaui.ViewModels"
+             x:DataType="local:CategoriesViewModel"
              Title="CategoriesPage">
     <ContentPage.BindingContext>
         <vm:CategoriesViewModel />
@@ -14,7 +17,7 @@
             <Button Command="{Binding AddFavoriteCategoryCmd}" Text="Add To Favorites" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
             <ListView ItemsSource="{Binding Categories}" HasUnevenRows="True" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" RefreshControlColor="Gold" SeparatorColor="Transparent">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="vd:CategoryDto">
                         <ViewCell>
                             <Grid Margin="5" Padding="5" RowSpacing="0">
                                 <Grid.RowDefinitions>

@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using Realms;
 using SaverMaui.Models;
+using SaverMaui.Services;
 using SaverMaui.ViewModels;
 using System.Threading;
 using System.Windows.Input;
@@ -50,6 +51,8 @@ namespace SaverMaui.Commands
 
 
             _realm.Write(() => requiredContent.Rating = parcedRate);
+
+            await BackendServiceClient.GetInstance().ContentActions.RateContent(requiredContent.Id, Environment.ProfileIntId, (short)requiredContent.Rating);
 
             var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
             await toast.Show(new CancellationTokenSource().Token);

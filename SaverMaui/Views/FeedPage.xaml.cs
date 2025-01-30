@@ -31,15 +31,15 @@ public partial class FeedPage : ContentPage
             return;
         }
 
-        Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 300);
+        var allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-        var ordered = allContent.OrderBy(i => i.Id).ToArray();
+        var ordered = allContent.OrderByDescending(i => i.Id);
 
         if (allContent != null)
         {
             FeedViewModel.Instance.ContentCollection.Clear();
 
-            foreach (var item in allContent)
+            foreach (var item in ordered)
             {
                 FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                 {
@@ -67,7 +67,7 @@ public partial class FeedPage : ContentPage
             CurrentPage += 1;
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-            var ordered = allContent.OrderBy(i => i.Id).ToArray();
+            var ordered = allContent.OrderBy(i => i.Id);
 
             if (allContent != null)
             {

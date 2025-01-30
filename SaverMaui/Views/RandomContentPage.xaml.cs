@@ -42,7 +42,7 @@ public partial class RandomContentPage : ContentPage
                 Name = randomContent.Title
             };
 
-            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().Single(c => c.CategoryId == randomContent.CategoryId).Name}", ToastDuration.Short, 14);
+            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().SingleOrDefault(c => c.CategoryId == randomContent.CategoryId)?.Name ?? "N/A"}", ToastDuration.Short, 14);
             await toast0.Show(new CancellationTokenSource().Token);
         }
     }
@@ -87,6 +87,11 @@ public partial class RandomContentPage : ContentPage
 
 
         _realm.Write(() => requiredContent.Rating = parcedRate);
+
+        if (Environment.ProfileIntId != 0) 
+        {
+            var resp = await BackendServiceClient.GetInstance().ContentActions.RateContent(requiredContent.Id, Environment.ProfileIntId, (short)requiredContent.Rating);
+        }
 
         var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
         await toast.Show(new CancellationTokenSource().Token);
