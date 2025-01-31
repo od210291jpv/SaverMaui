@@ -125,5 +125,10 @@
         {
             return $"{BaseAddress}/Login/ProfileInfo?login={login}&password={password}";
         }
+
+        public static string GetFavoriteContent(string login, string password) 
+        {
+            return $"/SyncContent/GetFavoriteContent?login={login}&password={password}";
+        }
     }
 }

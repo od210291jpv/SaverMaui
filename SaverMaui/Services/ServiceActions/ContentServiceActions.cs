@@ -85,5 +85,17 @@ namespace SaverMaui.Services.ServiceActions
             var response = await this.client.ExecuteGetAsync<ContentDto>(new RestRequest(UriHelper.RateContent(contentId, rate, profileId), Method.Get));
             return response.Data;
         }
+
+        public async Task<int[]> GetFavoriteContent(string login, string password) 
+        {
+            RestRequest request = new(UriHelper.GetFavoriteContent(login, password), Method.Post);
+            request.AddJsonBody(new GetFavoriteContentRequestDto() { Logn = login, Password = password });
+
+            var response = await this.client.ExecuteAsync<int[]>(request);
+            return response.Data;
+        }
+
+        public async Task<ContentDto> GetContentById() 
+        { }
     }
 }

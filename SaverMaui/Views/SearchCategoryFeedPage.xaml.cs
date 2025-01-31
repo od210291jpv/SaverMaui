@@ -1,3 +1,5 @@
+using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Platform;
 using Newtonsoft.Json;
 using Realms;
 using RestSharp;
@@ -29,6 +31,8 @@ public partial class SearchCategoryFeedPage : ContentPage
 
     private void OnAppear(object sender, EventArgs e)
     {
+        ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => handler.PlatformView?.Clear());
+
         foreach (var content in Environment.CurrectSearchResultCategory.Value)
         {
             SearchCategoryFeedViewModel.instance?.SearchResults.Add(content);
@@ -38,6 +42,8 @@ public partial class SearchCategoryFeedPage : ContentPage
 
     private async void OnTapGestureRecognizerTapped(object sender, TappedEventArgs e)
     {
+        ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => handler.PlatformView?.Clear());
+        
         Realm _realm = Realm.GetInstance();
 
         var catss = await BackendServiceClient.GetInstance().GetAllCategoriesAsync();
@@ -55,7 +61,7 @@ public partial class SearchCategoryFeedPage : ContentPage
             {
                 CategoryId = reqCat.CategoryId,
                 ImageUri = Environment.CurrectSearchResultItem,
-                Title = "Sexy"
+                Title = "sexy",
             };
 
             _realm.Write(() => _realm.Add<Content>(content));
@@ -80,5 +86,17 @@ public partial class SearchCategoryFeedPage : ContentPage
         {
             await Application.Current.MainPage.DisplayAlert("Error", $"Required category  does not exist!", "Ok");
         }
+    }
+
+    private async void Feed_CurrentItemChanged(object sender, CurrentItemChangedEventArgs e)
+    {
+        ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => handler.PlatformView?.Clear());
+        await Task.Delay(1000);
+    }
+
+    private async void Feed_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        ImageHandler.Mapper.PrependToMapping(nameof(Microsoft.Maui.IImage.Source), (handler, view) => handler.PlatformView?.Clear());
+        await Task.Delay(1000);
     }
 }
