@@ -95,7 +95,20 @@ namespace SaverMaui.Services.ServiceActions
             return response.Data;
         }
 
-        public async Task<ContentDto> GetContentById() 
-        { }
+        public async Task<ContentDto[]> GetContentById(int[] ids) 
+        {
+            RestRequest request = new RestRequest(UriHelper.GetContentById(), Method.Post);
+            request.AddJsonBody(ids);
+
+            var response = await this.client.ExecuteAsync<ContentDto[]>(request);
+            return response.Data;
+        }
+
+        public async Task<HttpStatusCode> BuyContent(int userId, int contentId) 
+        {
+            var request = new RestRequest(UriHelper.BuyContent(userId, contentId), Method.Get);
+            var response = await this.client.ExecuteAsync(request);
+            return response.StatusCode;
+        }
     }
 }

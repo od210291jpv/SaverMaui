@@ -22,6 +22,20 @@ namespace SaverMaui.Custom_Elements
 
         public Guid CategoryId { get; set; }
 
+        private Uri uri;
+
+        public Uri Uri 
+        {
+            get 
+            {
+                return uri;
+            }
+            set 
+            {
+                uri = value;
+            }
+        }
+
         public string CategoryName 
         {
             get 

@@ -128,7 +128,17 @@
 
         public static string GetFavoriteContent(string login, string password) 
         {
-            return $"/SyncContent/GetFavoriteContent?login={login}&password={password}";
+            return $"{BaseAddress}/SyncContent/GetFavoriteContent?login={login}&password={password}";
+        }
+
+        public static string GetContentById() 
+        {
+            return $"{BaseAddress}/SyncContent/GetContentById";
+        }
+
+        public static string BuyContent(int userId, int contentId) 
+        {
+            return $"{BaseAddress}/Content/BuyContent?userId={userId}&contentId={contentId}";
         }
     }
 }

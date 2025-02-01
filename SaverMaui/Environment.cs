@@ -8,6 +8,11 @@ namespace SaverMaui
 {
     public static class Environment
     {
+        public static bool IsLoggedIn 
+        { 
+            get => Login != null && Password != null;
+        }
+
         public static string Login;
 
         public static string Password;
