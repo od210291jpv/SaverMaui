@@ -6,6 +6,7 @@ using RestSharp;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;
+using System.Web;
 using static System.Net.WebRequestMethods;
 
 namespace ContentParserBackend.Services
@@ -39,6 +40,7 @@ namespace ContentParserBackend.Services
             consumer.Received += async (ch, ea) =>
             {
                 var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var rate = keyword.Split(":").Last();
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
                 
@@ -60,7 +62,21 @@ namespace ContentParserBackend.Services
 
                     foreach (var rl in resultLinks)
                     {
-                        await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
+                        if (rate != "0")
+                        {
+                            RestClient client = new RestClient();
+                            var actualRateResp = await client.ExecuteGetAsync<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
+                            var actualRate = actualRateResp.Data;
+
+                            if (actualRate is not null && actualRate == rate)
+                            {
+                                await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
+                            }
+                        }
+                        else 
+                        {
+                            await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
+                        }
                     }
 
                     progress += step;

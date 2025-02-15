@@ -4,7 +4,7 @@ namespace SaverBackend.Models
 {
     public class ApplicationContext : DbContext
     {
-        public static string ConnectionString = "Server=192.168.88.252;Database=mobilesdb;Uid=user;Pwd=password;";
+        public static string ConnectionString = "Server=192.168.88.252;Database=mobilesdb2;Uid=user;Pwd=password;";
 
         public DbSet<Category> Categories { get; set; }
 

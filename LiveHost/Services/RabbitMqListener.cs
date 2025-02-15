@@ -69,17 +69,20 @@ namespace LiveHost.Services
 
                     if (result.StatusCode != System.Net.HttpStatusCode.OK)
                     {
-                        context.BrokenContents.Add(new BrokenContent() 
+                        if (!context.BrokenContents.Select(c => c.Id).Contains(content.Id)) 
                         {
-                            CategoryId = content.CategoryId,
-                            Id = content.Id,
-                            ImageUri = content.ImageUri,
-                            Title = content.Title,
-                        });
+                            context.BrokenContents.Add(new BrokenContent()
+                            {
+                                CategoryId = content.CategoryId,
+                                Id = content.Id,
+                                ImageUri = content.ImageUri,
+                                Title = content.Title,
+                            });
 
-                        await context.SaveChangesAsync();
+                            await context.SaveChangesAsync();
 
-                        System.Console.WriteLine($"Orphan content found, {content.Title}");
+                            System.Console.WriteLine($"Orphan content found, {content.Title}");
+                        }
                     }
                 }
             }

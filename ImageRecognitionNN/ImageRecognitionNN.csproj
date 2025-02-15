@@ -5,15 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="DataModel\SampleImages\**" />
-    <EmbeddedResource Remove="DataModel\SampleImages\**" />
-    <None Remove="DataModel\SampleImages\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataModel\" />
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="Microsoft.ML" Version="3.0.1" />
     <PackageReference Include="Microsoft.ML.Vision" Version="3.0.1" />
