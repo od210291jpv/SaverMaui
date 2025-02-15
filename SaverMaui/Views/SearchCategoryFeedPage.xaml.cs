@@ -55,6 +55,9 @@ public partial class SearchCategoryFeedPage : ContentPage
 
         var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
 
+        var lastIdResponse = await BackendServiceClient.GetInstance().GetAllContentAsync();
+        var lastId = lastIdResponse.Select(c => c.Id).Max();
+
         if (reqCat != null)
         {
             Content content = new Content()
@@ -62,6 +65,7 @@ public partial class SearchCategoryFeedPage : ContentPage
                 CategoryId = reqCat.CategoryId,
                 ImageUri = Environment.CurrectSearchResultItem,
                 Title = "sexy",
+                Id = lastId + 1
             };
 
             _realm.Write(() => _realm.Add<Content>(content));
@@ -74,7 +78,8 @@ public partial class SearchCategoryFeedPage : ContentPage
                     CategoryId = reqCat.CategoryId,
                     DateCreated = DateTime.Now,
                     Title = "Sexy",
-                    ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url
+                    ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url,
+                    Id = content.Id
                 }}
             };
 

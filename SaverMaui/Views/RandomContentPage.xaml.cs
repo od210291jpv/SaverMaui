@@ -52,9 +52,23 @@ public partial class RandomContentPage : ContentPage
         Realm _realm = Realm.GetInstance();
         var all = _realm.All<Content>().ToArray();
 
-        Content feed = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        Content expectedContent = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
 
-        _realm.Write(() => feed.IsFavorite = true);
+        if (Environment.IsLoggedIn == true) 
+        {
+            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, expectedContent.Id);
+
+            if (result != System.Net.HttpStatusCode.OK)
+            {
+                CancellationTokenSource tok = new CancellationTokenSource();
+                var toast2 = Toast.Make($"Looks like no enough funds. Status is {result}", ToastDuration.Short, 14);
+                await toast2.Show(tok.Token);
+
+                return;
+            }
+        }
+
+        _realm.Write(() => expectedContent.IsFavorite = true);
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);

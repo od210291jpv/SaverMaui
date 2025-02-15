@@ -65,6 +65,7 @@ namespace SaverBackend.Controllers
                             ImageUri = content.ImageUri,
                             Title = content.Title,
                             Rating = content.Rating,
+                            Id = content.Id,
                         };
 
                         await db.Contents.AddAsync(newContent);
@@ -80,6 +81,7 @@ namespace SaverBackend.Controllers
                         CategoryId = content.CategoryId,
                         ImageUri = content.ImageUri,
                         Title = content.Title,
+                        Id = content.Id,
                     };
 
                     var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
