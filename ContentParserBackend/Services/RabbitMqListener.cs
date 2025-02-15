@@ -39,8 +39,9 @@ namespace ContentParserBackend.Services
 
             consumer.Received += async (ch, ea) =>
             {
-                var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var rate = keyword.Split(":").Last();
+                var inpm = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var keyword = inpm.Split(":").First();
+                var rate = inpm.Split(":").Last();
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
                 
@@ -65,7 +66,7 @@ namespace ContentParserBackend.Services
                         if (rate != "0")
                         {
                             RestClient client = new RestClient();
-                            var actualRateResp = await client.ExecuteGetAsync<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
+                            var actualRateResp = client.ExecuteGet<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
                             var actualRate = actualRateResp.Data;
 
                             if (actualRate is not null && actualRate == rate)
