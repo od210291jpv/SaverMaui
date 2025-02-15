@@ -16,7 +16,7 @@ namespace ContentParserBackend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers().AddNewtonsoftJson();
-            builder.Services.AddHostedService<RabbitMqListener>();
+            builder.Services.AddScoped<RabbitMqListener>();
             builder.Services.AddHostedService<PediarabbitMqListener>();
 
             var app = builder.Build();
