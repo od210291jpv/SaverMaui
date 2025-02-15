@@ -1,5 +1,6 @@
 ﻿using Flurl.Http;
 using RateMLModelConsole;
+using Tensorflow;
 
 namespace RateRecognitionNN
 {
@@ -10,24 +11,32 @@ namespace RateRecognitionNN
 
         public async Task<RateMLModel.ModelOutput> AnalyzeImageByUrl(string imageUri)
         {
-            await imageUri.DownloadFileAsync($"{this.directory}/data/");
+            var t = imageUri.DownloadFileAsync($"{this.directory}/data/");
+            await Task.WhenAll(t);
+
+            //await imageUri.DownloadFileAsync($"{this.directory}/data/");
 
             var file = Directory.GetFiles($"{this.directory}/data/");
             var result = this.AnalyzeImage(Path.GetFullPath(file.First()));
-            File.Delete(file.First());
+            File.Delete(Path.GetFullPath(file.First()));
             return result;
         }
 
         public RateMLModel.ModelOutput AnalyzeImage(string imagePath)
         {
-            var imageBytes = File.ReadAllBytes(imagePath);
-            RateMLModel.ModelInput sampleData = new RateMLModel.ModelInput()
+            if (File.Exists(imagePath)) 
             {
-                ImageSource = imageBytes,
-            };
+                var imageBytes = File.ReadAllBytes(imagePath);
+                RateMLModel.ModelInput sampleData = new RateMLModel.ModelInput()
+                {
+                    ImageSource = imageBytes,
+                };
 
-            RateMLModel.ModelOutput result = RateMLModel.Predict(sampleData);
-            return result;
+                RateMLModel.ModelOutput result = RateMLModel.Predict(sampleData);
+                return result;
+            }
+
+            return default;
         }
     }
 }

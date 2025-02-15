@@ -46,14 +46,19 @@ namespace SaverBackend.Services.RabbitMq
 
                 RabbitService.SendMessage($"Recognize content rate: url:{url}, expected rate: {rate}", "NotificationsQueue");
 
-                var r = await nn.AnalyzeImageByUrl(url);
+                var r = nn.AnalyzeImageByUrl(url).Result;
+
 
                 if (r.PredictedLabel == rate) 
                 {
                     await redisDb.StringSetAsync(Guid.NewGuid().ToString(), url);
                     RabbitService.SendMessage($"Found match for {url}, rate is: {r}", "NotificationsQueue");
                 }
+
+                _channel.BasicAck(ea.DeliveryTag, false);
             };
+
+            _channel.BasicConsume("GetRateQueue", false, consumer);
 
             return Task.CompletedTask;
         }
