@@ -66,7 +66,7 @@ namespace ContentParserBackend.Services
                         if (rate != "0")
                         {
                             RestClient client = new RestClient();
-                            var actualRateResp = client.ExecuteGet<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
+                            var actualRateResp = await client.ExecuteGetAsync<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
                             var actualRate = actualRateResp.Data;
 
                             if (actualRate is not null && actualRate == rate)
