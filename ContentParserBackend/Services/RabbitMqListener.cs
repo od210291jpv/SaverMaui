@@ -26,6 +26,7 @@ namespace ContentParserBackend.Services
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "ParceContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: "GetRateQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
             this.mqService = rabbit;
         }
 
@@ -65,14 +66,7 @@ namespace ContentParserBackend.Services
                     {
                         if (rate != "0")
                         {
-                            RestClient client = new RestClient();
-                            var actualRateResp = await client.ExecuteGetAsync<string>(new RestRequest($"http://192.168.88.252:80/RecognizeImage/RecognizeImageRate?imageUri={HttpUtility.UrlEncode(rl)}", Method.Get));
-                            var actualRate = actualRateResp.Data;
-
-                            if (actualRate is not null && actualRate == rate)
-                            {
-                                await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
-                            }
+                            mqService.SendMessage($"{rate}*{rl}", "GetRateQueue");
                         }
                         else 
                         {

@@ -19,9 +19,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddHostedService<NotificationsListener>();
 builder.Services.AddHostedService<ContentInfoListener>();
+builder.Services.AddHostedService<GetContentRateListener>();
 builder.Services.AddScoped<ContentFilterListener>();
 
 builder.Services.AddResponseCompression(options =>
