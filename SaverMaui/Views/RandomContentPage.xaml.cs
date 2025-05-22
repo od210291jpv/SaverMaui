@@ -42,7 +42,7 @@ public partial class RandomContentPage : ContentPage
                 Name = randomContent.Title
             };
 
-            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().Single(c => c.CategoryId == randomContent.CategoryId).Name}", ToastDuration.Short, 14);
+            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().SingleOrDefault(c => c.CategoryId == randomContent.CategoryId)?.Name ?? "N/A"}", ToastDuration.Short, 14);
             await toast0.Show(new CancellationTokenSource().Token);
         }
     }
@@ -52,9 +52,23 @@ public partial class RandomContentPage : ContentPage
         Realm _realm = Realm.GetInstance();
         var all = _realm.All<Content>().ToArray();
 
-        Content feed = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        Content expectedContent = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
 
-        _realm.Write(() => feed.IsFavorite = true);
+        if (Environment.IsLoggedIn == true) 
+        {
+            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, expectedContent.Id);
+
+            if (result != System.Net.HttpStatusCode.OK)
+            {
+                CancellationTokenSource tok = new CancellationTokenSource();
+                var toast2 = Toast.Make($"Looks like no enough funds. Status is {result}", ToastDuration.Short, 14);
+                await toast2.Show(tok.Token);
+
+                return;
+            }
+        }
+
+        _realm.Write(() => expectedContent.IsFavorite = true);
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);
@@ -87,6 +101,11 @@ public partial class RandomContentPage : ContentPage
 
 
         _realm.Write(() => requiredContent.Rating = parcedRate);
+
+        if (Environment.ProfileIntId != 0) 
+        {
+            var resp = await BackendServiceClient.GetInstance().ContentActions.RateContent(requiredContent.Id, Environment.ProfileIntId, (short)requiredContent.Rating);
+        }
 
         var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
         await toast.Show(new CancellationTokenSource().Token);

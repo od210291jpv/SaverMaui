@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
+﻿using Android.Telecom;
+using CommunityToolkit.Maui.Core.Extensions;
 using Realms;
 
 using SaverMaui.Commands;
@@ -163,9 +164,6 @@ namespace SaverMaui.ViewModels
             {
                 return this.addContentCommand ?? (addContentCommand = new AddContentCommand(this, async obj =>
                 {
-
-
-
                     Content content = new Content()
                     {
                         CategoryId = SelectedCategory.CategoryId,

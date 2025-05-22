@@ -45,18 +45,6 @@ namespace ImageRecognitionNN
 
                 Console.WriteLine($"Processing: {counter}/{allFilestCount} file...");
                 var labels = this.AnalyzeImage(item);
-
-                //if (labels.Length != 0) 
-                //{
-                //    var maxValue = labels.Select(label => label.Value).Max();
-                //    var actualLabel = labels.Single(l => l.Value == maxValue);
-                //    if (actualLabel.Key == label.ToString()) 
-                //    {
-                //        File.Copy(item, $"{outputDir}/{Path.GetFileName(item)}");
-                //        Console.WriteLine($"Found matching file: {Path.GetFileName(item)}");
-                //    }
-
-                //}
             }
         }
 

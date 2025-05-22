@@ -41,7 +41,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            var allContent = this.realmInstance.All<Content>().ToArray();
+            var allContent = this.realmInstance.All<Content>().Where(c => c.ImageUri != "" && c.ImageUri != null).ToArray();
             var allCategories = this.realmInstance.All<Category>().ToArray();
 
             var allCategoriesDto = new List<CategoryDto>();
@@ -49,39 +49,39 @@ namespace SaverMaui.Commands
 
             var allExistingsCategories = await this.backendClient.GetAllCategoriesAsync();
 
-            foreach (var cat in allCategories)
-            {
-                if (!allExistingsCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
-                {
-                    allCategoriesDto.Add(new CategoryDto()
-                    {
-                        Name = cat.Name,
-                        CategoryId = cat.CategoryId,
-                        AmountOfFavorites = cat.AmountOfFavorites,
-                        AmountOfOpenings = cat.AmountOfOpenings,
-                        PublisherProfileId = Environment.ProfileId
-                    });
-                }
-            }
-
-            var allExistingContent = await this.backendClient.GetAllContentAsync();
-
-            //foreach (var content in allContent) 
+            //foreach (var cat in allCategories)
             //{
-            //    if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(content.ImageUri)) 
+            //    if (!allExistingsCategories.Select(c => c.CategoryId).ToArray().Contains(cat.CategoryId)) 
             //    {
-            //        allContentDto.Add(new ContentDto()
+            //        allCategoriesDto.Add(new CategoryDto()
             //        {
-            //            CategoryId = content.CategoryId,
-            //            ImageUri = content.ImageUri,
-            //            Title = content.Title
+            //            Name = cat.Name,
+            //            CategoryId = cat.CategoryId,
+            //            AmountOfFavorites = cat.AmountOfFavorites,
+            //            AmountOfOpenings = cat.AmountOfOpenings,
+            //            PublisherProfileId = Environment.ProfileId
             //        });
             //    }
             //}
 
+            var allExistingContent = await this.backendClient.GetAllContentAsync();
+
+            foreach (var content in allContent)
+            {
+                if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(content.ImageUri))
+                {
+                    allContentDto.Add(new ContentDto()
+                    {
+                        CategoryId = content.CategoryId,
+                        ImageUri = content.ImageUri,
+                        Title = content.Title
+                    });
+                }
+            }
+
             var contentAmt = allContent.Length;
 
-            for (int i = 0; i >= contentAmt; i++) 
+            for (int i = 0; i <= contentAmt - 1; i++) 
             {
                 if (!allExistingContent.Select(ct => ct.ImageUri).ToArray().Contains(allContent[i].ImageUri))
                 {
@@ -89,7 +89,8 @@ namespace SaverMaui.Commands
                     {
                         CategoryId = allContent[i].CategoryId,
                         ImageUri = allContent[i].ImageUri,
-                        Title = allContent[i].Title
+                        Title = allContent[i].Title,
+                        Rating = (short)allContent[i].Rating,
                     });
                 }
             }

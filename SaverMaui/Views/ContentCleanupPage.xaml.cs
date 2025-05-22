@@ -26,7 +26,7 @@ public partial class ContentCleanupPage : ContentPage
         {
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-            var ordered = allContent.OrderBy(i => i.DateCreated).ToArray();
+            var ordered = allContent.OrderBy(i => i.DateCreated);
 
             if (allContent != null)
             {
@@ -34,7 +34,7 @@ public partial class ContentCleanupPage : ContentPage
 
                 foreach (var item in ordered)
                 {
-                    ContentCleanupViewModel.Instance?.ContentCollection.Add(new Custom_Elements.ImageRepresentationElement()
+                    ContentCleanupViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                     {
                         ContentId = item.Id,
                         Name = item.Title,
@@ -84,9 +84,9 @@ public partial class ContentCleanupPage : ContentPage
             CurrentPage += 1;
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-            var ordered = allContent.OrderBy(i => i.DateCreated).ToArray();
+            var ordered = allContent.OrderBy(i => i.DateCreated);
 
-            if (allContent != null)
+            if (ordered != null)
             {
                 foreach (var item in ordered)
                 {

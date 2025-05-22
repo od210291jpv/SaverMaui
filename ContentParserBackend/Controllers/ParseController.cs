@@ -16,7 +16,7 @@ namespace ContentParserBackend.Controllers
         }
 
         [HttpGet()]
-        public HttpStatusCode Index(string keyword, int parserId = 1)
+        public HttpStatusCode Index(string keyword, int parserId = 1, byte? desiredRate = null)
         {
             if (parserId == 2)
             {
@@ -24,7 +24,8 @@ namespace ContentParserBackend.Controllers
             }
             else 
             {
-                this.mqService.SendMessage($"{keyword}", "ParceContentQueue");
+                var rate = desiredRate ?? 0;
+                this.mqService.SendMessage($"{keyword}:{rate}", "ParceContentQueue");
             }
 
             return HttpStatusCode.OK;

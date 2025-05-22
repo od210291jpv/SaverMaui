@@ -105,5 +105,40 @@
         {
             get => $"{BaseAddress}/GetAllContent/CleanResults";
         }
+
+        public static string RateContent(int contentId, short rating, int profileId) 
+        {
+            return $"{BaseAddress}/Content/UpdateContentRating?contentId={contentId}&rating={rating}&profileId={profileId}";
+        }
+
+        public static string GetRatedContent(short rate = 0) 
+        {
+            return $"{BaseAddress}/Content/GetRatedContent?rate={rate}";
+        }
+
+        public static string GetCategoryContent(Guid categoryId) 
+        {
+            return $"{BaseAddress}/GetCategories/categoryContent?categoryId={categoryId}";
+        }
+
+        public static string ProfileInfo(string login, string password) 
+        {
+            return $"{BaseAddress}/Login/ProfileInfo?login={login}&password={password}";
+        }
+
+        public static string GetFavoriteContent(string login, string password) 
+        {
+            return $"{BaseAddress}/SyncContent/GetFavoriteContent?login={login}&password={password}";
+        }
+
+        public static string GetContentById() 
+        {
+            return $"{BaseAddress}/SyncContent/GetContentById";
+        }
+
+        public static string BuyContent(int userId, int contentId) 
+        {
+            return $"{BaseAddress}/Content/BuyContent?userId={userId}&contentId={contentId}";
+        }
     }
 }

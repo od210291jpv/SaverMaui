@@ -23,7 +23,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Environment.SahredData.currentCategory = this.viewModel.SelectedCategory;
+            //Environment.SahredData.currentCategory = this.viewModel.SelectedCategory;
             await Application.Current.MainPage.Navigation.PushAsync(new CategoryFeedPage());
         }
     }

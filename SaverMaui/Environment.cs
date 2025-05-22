@@ -2,16 +2,24 @@
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services.Contracts.Profile;
+using SaverMaui.Services.Contracts.Category;
 
 namespace SaverMaui
 {
     public static class Environment
     {
+        public static bool IsLoggedIn 
+        { 
+            get => Login != null && Password != null;
+        }
+
         public static string Login;
 
         public static string Password;
 
         public static Guid ProfileId;
+
+        public static int ProfileIntId;
 
         public static LoginResponse ProfileData;
 
@@ -27,7 +35,7 @@ namespace SaverMaui
 
         public static class SahredData
         {
-            public static Category currentCategory;
+            public static CategoryDto currentCategory;
 
             public static WebContent currentWebContent;
         }

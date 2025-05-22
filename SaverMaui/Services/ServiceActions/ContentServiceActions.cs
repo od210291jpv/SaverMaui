@@ -22,6 +22,18 @@ namespace SaverMaui.Services.ServiceActions
             return Array.Empty<ContentDto>();
         }
 
+        public async Task<ContentDto[]> GetRatedContent(short rate = 0) 
+        {
+            var response = await this.client.ExecuteAsync(new(UriHelper.GetRatedContent(rate), Method.Get));
+
+            if (response.StatusCode == HttpStatusCode.OK) 
+            {
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ContentDto[]>(response.Content);
+                return result;
+            }
+            return Array.Empty<ContentDto>();
+        }
+
         public async Task<ContentDto[]> GetAllContentWithPaginationAsync(short page, short size) 
         {
             RestRequest request = new RestRequest(UriHelper.GetPaginatedContent(page, size));
@@ -66,6 +78,37 @@ namespace SaverMaui.Services.ServiceActions
         {
             var response = await this.client.ExecuteAsync(new RestRequest(UriHelper.CleanSearchResults, Method.Delete));
             return response;
+        }
+
+        public async Task<ContentDto> RateContent(int contentId, int profileId, short rate) 
+        {
+            var response = await this.client.ExecuteGetAsync<ContentDto>(new RestRequest(UriHelper.RateContent(contentId, rate, profileId), Method.Get));
+            return response.Data;
+        }
+
+        public async Task<int[]> GetFavoriteContent(string login, string password) 
+        {
+            RestRequest request = new(UriHelper.GetFavoriteContent(login, password), Method.Post);
+            request.AddJsonBody(new GetFavoriteContentRequestDto() { Logn = login, Password = password });
+
+            var response = await this.client.ExecuteAsync<int[]>(request);
+            return response.Data;
+        }
+
+        public async Task<ContentDto[]> GetContentById(int[] ids) 
+        {
+            RestRequest request = new RestRequest(UriHelper.GetContentById(), Method.Post);
+            request.AddJsonBody(ids);
+
+            var response = await this.client.ExecuteAsync<ContentDto[]>(request);
+            return response.Data;
+        }
+
+        public async Task<HttpStatusCode> BuyContent(int userId, int contentId) 
+        {
+            var request = new RestRequest(UriHelper.BuyContent(userId, contentId), Method.Get);
+            var response = await this.client.ExecuteAsync(request);
+            return response.StatusCode;
         }
     }
 }

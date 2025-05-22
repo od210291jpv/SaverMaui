@@ -3,6 +3,7 @@
 using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.Services.Contracts;
+using SaverMaui.Services.Contracts.Content;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 
@@ -59,9 +60,9 @@ namespace SaverMaui.Commands
             allLocalCategorioesIds
             .Contains(ct.CategoryId) == false).ToArray();
 
-            GetAllContentResponseModel[] allContent = await this.backendClient.GetAllContentAsync();
+            ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentAsync();
 
-            GetAllContentResponseModel[] contentToBeAdded = CalculateContentToBeAdded(allContent, allLocalContent);
+            ContentDto[] contentToBeAdded = CalculateContentToBeAdded(allContent, allLocalContent);
 
             foreach (var cat in catsToBeAdded) 
             {
@@ -92,7 +93,8 @@ namespace SaverMaui.Commands
                         CategoryId = content.CategoryId,
                         ImageUri = content.ImageUri.Replace(" ", ""),
                         IsFavorite = false,
-                        Title = content.Title
+                        Title = content.Title,
+                        Rating = content.Rating,
                     };
 
                     realmInstance.Write(() => realmInstance.Add<Content>(ct));
@@ -106,7 +108,7 @@ namespace SaverMaui.Commands
             await Application.Current.MainPage.DisplayAlert("Done", $"Categories added{catsToBeAdded.Length}, Content added {contentToBeAdded.Length}", "Ok");
         }
 
-        private GetAllContentResponseModel[] CalculateContentToBeAdded(GetAllContentResponseModel[] allContent, Content[] allLocalContent) 
+        private ContentDto[] CalculateContentToBeAdded(ContentDto[] allContent, Content[] allLocalContent) 
         {
             var allLocalContentIds = allLocalContent
                 .Select(lcn => lcn.ImageUri).ToArray();

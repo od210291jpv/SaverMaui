@@ -33,19 +33,19 @@ namespace SaverMaui.ViewModels
 
             this.ItemChangedCommand = new FavoriteContentFeedItemChangedCommand(this);
 
-            Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().Where(ct => ct.IsFavorite == true).ToArray();
+            //Realm _realm = Realm.GetInstance();
+            //Content[] allRelatedContent = _realm.All<Content>().Where(ct => ct.IsFavorite == true).ToArray();
 
-            foreach (var cat in allRelatedContent)
-            {
-                ContentCollection.Add(new ImageRepresentationElement()
-                {
-                    CategoryId = cat.CategoryId.Value,
-                    Name = cat.Title,
-                    Source = cat.ImageUri,
-                    IsFavorite = cat.IsFavorite
-                });
-            }
+            //foreach (var cat in allRelatedContent)
+            //{
+            //    ContentCollection.Add(new ImageRepresentationElement()
+            //    {
+            //        CategoryId = cat.CategoryId.Value,
+            //        Name = cat.Title,
+            //        Source = cat.ImageUri,
+            //        IsFavorite = cat.IsFavorite
+            //    });
+            //}
 
             Instance = this;
         }

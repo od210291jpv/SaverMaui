@@ -1,7 +1,5 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using Realms;
-using SaverMaui.Commands;
-using SaverMaui.Models;
+﻿using SaverMaui.Commands;
+using SaverMaui.Services.Contracts.Category;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -10,24 +8,23 @@ namespace SaverMaui.ViewModels
 {
     public class CategoriesViewModel : BaseViewModel
     {
-        public static CategoriesViewModel Instance { get; private set; }
+        public static CategoriesViewModel? Instance { get; private set; }
 
-        public ObservableCollection<Category> Categories 
+        private ObservableCollection<CategoryDto> categories;
+
+        public ObservableCollection<CategoryDto> Categories 
         {
-            get
-            {
-                Realm _realm = Realm.GetInstance();
-                return _realm.All<Category>().OrderBy(c => c.Name).ToObservableCollection();
-            }
+            get { return this.categories; }
             set
             {               
+                this.categories = value;
                 OnPropertyChanged("Categories");
             }
         }
 
-        private Category selectedCategory;
+        private CategoryDto selectedCategory;
 
-        public Category SelectedCategory
+        public CategoryDto SelectedCategory
         {
             get { return selectedCategory; }
             set
@@ -54,10 +51,13 @@ namespace SaverMaui.ViewModels
 
         public CategoriesViewModel()
         {
-
+            this.Categories = new ObservableCollection<CategoryDto>();
+            this.categories = new ObservableCollection<CategoryDto>();
             this.AddFavoriteCategoryCmd = new AddFavoriteCategoryCommand(this);
 
-            this.Categories = new ObservableCollection<Category>();
+            this.selectedCategory = new CategoryDto();
+            this.SelectedCategory = new CategoryDto();
+
             Instance = this;
         }
 
@@ -73,13 +73,7 @@ namespace SaverMaui.ViewModels
         {
             this.Categories.Clear();
 
-            Realm _realm = Realm.GetInstance();
-            var allCategories = _realm.All<Category>();
-
-            foreach (var cat in allCategories)
-            {
-                Categories.Add(cat);
-            }
+            
         }
     }
 }

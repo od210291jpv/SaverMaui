@@ -1,5 +1,6 @@
 ﻿using ImageRecognitionNN;
 using Microsoft.AspNetCore.Mvc;
+using RateRecognitionNN;
 using SaverBackend.Services.RabbitMq;
 using System.Net;
 
@@ -29,6 +30,14 @@ namespace SaverBackend.Controllers
         {
             this.mqService.SendMessage(category, "FilterContentQueue");
             return HttpStatusCode.OK;
+        }
+
+        [HttpGet("RecognizeImageRate")]
+        public async Task<string> RecognizeCategory(string imageUri) 
+        {
+            ImageRateAnalyzer nn = new ImageRateAnalyzer();
+            var rate = await nn.AnalyzeImageByUrl(imageUri);
+            return rate.PredictedLabel;
         }
     }
 }

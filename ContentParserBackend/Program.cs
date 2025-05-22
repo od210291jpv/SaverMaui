@@ -7,7 +7,7 @@ namespace ContentParserBackend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+            builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
             builder.Configuration.AddJsonFile("appsettings.json");
             // Add services to the container.
 
@@ -16,8 +16,8 @@ namespace ContentParserBackend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers().AddNewtonsoftJson();
-            builder.Services.AddHostedService<RabbitMqListener>();
             builder.Services.AddHostedService<PediarabbitMqListener>();
+            builder.Services.AddHostedService<RabbitMqListener>();
 
             var app = builder.Build();
 

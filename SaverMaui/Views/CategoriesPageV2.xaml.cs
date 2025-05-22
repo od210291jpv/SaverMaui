@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Core.Extensions;
 using SaverMaui.Commands;
 using SaverMaui.Services;
 using SaverMaui.Services.ServiceExtensions;
@@ -11,6 +12,17 @@ public partial class CategoriesPageV2 : ContentPage
 	public CategoriesPageV2()
 	{
 		InitializeComponent();
+        this.Appearing += OnAppearing;
+    }
+
+    private async void OnAppearing(object sender, EventArgs e)
+    {
+        var allCAts = await BackendServiceClient.GetInstance().CategoriesActions.GetAllCategories();
+        if (CategoriesViewModel.Instance is not null) 
+        {
+            CategoriesViewModel.Instance.Categories.Clear();
+            CategoriesViewModel.Instance.Categories = allCAts.OrderBy(c => c.Name).ToObservableCollection();
+        }
     }
 
     private NavigateToPageCommand navigateToFeedItemCommand;

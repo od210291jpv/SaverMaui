@@ -21,5 +21,9 @@ namespace SaverBackend.DTO
         public bool IsOnline { get; set; }
 
         public string? Error { get; set; }
+
+        public decimal Funds { get; set; } = 0.0m;
+
+        public int Id { get; set; } = 0;
     }
 }

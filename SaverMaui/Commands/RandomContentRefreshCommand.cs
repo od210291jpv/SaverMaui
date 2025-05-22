@@ -52,7 +52,7 @@ namespace SaverMaui.Commands
                     Name = randomContent.Title
                 };
 
-                var toast0 = Toast.Make($"Content category: {_realm.All<Category>().Single(c => c.CategoryId == randomContent.CategoryId).Name}", ToastDuration.Short, 14);
+                var toast0 = Toast.Make($"Content category: {_realm.All<Category>().SingleOrDefault(c => c.CategoryId == randomContent.CategoryId)?.Name ?? "N/A"}", ToastDuration.Short, 14);
                 await toast0.Show(new CancellationTokenSource().Token);
             }
 

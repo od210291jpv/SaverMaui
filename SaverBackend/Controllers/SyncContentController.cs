@@ -6,6 +6,7 @@ using SaverBackend.DTO;
 using SaverBackend.Hubs;
 using SaverBackend.Models;
 using StackExchange.Redis;
+using System.Linq;
 
 namespace SaverBackend.Controllers
 {
@@ -63,6 +64,8 @@ namespace SaverBackend.Controllers
                             CategoryId = content.CategoryId,
                             ImageUri = content.ImageUri,
                             Title = content.Title,
+                            Rating = content.Rating,
+                            Id = content.Id,
                         };
 
                         await db.Contents.AddAsync(newContent);
@@ -78,6 +81,7 @@ namespace SaverBackend.Controllers
                         CategoryId = content.CategoryId,
                         ImageUri = content.ImageUri,
                         Title = content.Title,
+                        Id = content.Id,
                     };
 
                     var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
@@ -165,22 +169,24 @@ namespace SaverBackend.Controllers
             return this.db.FavoriteContent.Where(c => c.ProfileId == user.Id).Select(f => f.FavoriteContentId).ToArray();
         }
 
-        [HttpGet("GetContentById")]
-        public async Task<ContentDto?> GetContentById(int contentId) 
+        [HttpPost("GetContentById")]
+        public ContentDto[] GetContentById(int[] contentIds) 
         {
-            var result = await this.db.Contents.SingleOrDefaultAsync(c => c.Id == contentId);
+            var result = this.db.Contents.Where(c => contentIds.Contains(c.Id) == true);
             if (result is null) 
             {
-                return default(ContentDto?);
+                return Array.Empty<ContentDto>();
             }
 
-            return new ContentDto()
+            return result.AsParallel().Select(c => new ContentDto() 
             {
-                CategoryId = result.CategoryId,
-                ImageUri = result.ImageUri,
-                Title = result.Title,
-                Id = result.Id,
-            };
+                CategoryId = c.CategoryId,
+                ImageUri = c.ImageUri,
+                Title = c.Title,
+                Id = c.Id,
+                Cost = c.Cost,
+                Rating = c.Rating,
+            }).ToArray();
         }
 
         [HttpDelete("DeleteContent")]

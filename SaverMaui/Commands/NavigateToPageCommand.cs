@@ -28,20 +28,17 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Environment.SahredData.currentCategory = this._vm.SelectedCategory;
 
-            var category = Realm.GetInstance().All<Category>().Single(c => c.CategoryId == this._vm.SelectedCategory.CategoryId);
-
-            Realm.GetInstance().Write(() => category.AmountOfOpenings += 1);
 
             if (IsOnlineHelper.IsOnline == true) 
             {
                 try
                 {
+                    var r = Environment.SahredData.currentCategory;
                     await BackendServiceClient.GetInstance()
-                        .UpdateCategoryStatisticsAsync(category.CategoryId,
-                        category.AmountOfOpenings,
-                        category.AmountOfFavorites);
+                        .UpdateCategoryStatisticsAsync(CategoriesViewModel.Instance.SelectedCategory.CategoryId,
+                        this._vm.SelectedCategory.AmountOfOpenings ?? 0,
+                        this._vm.SelectedCategory.AmountOfFavorites ?? 0);
                 }
                 catch
                 { }

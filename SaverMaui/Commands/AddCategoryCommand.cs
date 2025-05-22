@@ -53,7 +53,7 @@ namespace SaverMaui.Commands
 
             if (CategoriesViewModel.Instance != null) 
             {
-                CategoriesViewModel.Instance.Categories = this.viewModel.Categories;
+                //CategoriesViewModel.Instance.Categories = this.viewModel.Categories;
             }
 
             if (DeviceInfo.Current.Platform.ToString().ToLower() == "android") 

@@ -29,5 +29,7 @@ namespace SaverBackend.Models
         public bool IsOnline { get; set; }
 
         public ICollection<Content> FavoriteContent { get; } = new List<Content>();
+
+        public decimal Funds { get; set; } = 0.0m;
     }
 }

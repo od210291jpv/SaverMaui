@@ -18,28 +18,61 @@ namespace SaverMaui.Views
             this.Appearing += OnAppearing;
         }
 
-        private void OnAppearing(object sender, EventArgs e)
+        private async void OnAppearing(object sender, EventArgs e)
         {
-            Realm _realm = Realm.GetInstance();
-            Content[] allRelatedContent = _realm.All<Content>().Where(c => c.Rating > 0).OrderByDescending(c => c.Rating).ToArray();
-
-            var zeroIdContent = _realm.All<Content>().Where(c => c.Id == 0 && c.ImageUri != string.Empty).ToArray();
-
-            ObservableCollection<ImageRepresentationElement> allFeed = new();
-
-            foreach (var cat in allRelatedContent.ToArray().Reverse())
+            if (Environment.ProfileIntId != 0)
             {
-                allFeed.Add(new ImageRepresentationElement()
-                {
-                    CategoryId = cat.CategoryId.Value,
-                    Name = cat.Title,
-                    Source = cat.ImageUri,
-                    IsFavorite = cat.IsFavorite,
-                    ContentId = cat.Id,
-                });
-            }
+                var allContent = await BackendServiceClient.GetInstance().ContentActions.GetRatedContent();
+                ObservableCollection<ImageRepresentationElement> allFeed = new();
 
-            TopRatedFeedViewModel.Instance.ContentCollection = allFeed;
+                var sortedContent = allContent.OrderByDescending(x => x.Rating);
+
+                foreach (var cat in sortedContent)
+                {
+                    allFeed.Add(new ImageRepresentationElement()
+                    {
+                        CategoryId = cat.CategoryId.Value,
+                        Name = cat.Title,
+                        Source = cat.ImageUri,
+                        IsFavorite = false,
+                        ContentId = cat.Id,
+                    });
+                }
+
+                TopRatedFeedViewModel.Instance.ContentCollection = allFeed;
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                var toast = Toast.Make($"You are authorized, online results are shown", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
+            }
+            else 
+            {
+                Realm _realm = Realm.GetInstance();
+                Content[] allRelatedContent = _realm.All<Content>().Where(c => c.Rating > 0).OrderByDescending(c => c.Rating).ToArray();
+
+                var zeroIdContent = _realm.All<Content>().Where(c => c.Id == 0 && c.ImageUri != string.Empty).ToArray();
+
+                ObservableCollection<ImageRepresentationElement> allFeed = new();
+
+                foreach (var cat in allRelatedContent.ToArray().Reverse())
+                {
+                    allFeed.Add(new ImageRepresentationElement()
+                    {
+                        CategoryId = cat.CategoryId.Value,
+                        Name = cat.Title,
+                        Source = cat.ImageUri,
+                        IsFavorite = cat.IsFavorite,
+                        ContentId = cat.Id,
+                    });
+                }
+
+                TopRatedFeedViewModel.Instance.ContentCollection = allFeed;
+
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                var toast = Toast.Make($"You are not authorized, local results are shown", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
+            }
         }
 
         private async void OnDeleteClicked(object sender, EventArgs e)

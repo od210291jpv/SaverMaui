@@ -6,6 +6,7 @@ using RestSharp;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;
+using System.Web;
 using static System.Net.WebRequestMethods;
 
 namespace ContentParserBackend.Services
@@ -25,6 +26,7 @@ namespace ContentParserBackend.Services
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "ParceContentQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+            _channel.QueueDeclare(queue: "GetRateQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
             this.mqService = rabbit;
         }
 
@@ -38,7 +40,9 @@ namespace ContentParserBackend.Services
 
             consumer.Received += async (ch, ea) =>
             {
-                var keyword = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var inpm = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var keyword = inpm.Split(":").First();
+                var rate = inpm.Split(":").Last();
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
                 
@@ -60,7 +64,14 @@ namespace ContentParserBackend.Services
 
                     foreach (var rl in resultLinks)
                     {
-                        await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
+                        if (rate != "0")
+                        {
+                            mqService.SendMessage($"{rate}*{rl}", "GetRateQueue");
+                        }
+                        else 
+                        {
+                            await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
+                        }
                     }
 
                     progress += step;

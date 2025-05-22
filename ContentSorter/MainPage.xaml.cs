@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SaverBackend.Models;
 using Flurl.Http;
+using RestSharp;
 
 namespace ContentSorter
 {
@@ -19,11 +20,17 @@ namespace ContentSorter
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 21));
 
             var options = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseMySql("Server=192.168.88.252;Database=mobilesdb;Uid=user;Pwd=password;", serverVersion).Options;
+                .UseMySql("Server=192.168.88.252;Database=mobilesdb2;Uid=user;Pwd=password;", serverVersion).Options;
             
             this.content = new LinkedList<Content>();
 
             this.database = new ApplicationContext(options);
+
+
+
+
+
+
             this.Appearing += appearing;
             this.next.Clicked += OnNextClicked;
             this.blondes.Clicked += OnBlondes;
@@ -157,8 +164,39 @@ namespace ContentSorter
             }
         }
 
-        private void appearing(object sender, EventArgs e)
+        private async void appearing(object sender, EventArgs e)
         {
+
+            var allsortedContent = this.database.Contents.Where(c => c.Rating > 0).ToArray();
+
+            var apiCl = new RestClient();
+
+            foreach (var c in allsortedContent)
+            {
+                if (c.Rating == 1 && apiCl.ExecuteGet(new RestRequest(c.ImageUri, Method.Get)).StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                        await c.ImageUri.AllowAnyHttpStatus().DownloadFileAsync($"{this.directory}/Sort/1");
+
+                }
+                if (c.Rating == 2 && apiCl.ExecuteGet(new RestRequest(c.ImageUri, Method.Get)).StatusCode == System.Net.HttpStatusCode.OK) 
+                {
+                        await c.ImageUri.AllowAnyHttpStatus().DownloadFileAsync($"{this.directory}/Sort/2");
+                }
+                if (c.Rating == 3 && apiCl.ExecuteGet(new RestRequest(c.ImageUri, Method.Get)).StatusCode == System.Net.HttpStatusCode.OK) 
+                {
+                        await c.ImageUri.AllowAnyHttpStatus().DownloadFileAsync($"{this.directory}/Sort/3");
+                }
+                if (c.Rating == 4 && apiCl.ExecuteGet(new RestRequest(c.ImageUri, Method.Get)).StatusCode == System.Net.HttpStatusCode.OK) 
+                {
+                        await c.ImageUri.AllowAnyHttpStatus().DownloadFileAsync($"{this.directory}/Sort/4");
+                }
+                if (c.Rating == 5 && apiCl.ExecuteGet(new RestRequest(c.ImageUri, Method.Get)).StatusCode == System.Net.HttpStatusCode.OK) 
+                {
+                        await c.ImageUri.AllowAnyHttpStatus().DownloadFileAsync($"{this.directory}/Sort/5");
+                }
+            }
+
+
             this.current = this.content.Find(this.database.Contents.Single(i => i.Id == this.currentState));
             this.image.Source = current.Value.ImageUri;
 

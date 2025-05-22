@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Newtonsoft.Json;
 using SaverBackend.DTO;
 using SaverBackend.Models;
+using StackExchange.Redis;
 
 namespace SaverBackend.Controllers
 {
@@ -13,9 +14,17 @@ namespace SaverBackend.Controllers
 
         private ApplicationContext db;
 
+        private ConnectionMultiplexer redis;
+        private IDatabase redisDb;
+        private IDatabase redisContentDb;
+
         public GetCategoriesController(ApplicationContext database)
         {
             this.db = database;
+
+            this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+            this.redisDb = redis.GetDatabase();
+            this.redisContentDb = redis.GetDatabase(1);
         }
 
         [HttpGet(Name = "GetCategories")]
@@ -31,6 +40,7 @@ namespace SaverBackend.Controllers
                 {
                     Name = ct.Name,
                     CategoryId = ct.CategoryId,
+                    Id = ct.Id,
                     AmountOfFavorites = ct.AmountOfFavorites,
                     AmountOfOpenings = ct.AmountOfOpenings,
                     PublisherProfileId = profileId,
@@ -38,6 +48,14 @@ namespace SaverBackend.Controllers
             }
 
             return results.ToArray();
+        }
+
+        [HttpGet("categoryContent")]
+        public async Task<ContentDto[]> GetCategoryContent(Guid categoryId) 
+        {
+            var keys = await this.db.Contents.Where(c => c.CategoryId == categoryId).Select(c => c.Id).ToArrayAsync();
+            var result = keys.Select(k => JsonConvert.DeserializeObject<ContentDto>(this.redisContentDb.StringGet(k.ToString()))).ToArray();
+            return result;
         }
 
         [HttpPost(Name = "GetPopularCategories")]
@@ -100,7 +118,7 @@ namespace SaverBackend.Controllers
         {
             Profile? result = await this.db
                 .Profiles
-                .SingleOrDefaultAsync(pr =>
+                .FirstOrDefaultAsync(pr =>
                 pr.PublishedCategories != null &&
                 pr.PublishedCategories.Select(c => c.CategoryId)
                 .ToArray()

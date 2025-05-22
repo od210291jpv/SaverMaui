@@ -11,7 +11,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CollectionView ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" SelectionMode="Single">
+            <CollectionView ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" BackgroundColor="Black" SelectionMode="Single">
                 <CollectionView.Header>
                     <StackLayout BackgroundColor="Gray">
                         <Label Text="Categories" TextColor="White" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
