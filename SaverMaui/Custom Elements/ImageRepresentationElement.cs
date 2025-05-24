@@ -10,31 +10,9 @@ namespace SaverMaui.Custom_Elements
     {
         public int ContentId { get; set; }
 
-        public HttpStatusCode StatusCode 
-        {
-            get 
-            {
-                return BackendServiceClient.GetInstance().GetSourceStatusCode(new Uri(this.Source.ToString())).Result;
-            }
-        }
-
         public string Name { get; set; }
 
         public Guid CategoryId { get; set; }
-
-        private Uri uri;
-
-        public Uri Uri 
-        {
-            get 
-            {
-                return uri;
-            }
-            set 
-            {
-                uri = value;
-            }
-        }
 
         public string CategoryName 
         {

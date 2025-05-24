@@ -25,11 +25,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Aspect="AspectFit" IsAnimationPlaying="True" x:Name="Img">
-                                <Image.Source>
-                                    <UriImageSource Uri="{Binding Path=Uri}" CacheValidity="9:00:00.0"/>
-                                </Image.Source>
-
+                            <Image Grid.Column="0" Grid.Row="0" Aspect="AspectFit" Source="{Binding Path=Source}" IsAnimationPlaying="True" x:Name="Img">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
                                 </Image.GestureRecognizers>
