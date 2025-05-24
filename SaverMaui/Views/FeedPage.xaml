@@ -8,6 +8,7 @@
              xmlns:cv="clr-namespace:CarouselView.Abstractions;assembly=CarouselView.Maui"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              x:DataType="local:FeedViewModel"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              Title="FeedPage">
     <ContentPage.BindingContext>
         <vm:FeedViewModel />
@@ -25,11 +26,16 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Aspect="AspectFit" Source="{Binding Path=Source}" IsAnimationPlaying="True" x:Name="Img">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                                </Image.GestureRecognizers>
-                            </Image>
+                            <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0"
+                                            Aspect="AspectFit"
+                                            Source="{Binding Path=Source}"
+                                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                                            FadeAnimationDuration="300"
+                                            x:Name="Img">
+                                    <ffimageloading:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                    </ffimageloading:CachedImage.GestureRecognizers>
+                            </ffimageloading:CachedImage>
                             <Button Grid.Row="0" 
                                 Grid.Column="0" 
                                 Text="R" FontAttributes="Bold" 

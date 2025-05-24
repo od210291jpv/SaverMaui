@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.ContentCleanupPage"
              x:DataType="local:ContentCleanupViewModel"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              Title="ContentCleanupPage">
     <ContentPage.BindingContext>
         <vm:ContentCleanupViewModel/>
@@ -23,8 +24,11 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
-                            </Image>
+                            <ffimageloading:CachedImage
+                                Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                                Aspect="AspectFit">
+                            </ffimageloading:CachedImage>
                             <Button Grid.Row="0" 
                                 Grid.Column="0" 
                                 Text="D" FontAttributes="Bold" 
