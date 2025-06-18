@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.FavoriteContentPage"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              Title="FavoriteContentPage">
 
     <ContentPage.BindingContext>
@@ -14,11 +15,14 @@
             <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Path=Source}" Aspect="AspectFit">
-                            <Image.GestureRecognizers>
+                        <ffimageloading:CachedImage 
+                            Source="{Binding Path=Source}"
+                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                            Aspect="AspectFit">
+                            <ffimageloading:CachedImage.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                            </Image.GestureRecognizers>
-                        </Image>
+                            </ffimageloading:CachedImage.GestureRecognizers>
+                        </ffimageloading:CachedImage>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>

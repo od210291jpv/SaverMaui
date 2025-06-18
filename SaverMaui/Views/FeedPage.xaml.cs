@@ -1,7 +1,5 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using Microsoft.Maui.Handlers;
-using Microsoft.Maui.Platform;
 using Realms;
 
 using SaverMaui.Custom_Elements;
@@ -35,9 +33,6 @@ public partial class FeedPage : ContentPage
 
         var allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-
-        new Random().Shuffle(allContent);
-
         if (allContent != null)
         {
             FeedViewModel.Instance.ContentCollection.Clear();
@@ -48,8 +43,13 @@ public partial class FeedPage : ContentPage
                 {
                     ContentId = item.Id,
                     Name = item.Title,
-                    Source = item.ImageUri,
-                    Uri = new Uri(item.ImageUri),
+                    Source = new UriImageSource()
+                    {
+                        Uri = new Uri(item.ImageUri),
+                        CachingEnabled = true,
+                        CacheValidity = TimeSpan.FromDays(30)
+                    },
+                    //Source = item.ImageUri,
                     CategoryId = item.CategoryId ?? new Guid()
                 });
             }
@@ -72,8 +72,6 @@ public partial class FeedPage : ContentPage
             CurrentPage += 1;
             Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
 
-            new Random().Shuffle(allContent);
-
             if (allContent != null)
             {
                 foreach (var item in allContent)
@@ -82,8 +80,12 @@ public partial class FeedPage : ContentPage
                     {
                         ContentId = item.Id,
                         Name = item.Title,
-                        Source = item.ImageUri,
-                        Uri = new Uri(item.ImageUri),
+                        Source = new UriImageSource()
+                        {
+                            Uri = new Uri(item.ImageUri),
+                            CachingEnabled = true,
+                            CacheValidity = TimeSpan.FromDays(30)
+                        },
                         CategoryId = item.CategoryId ?? new Guid()
                     });
                 }

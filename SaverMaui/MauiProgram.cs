@@ -1,7 +1,7 @@
 ﻿using CarouselView;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
-
+using FFImageLoading.Maui;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
 
@@ -20,6 +20,7 @@ namespace SaverMaui
                 .UseMauiCommunityToolkitMediaElement()
                 .UseMauiCommunityToolkitMarkup()
                 .UseMauiCarouselView()
+                .UseFFImageLoading()
                 .ConfigureFonts(fonts =>
                 {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

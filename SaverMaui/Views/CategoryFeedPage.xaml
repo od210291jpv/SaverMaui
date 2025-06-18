@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.CategoryFeedPage"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              Title="CategoryFeedPage">
     <ContentPage.BindingContext>
         <vm:CategoryFeedViewModel/>
@@ -22,11 +23,13 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=ImageUri}" Margin="0">
-                                <Image.GestureRecognizers>
+                            <ffimageloading:CachedImage Grid.Row="0"
+                                                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                                                        Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=ImageUri}" Margin="0">
+                                <ffimageloading:CachedImage.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                                </Image.GestureRecognizers>
-                            </Image>
+                                </ffimageloading:CachedImage.GestureRecognizers>
+                            </ffimageloading:CachedImage>
                         </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
