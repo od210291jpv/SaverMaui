@@ -61,7 +61,7 @@ namespace SaverBackend.Controllers
                     {
                         List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
 
-                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max();
+                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max() + 1;
 
                         Content newContent = new Content()
                         {
@@ -69,7 +69,7 @@ namespace SaverBackend.Controllers
                             ImageUri = content.ImageUri,
                             Title = content.Title,
                             Rating = content.Rating,
-                            Id = newId +1,
+                            Id = newId,
                         };
 
                         await db.Contents.AddAsync(newContent);
