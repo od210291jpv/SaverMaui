@@ -83,7 +83,7 @@ public partial class SearchCategoryFeedPage : ContentPage
                 }}
             };
 
-            _ = await BackendServiceClient.GetInstance().PostAllContentDataAsync(request);
+            var response = await BackendServiceClient.GetInstance().PostAllContentDataAsync(request);
 
             await Application.Current.MainPage.DisplayAlert("Ok", $"Content added into the category: {reqCat.Name}", "Ok");
         }

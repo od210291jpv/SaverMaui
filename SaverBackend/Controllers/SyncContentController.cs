@@ -61,7 +61,7 @@ namespace SaverBackend.Controllers
                     {
                         List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
 
-                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max() + 3;
+                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max() + 2;
 
                         Content newContent = new Content()
                         {
