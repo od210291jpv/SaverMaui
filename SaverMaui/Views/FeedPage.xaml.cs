@@ -100,7 +100,7 @@ public partial class FeedPage : ContentPage
 
 		var all = _realm.All<Content>().ToArray();
 
-		var content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+		var content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", ""))).FirstOrDefault();
 
         if (content == null) 
         {

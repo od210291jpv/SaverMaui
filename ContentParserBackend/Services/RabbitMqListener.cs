@@ -45,7 +45,10 @@ namespace ContentParserBackend.Services
                 var rate = inpm.Split(":").Last();
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
-                
+
+                var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+                var redisDb = redis.GetDatabase(2);
+
                 foreach (char c in alpha)
                 {
                     mqService.SendMessage($"Parsing {c} character for request {keyword} https://fapomania.com/onlyfans/{c} link", "NotificationsQueue");
@@ -58,9 +61,6 @@ namespace ContentParserBackend.Services
                     {
                         mqService.SendMessage($"For request {keyword} https://fapomania.com/onlyfans/{c} found {resultLinks.Count()} results", "NotificationsQueue");
                     }
-
-                    var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-                    var redisDb = redis.GetDatabase(2);
 
                     foreach (var rl in resultLinks)
                     {

@@ -29,7 +29,9 @@ namespace SaverMaui.Commands
             Realm _realm = Realm.GetInstance();
             var all = _realm.All<Content>().ToArray();
 
-            var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(this.feedViewModel.CurrentContent.Source.ToString().Replace("Uri: ", "")));
+            var debug = this.feedViewModel.CurrentContent.Source.ToString();
+
+            var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(this.feedViewModel.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", "")));
 
             var toast0 = Toast.Make($"Current content rate: {requiredContent.Rating}", ToastDuration.Short, 14);
             await toast0.Show(new CancellationTokenSource().Token);
