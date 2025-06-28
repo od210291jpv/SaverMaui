@@ -65,7 +65,7 @@ namespace ContentParserBackend.Services
             return Task.CompletedTask;
         }
 
-        public async static Task<List<string>> PullPediaImageLinks(List<string> urls, string keyword)
+        public async static Task<string[]> PullPediaImageLinks(List<string> urls, string keyword)
         {
             RestClient client = new RestClient();
 
@@ -79,15 +79,15 @@ namespace ContentParserBackend.Services
                 var dt = await client.ExecuteGetAsync<string>(new RestRequest(url, Method.Get));
                 doc.LoadHtml(dt.Content ?? "");
 
-                var link = doc.DocumentNode.SelectNodes(xpath)?.Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
+                var link = doc.DocumentNode.SelectNodes(xpath)?.AsParallel().Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
 
-                if (link != null)
+                if (link != null && link.Contains(keyword) == true)
                 {
                     links.AddRange(link);
                 }
             }
 
-            return links.Distinct().Where(l => l.Contains(keyword) == true).ToList();
+            return links.Distinct().ToArray();
         }
     }
 }

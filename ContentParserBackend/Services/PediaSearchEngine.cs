@@ -27,7 +27,7 @@ namespace ContentParserBackend.Services
             document.LoadHtml(responseContent);
 
             // all "a" starting models for example
-            var pages = document.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").Select(a => a.GetAttributeValue("href", "")).Where(e => e != "").ToArray();
+            var pages = document.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").AsParallel().Select(a => a.GetAttributeValue("href", "")).Where(e => e != "").ToArray();
 
             // pagination for specific model miniatures set
             int pagination = 0;
@@ -54,7 +54,7 @@ namespace ContentParserBackend.Services
                         // get all thumbnais urls and replace t_ part with ""
 
 
-                        var res = pageWithThumbnails.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").Select(i => i.GetAttributeValue("href", "")).Where(l => l.ToLower().Contains(keyword.ToLower()) == true);
+                        var res = pageWithThumbnails.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").AsParallel().Select(i => i.GetAttributeValue("href", "")).Where(l => l.ToLower().Contains(keyword.ToLower()) == true);
                         results.AddRange(res);
                     }
                 }
