@@ -53,7 +53,7 @@ namespace ContentParserBackend.Services
                 {
                     mqService.SendMessage($"Parsing {c} character for request {keyword} https://fapomania.com/onlyfans/{c} link", "NotificationsQueue");
                     SerachEngine parser = new($"https://fapomania.com/onlyfans/{c}/");
-                    var result = await parser.ParseAsync(keyword);
+                    var result = await parser.ParseAsync(keyword, mqService);
 
                     var resultLinks = PullImagesLinks(result, keyword);
 

@@ -18,7 +18,7 @@ namespace ContentParserBackend.Services
             this.restClient = new RestClient();
         }
 
-        public async Task<List<string>> ParseAsync(string keyword)
+        public async Task<List<string>> ParseAsync(string keyword, IRabbitMqService mq)
         {
             this.results.Clear();
 
