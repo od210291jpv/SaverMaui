@@ -44,11 +44,11 @@ namespace ContentParserBackend.Services
                 {
                     mqService.SendMessage($"Parsing {c} character for request {keyword} https://fapopedia.net/list/{c} link", "NotificationsQueue");
 
-                    var result = await new PediaSearchEngine($"https://fapopedia.net/list/{c}/").ParseAsync(expectedKeyword);
+                    var result = await new PediaSearchEngine($"https://fapopedia.net/list/{c}/").ParseAsync(expectedKeyword, mqService);
                     
                     mqService.SendMessage($"Pedia: {result.Count} mathed links found", "NotificationsQueue");
 
-                    var parsedRsults = await PullPediaImageLinks(result, expectedKeyword);
+                    var parsedRsults = await this.PullPediaImageLinks(result, expectedKeyword);
 
                     foreach (var rl in parsedRsults)
                     {
@@ -65,7 +65,7 @@ namespace ContentParserBackend.Services
             return Task.CompletedTask;
         }
 
-        public async static Task<string[]> PullPediaImageLinks(List<string> urls, string keyword)
+        public async Task<string[]> PullPediaImageLinks(List<string> urls, string keyword)
         {
             RestClient client = new RestClient();
 
@@ -80,10 +80,19 @@ namespace ContentParserBackend.Services
                 doc.LoadHtml(dt.Content ?? "");
 
                 var link = doc.DocumentNode.SelectNodes(xpath)?.AsParallel().Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
+                mqService.SendMessage($"Pedia: {link} was pulled for {keyword} in {url}", "NotificationsQueue");
 
-                if (link != null && link.Contains(keyword) == true)
+                if (link != null)
                 {
-                    links.AddRange(link);
+                    foreach (var l in link)
+                    {
+                        mqService.SendMessage($"Pedia: {l} was pulled for {keyword} in {url}", "NotificationsQueue");
+                        if (l.ToLower().Contains(keyword.ToLower()))
+                        {
+                            mqService.SendMessage($"Pedia: {l} does contain keyword {keyword} in {url}", "NotificationsQueue");
+                            links.Add(l);
+                        }
+                    }
                 }
             }
 
