@@ -15,11 +15,10 @@ namespace ContentParserBackend.Services
             this.restClient = new RestClient();
         }
 
-        public async Task<List<string>> ParseAsync(string keyword)
+        public async Task<List<string>> ParseAsync(string keyword, IRabbitMqService mqService)
         {
             List<string> results = new List<string>();
             var response = await this.restClient.ExecuteGetAsync<string>(new RestRequest(this.url, method: Method.Get));
-
 
             var responseContent = response.Content;
 
@@ -27,7 +26,8 @@ namespace ContentParserBackend.Services
             document.LoadHtml(responseContent);
 
             // all "a" starting models for example
-            var pages = document.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").Select(a => a.GetAttributeValue("href", "")).Where(e => e != "").ToArray();
+            var pages = document.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").AsParallel().Select(a => a.GetAttributeValue("href", "")).Where(e => e != "").ToArray();
+            mqService.SendMessage($"Pedia: {pages.Length} pages with images found for the {this.url}", "NotificationsQueue");
 
             // pagination for specific model miniatures set
             int pagination = 0;
@@ -44,6 +44,8 @@ namespace ContentParserBackend.Services
                     var pag = pageWithContentMiniatures.DocumentNode.SelectSingleNode("//div[@class = 'nv-blk']//li[2]/span")?.InnerText?.Split("of")?.LastOrDefault()?.Replace(" ", "");
                     pagination = int.Parse(pag ?? "1");
 
+                    mqService.SendMessage($"Pedia: Content page pagination: {pagination} pages with images found for the {page}", "NotificationsQueue");
+
                     for (int i = 1; i <= pagination; i++) 
                     {
                         var pageWithThumbnails = new HtmlDocument();
@@ -54,11 +56,11 @@ namespace ContentParserBackend.Services
                         // get all thumbnais urls and replace t_ part with ""
 
 
-                        var res = pageWithThumbnails.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").Select(i => i.GetAttributeValue("href", "")).Where(l => l.ToLower().Contains(keyword.ToLower()) == true);
+                        var res = pageWithThumbnails.DocumentNode.SelectNodes("//div[@class = 'shrt']/a").AsParallel().Select(i => i.GetAttributeValue("href", "")).Where(l => l.ToLower().Contains(keyword.ToLower()) == true);
+                        mqService.SendMessage($"Pedia: {res.Count()} mathed links found for {keyword} in {url}", "NotificationsQueue");
                         results.AddRange(res);
                     }
                 }
-
             }
 
             return results;

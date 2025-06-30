@@ -12,12 +12,11 @@ namespace ContentParserBackend.Services
     {
         private IConnection _connection;
         private IModel _channel;
-        private readonly IServiceScopeFactory serviceScopeFactory;
-        private string keyword = string.Empty;
+        private readonly IRabbitMqService mqService;
 
-        public PediarabbitMqListener(IServiceScopeFactory serviceScopeFactory)
+        public PediarabbitMqListener(IRabbitMqService rabbit)
         {
-            this.serviceScopeFactory = serviceScopeFactory;
+            this.mqService = rabbit;
             var factory = new ConnectionFactory { HostName = "192.168.88.252", UserName = "pi", Password = "raspberry" };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
@@ -38,18 +37,22 @@ namespace ContentParserBackend.Services
                 var parserId = keyword.Split(":")?[1];
                 var expectedKeyword = keyword.Split(":")?[0] ?? keyword;
 
+                var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
+                var redisDb = redis.GetDatabase(2);
+
                 foreach (char c in alpha)
                 {
-                    PediaSearchEngine parser = new PediaSearchEngine($"https://fapopedia.net/list/{c}/");
-                    var result = await parser.ParseAsync(expectedKeyword);
-                    var parsedRsults = await PullPediaImageLinks(result, expectedKeyword);
+                    mqService.SendMessage($"Parsing {c} character for request {keyword} https://fapopedia.net/list/{c} link", "NotificationsQueue");
 
+                    var result = await new PediaSearchEngine($"https://fapopedia.net/list/{c}/").ParseAsync(expectedKeyword, mqService);
+                    
+                    mqService.SendMessage($"Pedia: {result.Count} mathed links found", "NotificationsQueue");
 
-                    var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-                    var redisDb = redis.GetDatabase(3);
+                    var parsedRsults = await this.PullPediaImageLinks(result, expectedKeyword);
 
                     foreach (var rl in parsedRsults)
                     {
+                        mqService.SendMessage($"Pedia: {rl} found for {expectedKeyword}", "NotificationsQueue");
                         await redisDb.StringSetAsync(Guid.NewGuid().ToString(), rl);
                     }
                 }
@@ -62,7 +65,7 @@ namespace ContentParserBackend.Services
             return Task.CompletedTask;
         }
 
-        public async static Task<List<string>> PullPediaImageLinks(List<string> urls, string keyword)
+        public async Task<string[]> PullPediaImageLinks(List<string> urls, string keyword)
         {
             RestClient client = new RestClient();
 
@@ -76,15 +79,24 @@ namespace ContentParserBackend.Services
                 var dt = await client.ExecuteGetAsync<string>(new RestRequest(url, Method.Get));
                 doc.LoadHtml(dt.Content ?? "");
 
-                var link = doc.DocumentNode.SelectNodes(xpath)?.Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
+                var link = doc.DocumentNode.SelectNodes(xpath)?.AsParallel().Select(i => i.GetAttributeValue("src", "")).Where(l => l != "" && l != null).Select(l => l.Replace(@"/t_", "")).ToArray();
+                mqService.SendMessage($"Pedia: {link} was pulled for {keyword} in {url}", "NotificationsQueue");
 
                 if (link != null)
                 {
-                    links.AddRange(link);
+                    foreach (var l in link)
+                    {
+                        mqService.SendMessage($"Pedia: {l} was pulled for {keyword} in {url}", "NotificationsQueue");
+                        if (l.ToLower().Contains(keyword.ToLower()))
+                        {
+                            mqService.SendMessage($"Pedia: {l} does contain keyword {keyword} in {url}", "NotificationsQueue");
+                            links.Add(l);
+                        }
+                    }
                 }
             }
 
-            return links.Distinct().Where(l => l.Contains(keyword) == true).ToList();
+            return links.Distinct().ToArray();
         }
     }
 }

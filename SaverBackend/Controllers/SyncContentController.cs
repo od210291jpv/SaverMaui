@@ -59,38 +59,25 @@ namespace SaverBackend.Controllers
                 {
                     if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0) 
                     {
+                        List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
+
+                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max() + 2;
+
                         Content newContent = new Content()
                         {
                             CategoryId = content.CategoryId,
                             ImageUri = content.ImageUri,
                             Title = content.Title,
                             Rating = content.Rating,
-                            Id = content.Id,
+                            Id = newId,
                         };
 
                         await db.Contents.AddAsync(newContent);
+                        await this.redisDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
                 int result = await db.SaveChangesAsync();
-
-                foreach (var content in contentRepresentation.Content) 
-                {
-                    Content newContent = new Content()
-                    {
-                        CategoryId = content.CategoryId,
-                        ImageUri = content.ImageUri,
-                        Title = content.Title,
-                        Id = content.Id,
-                    };
-
-                    var contentFromDb = await this.db.Contents.FirstOrDefaultAsync(c => c.ImageUri == newContent.ImageUri);
-
-                    if (contentFromDb != null) 
-                    {
-                        await this.redisDb.StringSetAsync(contentFromDb.Id.ToString(), JsonConvert.SerializeObject(newContent));
-                    }
-                }
 
                 if (result > 0) 
                 {
