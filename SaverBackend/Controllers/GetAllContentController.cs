@@ -4,6 +4,7 @@ using SaverBackend.DTO;
 using SaverBackend.Models;
 using StackExchange.Redis;
 using System.Net;
+using Tensorflow;
 
 namespace SaverBackend.Controllers
 {
@@ -42,26 +43,25 @@ namespace SaverBackend.Controllers
                 howManyToSkip = pageSize * page;
             }
 
-            RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).Skip(howManyToSkip).Take(pageSize).ToArray();
+            var allPagedKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).AsParallel().OrderBy(k => int.Parse(k)).Skip(howManyToSkip).Take(pageSize).ToArray();
 
-            List<Content> results = new(allKeys.Length);
+            var allValues = new List<Content>();
 
-            foreach (RedisKey key in allKeys) 
+            foreach (var k in allPagedKeys) 
             {
-                var redisValue = await this.redisDb.StringGetAsync(key);
-                if (redisValue.HasValue) 
+                var redisValue = await this.redisDb.StringGetAsync(k);
+                if (redisValue.HasValue)
                 {
-                    var deserialized = JsonConvert.DeserializeObject<Content>(redisValue);
-                    if (deserialized != null) 
+                    var rr = JsonConvert.DeserializeObject<Content>(redisValue);
+
+                    if (rr is not null) 
                     {
-                        results.Add(deserialized);
+                        allValues.add(rr);
                     }
                 }
             }
 
-            var sorted = results.OrderBy(r => r.Id).Reverse();
-
-            return sorted.ToArray();
+            return allValues.OrderBy(v => v.Id).ToArray();
         }
 
         [HttpGet("searchResults")]
@@ -70,7 +70,7 @@ namespace SaverBackend.Controllers
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(2).ToList() ?? new List<RedisKey>();
             var resultsDb = this.redis.GetDatabase(2);
 
-            return allKeys.AsParallel().Select(k => resultsDb.StringGet(k).ToString()).ToArray();
+            return allKeys.AsParallel().Select(k => resultsDb.StringGet(k).ToString()).Distinct().ToArray();
         }
 
         [HttpDelete("CleanResults")]
