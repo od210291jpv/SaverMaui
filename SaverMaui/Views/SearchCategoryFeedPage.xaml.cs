@@ -63,8 +63,8 @@ public partial class SearchCategoryFeedPage : ContentPage
             Content content = new Content()
             {
                 CategoryId = reqCat.CategoryId,
-                ImageUri = Environment.CurrectSearchResultItem,
-                Title = "sexy",
+                ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url,
+                Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Split("/").Last().Split("_").First(),
                 Id = lastId + 1
             };
 
@@ -77,7 +77,7 @@ public partial class SearchCategoryFeedPage : ContentPage
                 {
                     CategoryId = reqCat.CategoryId,
                     DateCreated = DateTime.Now,
-                    Title = "Sexy",
+                    Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Split("/").Last().Split("_").First(),
                     ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url,
                     Id = content.Id
                 }}

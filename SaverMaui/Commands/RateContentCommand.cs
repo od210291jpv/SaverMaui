@@ -26,14 +26,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Realm _realm = Realm.GetInstance();
-            var all = _realm.All<Content>().ToArray();
-
-            var debug = this.feedViewModel.CurrentContent.Source.ToString();
-
-            var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(this.feedViewModel.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", "")));
-
-            var toast0 = Toast.Make($"Current content rate: {requiredContent.Rating}", ToastDuration.Short, 14);
+            var toast0 = Toast.Make($"Current content rate: temporary unavailable", ToastDuration.Short, 14);
             await toast0.Show(new CancellationTokenSource().Token);
 
             string result = await Application.Current.MainPage.DisplayPromptAsync("Rate the content", "Please set from 1 to 5", "Ok", "Cancel");
@@ -51,10 +44,7 @@ namespace SaverMaui.Commands
                 return;
             }
 
-
-            _realm.Write(() => requiredContent.Rating = parcedRate);
-
-            await BackendServiceClient.GetInstance().ContentActions.RateContent(requiredContent.Id, Environment.ProfileIntId, (short)requiredContent.Rating);
+            await BackendServiceClient.GetInstance().ContentActions.RateContent(this.feedViewModel.CurrentContent.ContentId, Environment.ProfileIntId, short.Parse(result));
 
             var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);
             await toast.Show(new CancellationTokenSource().Token);

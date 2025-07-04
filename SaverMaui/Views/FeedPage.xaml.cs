@@ -31,7 +31,7 @@ public partial class FeedPage : ContentPage
             return;
         }
 
-        var allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
+        var allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 50);
 
         if (allContent != null)
         {
@@ -49,7 +49,6 @@ public partial class FeedPage : ContentPage
                         CachingEnabled = true,
                         CacheValidity = TimeSpan.FromDays(30)
                     },
-                    //Source = item.ImageUri,
                     CategoryId = item.CategoryId ?? new Guid()
                 });
             }
@@ -70,7 +69,7 @@ public partial class FeedPage : ContentPage
         if (currentItem.Id == FeedViewModel.Instance?.ContentCollection.Last().Id)
         {
             CurrentPage += 1;
-            Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 100);
+            Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 50);
 
             if (allContent != null)
             {
@@ -96,29 +95,29 @@ public partial class FeedPage : ContentPage
 
     private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
 	{
-        Realm _realm = Realm.GetInstance();
+        //Realm _realm = Realm.GetInstance();
 
-		var all = _realm.All<Content>().ToArray();
+		//var all = _realm.All<Content>().ToArray();
 
-		var content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", ""))).FirstOrDefault();
+		//var content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", ""))).FirstOrDefault();
 
-        if (content == null) 
-        {
-            _realm.Add(new Content 
-            {
-                CategoryId = content.CategoryId,
-                Id = content.Id,
-                ImageUri = content.ImageUri,
-                IsFavorite = content.IsFavorite,
-                Title = content.Title
-            });
+        //if (content == null) 
+        //{
+        //    _realm.Add(new Content 
+        //    {
+        //        CategoryId = content.CategoryId,
+        //        Id = content.Id,
+        //        ImageUri = content.ImageUri,
+        //        IsFavorite = content.IsFavorite,
+        //        Title = content.Title
+        //    });
 
-            content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
-        }
+        //    content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
+        //}
 
         if (Environment.IsLoggedIn == true) 
         {
-            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, content.Id);
+            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, FeedViewModel.Instance.CurrentContent.ContentId);
 
             if (result != System.Net.HttpStatusCode.OK) 
             {
@@ -129,7 +128,7 @@ public partial class FeedPage : ContentPage
                 return;
             }
 
-            _realm.Write(() => content.IsFavorite = true);
+            //_realm.Write(() => content.IsFavorite = true);
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
             await toast.Show(cancellationTokenSource.Token);
