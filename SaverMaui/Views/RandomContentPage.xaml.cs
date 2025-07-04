@@ -49,14 +49,9 @@ public partial class RandomContentPage : ContentPage
 
     private async void OnTapGestureRecognizerTapped(object sender, TappedEventArgs e)
     {
-        Realm _realm = Realm.GetInstance();
-        var all = _realm.All<Content>().ToArray();
-
-        Content expectedContent = all.Where(i => i.ImageUri.ToString().Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
-
         if (Environment.IsLoggedIn == true) 
         {
-            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, expectedContent.Id);
+            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, FeedRandomContentViewModel.Instance.CurrentImage.ContentId);
 
             if (result != System.Net.HttpStatusCode.OK)
             {
@@ -68,7 +63,6 @@ public partial class RandomContentPage : ContentPage
             }
         }
 
-        _realm.Write(() => expectedContent.IsFavorite = true);
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
         await toast.Show(cancellationTokenSource.Token);

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SaverBackend.Models;
 using SaverBackend.Services.RabbitMq;
 using StackExchange.Redis;
+using System.Threading.Tasks;
 
 namespace SaverBackend.Controllers
 {
@@ -103,6 +104,21 @@ namespace SaverBackend.Controllers
 
             await this.db.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet("RandomContent")]
+        public async Task<Content> GetRandomContent() 
+        {
+            var all = await this.db.Contents.ToArrayAsync();
+            Content random = all.ElementAt(new Random().Next(1, this.db.Contents.Count()));
+            return random;
+        }
+
+        [HttpGet("ContentRating")]
+        public async Task<short?> GetContentRating(int id) 
+        {
+            var content = await this.db.Contents.SingleOrDefaultAsync(c => c.Id == id);
+            return content?.Rating;
         }
 
         [HttpGet("GetRatedContent")]

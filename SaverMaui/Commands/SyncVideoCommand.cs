@@ -13,7 +13,7 @@ namespace SaverMaui.Commands
 
         public bool CanExecute(object parameter)
         {
-            return Environment.ProfileData?.ProfileId != null;
+            return true;
         }
 
         public async void Execute(object parameter)
@@ -39,7 +39,7 @@ namespace SaverMaui.Commands
                         CategoryId = v.CategoryId,
                         DateCreated = DateTime.Now,
                         ImageUri = v.VideoUri,
-                        PublisherProfileId = Environment.ProfileData.ProfileId,
+                        PublisherProfileId = Guid.Parse("2409395f-16b6-4a89-b2c4-cb70f376d7c3"),
                         Title = v.Title,
                     }).ToArray();
 
