@@ -4,13 +4,24 @@ trigger:
 
 variables:
   # Define a variable for your Docker image name
+  dockerRegistryServiceConnection: 'localRegistry' # Name of your service connection to Docker Hub/ACR
+  imageRepository: 'my-api-tests' # The name of your image in the registry
   testImageName: 'my-api-tests'
   tag: '$(Build.BuildId)'
 
-steps:
-- task: Docker@2
-  displayName: "Build docker container"
-  inputs:
-    command: 'build'
-    Dockerfile: '**/Dockerfile'
-    arguments: '-t $(testImageName):$(tag)'
+stages:
+- stage: Build
+  displayName: Build and push Docker image
+  jobs:
+  - job: BuildAndPush
+    displayName: Build and Push
+    steps:
+    - task: Docker@2
+      displayName: "Build docker container"
+      inputs:
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        arguments: '-t $(testImageName):$(tag)'
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        tags: |
+          $(tag)
