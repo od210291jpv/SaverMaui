@@ -29,5 +29,13 @@ namespace SaverBackendApiTests
            
             response.Should().Be(HttpStatusCode.OK, "The registration should succeed with a valid request.");
         }
+
+        [Test]
+        public async Task GetPagedContent() 
+        {
+            var content = await this.client.ContentActions.GetPagedContent();
+            content.Should().NotBeNull("The content should not be null.");
+            content.Length.Should().Be(50);
+        }
     }
 }
