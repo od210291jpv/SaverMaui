@@ -14,7 +14,7 @@ steps:
     command: 'build'
     dockerfile: 'Dockerfile' # Path to your Dockerfile for the tests
     tags: '$(testImageName):$(tag)'
-    buildContext: 'MyApiTests'
+    buildContext: 'SaverBackendApiTests'
 
 - script: |
     echo "Running Dockerized Tests..."
