@@ -13,4 +13,4 @@ steps:
   inputs:
     command: 'build'
     Dockerfile: '**/Dockerfile'
-
+    arguments: '-t $(testImageName):$(tag)'
