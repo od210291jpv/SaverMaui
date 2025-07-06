@@ -14,9 +14,8 @@ steps:
     command: 'build'
     dockerfile: 'Dockerfile' # Path to your Dockerfile for the tests
     tags: '$(testImageName):$(tag)'
-    buildContext: 'SaverBackendApiTests'
 
 - script: |
     echo "Running Dockerized Tests..."
-    docker run --rm $(testImageName):$(tag)
+    sudo docker run --rm $(testImageName):$(tag)
     displayName: 'Run Dockerized Tests'
