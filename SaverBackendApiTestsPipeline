@@ -5,7 +5,7 @@ trigger:
 variables:
   # Define a variable for your Docker image name
   testImageName: 'my-api-tests'
-  tag: '$(Build.BuildId)'
+  tag: 'my-api-tests'
 
 steps:
 - task: Docker@2
@@ -13,9 +13,9 @@ steps:
   inputs:
     command: 'build'
     dockerfile: 'Dockerfile' # Path to your Dockerfile for the tests
-    tags: '$(testImageName):$(tag)'
+    tags: 'my-api-tests'
 
 - script: |
     echo "Running Dockerized Tests..."
-    sudo docker run --rm $(testImageName):$(tag)
+    sudo docker run --rm 'my-api-tests'
     displayName: 'Run Dockerized Tests'
