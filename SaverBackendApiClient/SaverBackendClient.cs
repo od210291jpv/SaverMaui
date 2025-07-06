@@ -17,16 +17,16 @@ namespace SaverBackendApiClient
             get => new UserProfileServiceActions(this.restClient, this.BaseUrl);
         }
 
-        public SaverBackendClient(IOptionsMonitor<SaverBackendClientSettings> settings)
+        public SaverBackendClient(SaverBackendClientSettings settings)
         {
-            RestClientOptions options = new RestClientOptions(settings.CurrentValue.BaseUrl)
+            RestClientOptions options = new RestClientOptions(settings.BaseUrl)
             {
                 ThrowOnAnyError = true,
                 ThrowOnDeserializationError = true,
-                Timeout = settings.CurrentValue.Timeout
+                Timeout = settings.Timeout
             };
 
-            this.BaseUrl = settings.CurrentValue.BaseUrl;
+            this.BaseUrl = settings.BaseUrl;
             this.restClient = new RestClient(options, configureSerialization: s => s.UseNewtonsoftJson());
         }
     }
