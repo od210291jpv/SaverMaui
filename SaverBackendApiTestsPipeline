@@ -23,5 +23,6 @@ stages:
         Dockerfile: '**/Dockerfile'
         arguments: '-t $(testImageName):$(tag)'
         containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: "/tests"
         tags: |
           $(tag)
