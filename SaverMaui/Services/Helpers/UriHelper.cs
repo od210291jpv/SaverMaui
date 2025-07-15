@@ -31,6 +31,11 @@
             return $"{BaseAddress}/GetAllContent/GetAllContentPaged?page={page}&pageSize={size}";
         }
 
+        public static string AllContentCount
+        {
+            get => $"{BaseAddress}/Content/GetAllContentCount";
+        }
+
         public static string GetAllCategories 
         {
             get => $"{BaseAddress}/GetCategories";

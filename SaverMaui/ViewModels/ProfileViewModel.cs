@@ -17,12 +17,10 @@ namespace SaverMaui.ViewModels
 
         public Color OnlineButtonBackgroundColor { get; set; } = new Color(255, 160, 122);
 
-        public ICommand LogoutCommand { get; }
 
         public ProfileViewModel()
         {
             this.WeAreOnline = IsOnlineHelper.IsOnline;
-            this.LogoutCommand = new LogOutCommand(this);
 
             if (this.WeAreOnline) 
             {

@@ -1,5 +1,6 @@
 using Realms;
 using SaverMaui.Models;
+using SaverMaui.Services;
 using SaverMaui.SignalRModels;
 using SaverMaui.ViewModels;
 using System.Reactive.Linq;
@@ -14,23 +15,20 @@ public partial class ProfilePage : ContentPage
 	{
 		InitializeComponent();
 
-		if (Environment.ProfileData != null && Environment.ProfileData?.PublishedCategories != null) 
-		{
-            this.PublishedCats.Text = $"Amount of published categories: {Environment.ProfileData.PublishedCategories.Count()}";
-        }
 		this.Appearing += OnProfileAppearing;
     }
 
-    private void OnProfileAppearing(object sender, EventArgs e)
+    private async void OnProfileAppearing(object sender, EventArgs e)
     {
         Realm _realm = Realm.GetInstance();
         var allCats = _realm.All<Category>();
 
-        this.TotalContentAmount.Text = $"{_realm.All<Content>().ToArray().Length}/{_realm.All<Content>().Where(c => c.Rating > 0).Count()}";
+        this.TotalContentAmount.Text = $"{await BackendServiceClient.GetInstance().ContentActions.GetAllContentCount()}";
+        var funds = await BackendServiceClient.GetInstance().UserActions.GetProfileInfo(Environment.Login, Environment.Password);
 
-       
+        this.Funds.Text = $"{funds.Funds}";
 
-        if (this.IsProgressSubscribed == false) 
+        if (this.IsProgressSubscribed == false)
         {
             NotificationCenterViewModel.GetInstance()?.Notifications.Where(n => n.Message.Contains("Search Progress:")).Subscribe(OnProgressUpdatedFiltered);
             this.IsProgressSubscribed = true;
