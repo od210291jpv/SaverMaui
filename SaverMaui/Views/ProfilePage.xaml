@@ -78,32 +78,6 @@
                     <Button Grid.Column="0" Grid.Row="9" Text="My Groups" BackgroundColor="DeepPink" CornerRadius="0" HorizontalOptions="FillAndExpand" TextColor="White"/>
                     <Label Grid.Column="0" Grid.Row="10" Text="Total Content: "></Label>
                     <Label Grid.Column="0" Grid.Row="11" x:Name="TotalContentAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="12" Text="Ass" ></Label>
-                    <Label Grid.Column="0" Grid.Row="13" x:Name="TotalAssAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="14" Text="Bj" ></Label>
-                    <Label Grid.Column="0" Grid.Row="15" x:Name="TotalBjAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="16" Text="Blondes"></Label>
-                    <Label Grid.Column="0" Grid.Row="17" x:Name="TotalBlondesAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="18" Text="Brunnetes"></Label>
-                    <Label Grid.Column="0" Grid.Row="19" x:Name="TotalBrunettesAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="20" Text="Cumface"></Label>
-                    <Label Grid.Column="0" Grid.Row="21" x:Name="TotalCumfaceAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="22" Text="Curvys"></Label>
-                    <Label Grid.Column="0" Grid.Row="23" x:Name="TotalCurvysAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="24" Text="Face"></Label>
-                    <Label Grid.Column="0" Grid.Row="25" x:Name="TotalFaceAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="26" Text="Lips"></Label>
-                    <Label Grid.Column="0" Grid.Row="27" x:Name="TotalLipsAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="28" Text="MILF"></Label>
-                    <Label Grid.Column="0" Grid.Row="29" x:Name="TotalMilfAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="30" Text="Red"></Label>
-                    <Label Grid.Column="0" Grid.Row="31" x:Name="TotalRedAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="32" Text="Rest"></Label>
-                    <Label Grid.Column="0" Grid.Row="33" x:Name="TotalRestAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="34" Text="Sluts"></Label>
-                    <Label Grid.Column="0" Grid.Row="35" x:Name="TotalSlutsAmount"></Label>
-                    <Label Grid.Column="0" Grid.Row="36" Text="Tits"></Label>
-                    <Label Grid.Column="0" Grid.Row="37" x:Name="TotalTitsAmount"></Label>
                 </Grid>
             </ScrollView>
         </RefreshView>
