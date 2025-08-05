@@ -51,15 +51,18 @@ public partial class RandomContentPage : ContentPage
     {
         if (Environment.IsLoggedIn == true) 
         {
-            var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, FeedRandomContentViewModel.Instance.CurrentImage.ContentId);
-
-            if (result != System.Net.HttpStatusCode.OK)
+            if (BindingContext is FeedRandomContentViewModel viewModel)
             {
-                CancellationTokenSource tok = new CancellationTokenSource();
-                var toast2 = Toast.Make($"Looks like no enough funds. Status is {result}", ToastDuration.Short, 14);
-                await toast2.Show(tok.Token);
+                var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, viewModel.CurrentImage.ContentId);
 
-                return;
+                if (result != System.Net.HttpStatusCode.OK)
+                {
+                    CancellationTokenSource tok = new CancellationTokenSource();
+                    var toast2 = Toast.Make($"Looks like no enough funds. Status is {result}", ToastDuration.Short, 14);
+                    await toast2.Show(tok.Token);
+
+                    return;
+                }
             }
         }
 

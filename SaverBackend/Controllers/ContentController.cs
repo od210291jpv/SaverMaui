@@ -130,5 +130,11 @@ namespace SaverBackend.Controllers
             var deserializedResult = result.Where(r => r.HasValue == true).Select(r => JsonConvert.DeserializeObject<Content>(r.ToString())).OrderBy(c => c?.Rating).ToArray();
             return deserializedResult;
         }
+
+        [HttpGet("GetAllContentCount")]
+        public async Task<int> GetTotalcontentCount()
+        {
+            return await this.db.Contents.CountAsync();
+        }
     }
 }

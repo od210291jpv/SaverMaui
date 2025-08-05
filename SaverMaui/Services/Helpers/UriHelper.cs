@@ -21,9 +21,19 @@
             get => $"{BaseAddress}/GetAllContent";
         }
 
+        public static string GetRandomContent
+        {
+            get => $"{BaseAddress}/Content/RandomContent";
+        }
+
         public static string GetPaginatedContent(short page = 0, short size = 200) 
         {
             return $"{BaseAddress}/GetAllContent/GetAllContentPaged?page={page}&pageSize={size}";
+        }
+
+        public static string AllContentCount
+        {
+            get => $"{BaseAddress}/Content/GetAllContentCount";
         }
 
         public static string GetAllCategories 

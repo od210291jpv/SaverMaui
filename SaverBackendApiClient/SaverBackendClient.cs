@@ -17,6 +17,11 @@ namespace SaverBackendApiClient
             get => new UserProfileServiceActions(this.restClient, this.BaseUrl);
         }
 
+        public ContentServiceAction ContentActions 
+        { 
+            get => new ContentServiceAction(this.restClient, this.BaseUrl);
+        }
+
         public SaverBackendClient(SaverBackendClientSettings settings)
         {
             RestClientOptions options = new RestClientOptions(settings.BaseUrl)

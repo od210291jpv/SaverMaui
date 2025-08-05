@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SaverBackend.DTO;
 using SaverBackend.Models;
 using StackExchange.Redis;
 using System.Net;
@@ -61,7 +60,7 @@ namespace SaverBackend.Controllers
                 }
             }
 
-            return allValues.OrderBy(v => v.Id).ToArray();
+            return allValues.OrderByDescending(v => v.DateCreated).ToArray();
         }
 
         [HttpGet("searchResults")]

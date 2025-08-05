@@ -1,9 +1,7 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using Realms;
 
 using SaverMaui.Custom_Elements;
-using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.ViewModels;
 
@@ -37,7 +35,7 @@ public partial class FeedPage : ContentPage
         {
             FeedViewModel.Instance.ContentCollection.Clear();
 
-            foreach (var item in allContent)
+            foreach (var item in allContent.OrderByDescending(c => c.DateCreated))
             {
                 FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                 {
@@ -73,7 +71,7 @@ public partial class FeedPage : ContentPage
 
             if (allContent != null)
             {
-                foreach (var item in allContent)
+                foreach (var item in allContent.OrderBy(c => c.DateCreated))
                 {
                     FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                     {
@@ -90,31 +88,10 @@ public partial class FeedPage : ContentPage
                 }
             }
         }
-
     }
 
     private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
 	{
-        //Realm _realm = Realm.GetInstance();
-
-		//var all = _realm.All<Content>().ToArray();
-
-		//var content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", "").Replace(" ", ""))).FirstOrDefault();
-
-        //if (content == null) 
-        //{
-        //    _realm.Add(new Content 
-        //    {
-        //        CategoryId = content.CategoryId,
-        //        Id = content.Id,
-        //        ImageUri = content.ImageUri,
-        //        IsFavorite = content.IsFavorite,
-        //        Title = content.Title
-        //    });
-
-        //    content = all.Where(i => i.ImageUri.ToString().Contains(FeedViewModel.Instance.CurrentContent.Source.ToString().Replace("Uri: ", ""))).FirstOrDefault();
-        //}
-
         if (Environment.IsLoggedIn == true) 
         {
             var result = await BackendServiceClient.GetInstance().ContentActions.BuyContent(Environment.ProfileIntId, FeedViewModel.Instance.CurrentContent.ContentId);
@@ -128,7 +105,6 @@ public partial class FeedPage : ContentPage
                 return;
             }
 
-            //_realm.Write(() => content.IsFavorite = true);
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             var toast = Toast.Make($"Content added to favorites", ToastDuration.Short, 14);
             await toast.Show(cancellationTokenSource.Token);

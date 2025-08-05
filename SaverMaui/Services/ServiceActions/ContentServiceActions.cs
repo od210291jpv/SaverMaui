@@ -110,5 +110,21 @@ namespace SaverMaui.Services.ServiceActions
             var response = await this.client.ExecuteAsync(request);
             return response.StatusCode;
         }
+
+        public async Task<ContentDto> GetRandomContent()
+        {
+            var response = await this.client.ExecuteGetAsync<ContentDto>(new RestRequest(UriHelper.GetRandomContent, Method.Get));
+            return response.Data;
+        }
+
+        public async Task<int> GetAllContentCount() 
+        {
+            var response = await this.client.ExecuteGetAsync<int>(new RestRequest(UriHelper.AllContentCount, Method.Get));
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            return 0;
+        }
     }
 }
