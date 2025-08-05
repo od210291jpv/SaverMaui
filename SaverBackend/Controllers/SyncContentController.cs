@@ -17,6 +17,7 @@ namespace SaverBackend.Controllers
         private ApplicationContext db;
         private ConnectionMultiplexer redis;
         private IDatabase redisDb;
+        private IDatabase LatestUpdatesRedisDb;
 
         private IHubContext<MainNotificationsHub> notificationsHubContext { get; set; }
 
@@ -24,6 +25,7 @@ namespace SaverBackend.Controllers
         {
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             this.redisDb = redis.GetDatabase(1);
+            this.LatestUpdatesRedisDb = redis.GetDatabase(4);
             this.db = database;
             this.notificationsHubContext = hubcontext;
         }
@@ -74,6 +76,7 @@ namespace SaverBackend.Controllers
 
                         await db.Contents.AddAsync(newContent);
                         await this.redisDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
+                        await this.AddContentIntoLatest(new List<Content>() { newContent });
                     }
                 }
 
@@ -90,6 +93,40 @@ namespace SaverBackend.Controllers
             }
 
             return StatusCode(404);
+        }
+
+        private async Task AddContentIntoLatest(List<Content> content) 
+        {
+            RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(4).ToArray();
+            if (allKeys.Length > 100) 
+            {
+                foreach (var k in allKeys) 
+                {
+                    await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
+                }
+
+                foreach (var con in content) 
+                {
+                    await this.redisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
+                }
+
+                return;
+            }
+
+            int contentToUpdate = 100 - content.Count;
+            var keysToDelete = allKeys.Take(contentToUpdate).ToArray();
+
+            foreach (var k in keysToDelete)
+            {
+                await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
+            }
+
+            foreach (var con in content)
+            {
+                await this.LatestUpdatesRedisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
+            }
+
+            return;
         }
 
         [HttpPost]

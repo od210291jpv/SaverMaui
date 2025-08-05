@@ -14,12 +14,14 @@ namespace SaverBackend.Controllers
         private ApplicationContext db;
         private ConnectionMultiplexer redis;
         private IDatabase redisDb;
+        private IDatabase LatestUpdatesRedisDb;
 
         public GetAllContentController(ApplicationContext database)
         {
             this.db = database;
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             this.redisDb = redis.GetDatabase(1);
+            this.LatestUpdatesRedisDb = redis.GetDatabase(4);
         }
 
         [HttpGet(Name = "GetAllContent")]
@@ -54,6 +56,29 @@ namespace SaverBackend.Controllers
                     var rr = JsonConvert.DeserializeObject<Content>(redisValue);
 
                     if (rr is not null) 
+                    {
+                        allValues.add(rr);
+                    }
+                }
+            }
+
+            return allValues.OrderByDescending(v => v.DateCreated).ToArray();
+        }
+
+        [HttpGet("GetLatestContent")]
+        public async Task<Content[]> GetLatestContent() 
+        {
+            var allValues = new List<Content>();
+            var allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(4).ToArray();
+
+            foreach (var k in allKeys)
+            {
+                var redisValue = await this.redisDb.StringGetAsync(k);
+                if (redisValue.HasValue)
+                {
+                    var rr = JsonConvert.DeserializeObject<Content>(redisValue);
+
+                    if (rr is not null)
                     {
                         allValues.add(rr);
                     }
