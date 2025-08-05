@@ -44,7 +44,7 @@ namespace SaverBackend.Controllers
                 howManyToSkip = pageSize * page;
             }
 
-            var allPagedKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).AsParallel().OrderBy(k => int.Parse(k)).Skip(howManyToSkip).Take(pageSize).ToArray();
+            var allPagedKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).AsParallel().OrderByDescending(k => int.Parse(k)).Skip(howManyToSkip).Take(pageSize).ToArray();
 
             var allValues = new List<Content>();
 
