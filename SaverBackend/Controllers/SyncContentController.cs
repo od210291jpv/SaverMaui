@@ -98,7 +98,7 @@ namespace SaverBackend.Controllers
         private async Task AddContentIntoLatest(List<Content> content) 
         {
             RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(4).ToArray();
-            if (allKeys.Length > 100) 
+            if (content.Count >= 100) 
             {
                 foreach (var k in allKeys) 
                 {
@@ -114,18 +114,21 @@ namespace SaverBackend.Controllers
             }
 
             int contentToUpdate = 100 - content.Count;
-            var keysToDelete = allKeys.Take(contentToUpdate).ToArray();
 
-            foreach (var k in keysToDelete)
+            if (allKeys.Length >= 100) 
             {
-                await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
-            }
+                var keysToDelete = allKeys.Take(contentToUpdate).ToArray();
 
-            foreach (var con in content)
-            {
-                await this.LatestUpdatesRedisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
-            }
+                foreach (var k in keysToDelete)
+                {
+                    await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
+                }
 
+                foreach (var con in content)
+                {
+                    await this.LatestUpdatesRedisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
+                }
+            }
             return;
         }
 
