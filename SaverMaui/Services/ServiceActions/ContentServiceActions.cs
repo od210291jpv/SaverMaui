@@ -126,5 +126,15 @@ namespace SaverMaui.Services.ServiceActions
             }
             return 0;
         }
+
+        public async Task<short> GetContentRate(int contentId)
+        {
+            var response = await this.client.ExecuteGetAsync<short>(new RestRequest(UriHelper.GetContentRate(contentId), Method.Get));
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            return 0;
+        }
     }
 }

@@ -5,6 +5,7 @@ using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
 using SaverMaui.Models;
 using SaverMaui.Services;
+using SaverMaui.Services.Contracts.Content;
 using SaverMaui.ViewModels;
 
 namespace SaverMaui.Views;
@@ -19,31 +20,18 @@ public partial class RandomContentPage : ContentPage
 
     private async void OnPageAppearing(object sender, EventArgs e)
     {
-        Realm _realm = Realm.GetInstance();
-        var all = _realm.All<Content>().Where(c => c.Rating < 1).ToArray();
-        
-        if (all.Length == 0) 
-        {
-            all = _realm.All<Content>().ToArray();
-        }
+        ContentDto randomContent = await BackendServiceClient.GetInstance().ContentActions.GetRandomContent();
 
-        if (all.Length <= 1) 
+        if (BindingContext is FeedRandomContentViewModel viewModel)
         {
-            return;
-        }
-
-        var randomContent = all[new Random().Next(0, all.Length - 1)];
-        if (FeedRandomContentViewModel.Instance != null) 
-        {
-            FeedRandomContentViewModel.Instance.CurrentImage = new ImageRepresentationElement()
+            viewModel.CurrentImage = new ImageRepresentationElement()
             {
                 CategoryId = randomContent.CategoryId ?? new Guid(),
                 Source = randomContent.ImageUri,
-                Name = randomContent.Title
+                Name = randomContent.Title,
+                Rating = randomContent.Rating,
+                ContentId = randomContent.Id
             };
-
-            var toast0 = Toast.Make($"Content category: {_realm.All<Category>().SingleOrDefault(c => c.CategoryId == randomContent.CategoryId)?.Name ?? "N/A"}", ToastDuration.Short, 14);
-            await toast0.Show(new CancellationTokenSource().Token);
         }
     }
 
@@ -73,12 +61,9 @@ public partial class RandomContentPage : ContentPage
 
     private async void OnRateClicked(object sender, EventArgs e)
     {
-        Realm _realm = Realm.GetInstance();
-        var all = _realm.All<Content>().ToArray();
+        var rating = await BackendServiceClient.GetInstance().ContentActions.GetContentRate(FeedRandomContentViewModel.Instance.CurrentImage.ContentId);
 
-        var requiredContent = all.FirstOrDefault(c => c.ImageUri.Contains(FeedRandomContentViewModel.Instance.CurrentImage.Source.ToString().Replace("Uri: ", "")));
-
-        var toast0 = Toast.Make($"Current content rate: {requiredContent.Rating}", ToastDuration.Short, 14);
+        var toast0 = Toast.Make($"Current content rate: {rating}", ToastDuration.Short, 14);
         await toast0.Show(new CancellationTokenSource().Token);
 
         string result = await Application.Current.MainPage.DisplayPromptAsync("Rate the content", "Please set from 1 to 5", "Ok", "Cancel");
@@ -96,12 +81,9 @@ public partial class RandomContentPage : ContentPage
             return;
         }
 
-
-        _realm.Write(() => requiredContent.Rating = parcedRate);
-
         if (Environment.ProfileIntId != 0) 
         {
-            var resp = await BackendServiceClient.GetInstance().ContentActions.RateContent(requiredContent.Id, Environment.ProfileIntId, (short)requiredContent.Rating);
+            var resp = await BackendServiceClient.GetInstance().ContentActions.RateContent(FeedRandomContentViewModel.Instance.CurrentImage.ContentId, Environment.ProfileIntId, (short)parcedRate);
         }
 
         var toast = Toast.Make($"Thank you for the rate!", ToastDuration.Short, 14);

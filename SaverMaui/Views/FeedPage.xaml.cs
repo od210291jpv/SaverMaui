@@ -19,7 +19,6 @@ public partial class FeedPage : ContentPage
 
     private async void OnFeedAppearing(object sender, EventArgs e)
     {
-
         if (Environment.Login == null || Environment.Password == null) 
         {
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -35,7 +34,7 @@ public partial class FeedPage : ContentPage
         {
             FeedViewModel.Instance.ContentCollection.Clear();
 
-            foreach (var item in allContent.OrderByDescending(c => c.DateCreated))
+            foreach (var item in allContent)
             {
                 FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                 {
@@ -71,7 +70,7 @@ public partial class FeedPage : ContentPage
 
             if (allContent != null)
             {
-                foreach (var item in allContent.OrderBy(c => c.DateCreated))
+                foreach (var item in allContent)
                 {
                     FeedViewModel.Instance?.ContentCollection.Add(new ImageRepresentationElement()
                     {

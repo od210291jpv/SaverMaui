@@ -26,7 +26,9 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            var toast0 = Toast.Make($"Current content rate: temporary unavailable", ToastDuration.Short, 14);
+            var rating = await BackendServiceClient.GetInstance().ContentActions.GetContentRate(this.feedViewModel.CurrentContent.ContentId);
+
+            var toast0 = Toast.Make($"Current content rate: {rating}", ToastDuration.Short, 14);
             await toast0.Show(new CancellationTokenSource().Token);
 
             string result = await Application.Current.MainPage.DisplayPromptAsync("Rate the content", "Please set from 1 to 5", "Ok", "Cancel");

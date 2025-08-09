@@ -122,13 +122,26 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet("GetRatedContent")]
-        public async Task<Content[]> GetRatedContent(short? rate) 
+        public Content[] GetRatedContent(short? rate) 
         {
             var targetRating = rate != null ? rate.Value : 0;
-            var ratedContentIds = await this.db.Contents.Where(c => c.Rating > targetRating).Select(c => c.Id).ToArrayAsync();
-            var result = ratedContentIds.Select(i => this.redisContentDb.StringGet(i.ToString()));
-            var deserializedResult = result.Where(r => r.HasValue == true).Select(r => JsonConvert.DeserializeObject<Content>(r.ToString())).OrderBy(c => c?.Rating).ToArray();
-            return deserializedResult;
+
+            List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
+
+            RedisValue[] allValues = allKeys.AsParallel().Select(k => this.redisContentDb.StringGet(k)).Where(v => v.HasValue).ToArray();
+
+            List<Content> result = new List<Content>();
+
+            foreach (var value in allValues)
+            {
+                var deserialised = JsonConvert.DeserializeObject<Content>(value);
+                if (deserialised != null && deserialised!.Rating >= targetRating)
+                {
+                    result.Add(deserialised);
+                }
+            }
+
+            return result.OrderByDescending(c => c.Rating).ToArray();
         }
 
         [HttpGet("GetAllContentCount")]
