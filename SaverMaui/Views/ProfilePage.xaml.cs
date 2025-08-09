@@ -31,8 +31,15 @@ public partial class ProfilePage : ContentPage
         if (this.IsProgressSubscribed == false)
         {
             NotificationCenterViewModel.GetInstance()?.Notifications.Where(n => n.Message.Contains("Search Progress:")).Subscribe(OnProgressUpdatedFiltered);
+            NotificationCenterViewModel.GetInstance()?.Notifications.Where(n => n.Message.Contains("Found p results:")).Subscribe(OnNewResultsUpdated);
             this.IsProgressSubscribed = true;
         }
+    }
+
+    private void OnNewResultsUpdated(Notification notification)
+    {
+        string resultsCount = notification.Message.Split(":").Last().Trim();
+        this.ResultsAmt.Text = $"{int.Parse(this.ResultsAmt.Text) + int.Parse(resultsCount)}";
     }
 
     public async void OnProgressUpdatedFiltered(Notification notification) 

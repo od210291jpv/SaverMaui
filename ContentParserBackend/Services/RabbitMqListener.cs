@@ -76,6 +76,7 @@ namespace ContentParserBackend.Services
 
                     progress += step;
                     mqService.SendMessage($"Search Progress:{progress}", "NotificationsQueue");
+                    mqService.SendMessage($"Found p results:{resultLinks.Count()}", "NotificationsQueue");
                 }
 
                 progress = 0;
