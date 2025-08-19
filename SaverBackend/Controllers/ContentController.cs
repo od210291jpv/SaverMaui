@@ -148,5 +148,19 @@ namespace SaverBackend.Controllers
         {
             return await this.db.Contents.CountAsync();
         }
+
+        [HttpGet("SearchStatus")]
+        public async Task<string> GetSearchStatus() 
+        {             
+            var redisSearchStateDb = this.redis.GetDatabase(6);
+            var searchStatus = await redisSearchStateDb.StringGetAsync("SearchStatus");
+            
+            if (searchStatus.HasValue)
+            {
+                return searchStatus.ToString();
+            }
+
+            return "Inactive";
+        }
     }
 }
