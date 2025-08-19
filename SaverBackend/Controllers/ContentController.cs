@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using SaverBackend.Models;
 using SaverBackend.Services.RabbitMq;
 using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace SaverBackend.Controllers
 {

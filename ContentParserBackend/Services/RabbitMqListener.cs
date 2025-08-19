@@ -6,8 +6,6 @@ using RestSharp;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;
-using System.Web;
-using static System.Net.WebRequestMethods;
 
 namespace ContentParserBackend.Services
 {
@@ -38,16 +36,22 @@ namespace ContentParserBackend.Services
             double progress = 0;
             double step = 0.03846153846;
 
+            var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");
+            var redisSearchStateDb = redis.GetDatabase(6);
+            var redisDb = redis.GetDatabase(2);
+
             consumer.Received += async (ch, ea) =>
             {
+                await redisSearchStateDb.StringSetAsync("SearchStatus", "Active");
+
                 var inpm = Encoding.UTF8.GetString(ea.Body.ToArray());
                 var keyword = inpm.Split(":").First();
                 var rate = inpm.Split(":").Last();
 
                 char[] alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
 
-                var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-                var redisDb = redis.GetDatabase(2);
+                // fix, get from config
+                
 
                 foreach (char c in alpha)
                 {
@@ -82,6 +86,7 @@ namespace ContentParserBackend.Services
                 progress = 0;
 
                 _channel.BasicAck(ea.DeliveryTag, false);
+                await redisSearchStateDb.StringSetAsync("SearchStatus", "Passive");
             };
 
             _channel.BasicConsume("ParceContentQueue", false, consumer);
