@@ -7,6 +7,7 @@ namespace SaverMaui.ViewModels
 {
     internal class ProfileViewModel : BaseViewModel
     {
+
         public string Login { get; set; }
 
         public string Password { get; set; }
@@ -17,6 +18,17 @@ namespace SaverMaui.ViewModels
 
         public Color OnlineButtonBackgroundColor { get; set; } = new Color(255, 160, 122);
 
+        private string resultsAmnt;
+
+        public string ResultsAmnt 
+        { 
+            get => resultsAmnt;
+            set 
+            { 
+                resultsAmnt = value; 
+                OnPropertyChanged("ResultsAmnt"); 
+            } 
+        }
 
         public ProfileViewModel()
         {
@@ -27,6 +39,8 @@ namespace SaverMaui.ViewModels
                 this.OnlineButtonBackgroundColor = new Color(124, 252, 0);
                 this.UserName = Environment.Login;
             }
+
+            this.ResultsAmnt = "0";
         }
     }
 }

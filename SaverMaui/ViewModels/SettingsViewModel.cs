@@ -241,20 +241,6 @@ namespace SaverMaui.ViewModels
             }
         }
 
-        private ParseRemoteContentFeedCommand parseFeedCommand;
-
-        public ParseRemoteContentFeedCommand ParseFeedCommand 
-        {
-            get => this.parseFeedCommand ?? (this.parseFeedCommand = new ParseRemoteContentFeedCommand(this));
-        }
-
-        private DeleteImagesCommand deleteImagesCommand;
-
-        public DeleteImagesCommand DeleteImagesCommand 
-        {
-            get => this.deleteImagesCommand ?? (this.deleteImagesCommand = new DeleteImagesCommand());
-        }
-
         private SearchContentCommand searchContent;
 
         public SearchContentCommand SearchContent 

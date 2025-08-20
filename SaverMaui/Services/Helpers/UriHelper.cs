@@ -150,5 +150,15 @@
         {
             return $"{BaseAddress}/Content/BuyContent?userId={userId}&contentId={contentId}";
         }
+
+        internal static string GetContentRate(int contentId)
+        {
+            return $"{BaseAddress}/Content/ContentRating?id={contentId}";
+        }
+
+        internal static string SearchStatus 
+        {
+            get => $"{BaseAddress}/Content/SearchStatus";
+        }
     }
 }

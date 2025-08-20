@@ -51,7 +51,7 @@ public partial class SearchCategoryFeedPage : ContentPage
         var ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url;
 
         var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(ImageUri)}";
-        var resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
+        RestResponse<string> resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
 
         var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
 

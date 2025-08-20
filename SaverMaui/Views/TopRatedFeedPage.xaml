@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:SaverMaui.ViewModels"
              xmlns:vd="clr-namespace:SaverMaui.Custom_Elements"
              x:DataType="local:TopRatedFeedViewModel"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:Class="SaverMaui.Views.TopRatedFeedPage">
     
     <ContentPage.BindingContext>
@@ -23,8 +24,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit" IsAnimationPlaying="True">
-                            </Image>
+                            <ffimageloading:CachedImage Grid.Column="0" LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit">
+                            </ffimageloading:CachedImage>
                             <Button Grid.Row="0" 
                                 Grid.Column="0"
                                 Text="D"
