@@ -155,5 +155,10 @@
         {
             return $"{BaseAddress}/Content/ContentRating?id={contentId}";
         }
+
+        internal static string SearchStatus 
+        {
+            get => $"{BaseAddress}/Content/SearchStatus";
+        }
     }
 }

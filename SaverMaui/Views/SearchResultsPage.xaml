@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.SearchResultsPage" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              Title="Search Results">
     <ContentPage.BindingContext>
         <vm:SearchResultsViewModel />
@@ -21,11 +22,11 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Grid.Row="0" Source="{Binding Path=Value[0].Url}" Aspect="AspectFit" IsAnimationPlaying="False">
-                                    <Image.GestureRecognizers>
+                                <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding Path=Value[0].Url}" Aspect="AspectFit" LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" FadeAnimationEnabled="True">
+                                    <ffimageloading:CachedImage.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnCategoryOpen" NumberOfTapsRequired="2" />
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    </ffimageloading:CachedImage.GestureRecognizers>
+                                </ffimageloading:CachedImage>
                                 <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" FontSize="25" VerticalOptions="Start" FontAttributes="Bold" TextColor="White" Text="{Binding Path=Key}"/>
                             </Grid>
                         </Frame>

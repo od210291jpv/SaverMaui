@@ -136,5 +136,16 @@ namespace SaverMaui.Services.ServiceActions
             }
             return 0;
         }
+
+        public async Task<string> GetSearchStatusAsync() 
+        {
+            var response = await this.client.ExecuteGetAsync<string>(new RestRequest(UriHelper.SearchStatus, Method.Get));
+            
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            return "Passive";
+        }
     }
 }

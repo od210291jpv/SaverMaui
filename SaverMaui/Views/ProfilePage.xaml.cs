@@ -28,6 +28,8 @@ public partial class ProfilePage : ContentPage
 
         this.Funds.Text = $"{funds.Funds}";
 
+        this.SearchStatuslabel.Text = await BackendServiceClient.GetInstance().ContentActions.GetSearchStatusAsync();
+
         if (this.IsProgressSubscribed == false)
         {
             NotificationCenterViewModel.GetInstance()?.Notifications.Where(n => n.Message.Contains("Search Progress:")).Subscribe(OnProgressUpdatedFiltered);
@@ -36,10 +38,15 @@ public partial class ProfilePage : ContentPage
         }
     }
 
-    private void OnNewResultsUpdated(Notification notification)
+    private async void OnNewResultsUpdated(Notification notification)
     {
         string resultsCount = notification.Message.Split(":").Last().Trim();
-        this.ResultsAmt.Text = $"{int.Parse(this.ResultsAmt.Text) + int.Parse(resultsCount)}";
+        await Task.Delay(10);
+
+        if(BindingContext is ProfileViewModel viewModel)
+        {
+            viewModel.ResultsAmnt = $"Results currently: {int.Parse(this.ResultsAmt.Text.Split(":").Last()) + int.Parse(resultsCount)}";
+        }
     }
 
     public async void OnProgressUpdatedFiltered(Notification notification) 

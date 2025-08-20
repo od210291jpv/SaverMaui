@@ -8,6 +8,7 @@ using SaverMaui.ViewModels;
 namespace SaverMaui.Views;
 public partial class FeedPage : ContentPage
 {
+    private int allContentCount;
     private short CurrentPage = 0;
     private int currentImageIndex = 0;
     private static bool InitialLoad = true;
@@ -20,6 +21,8 @@ public partial class FeedPage : ContentPage
 
     private async void OnFeedAppearing(object sender, EventArgs e)
     {
+        this.allContentCount = await BackendServiceClient.GetInstance().ContentActions.GetAllContentCount();
+
         this.CurrentPage = 0;
 
         if (Environment.Login == null || Environment.Password == null) 
@@ -59,8 +62,9 @@ public partial class FeedPage : ContentPage
 
     public async void OnCurrentItemChanged(object sender, CurrentItemChangedEventArgs e)
     {
+        
         this.currentImageIndex = FeedViewModel.Instance.ContentCollection.IndexOf((ImageRepresentationElement)e.CurrentItem);
-        this.Title = currentImageIndex.ToString();
+        this.Title = $"{currentImageIndex.ToString()}/{this.allContentCount}";
         if (InitialLoad == true)
         {
             return;
