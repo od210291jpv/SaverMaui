@@ -35,6 +35,19 @@ namespace SaverMaui.ViewModels
             }
         }
 
+        public string GalleryColumns
+        {
+            get => Environment.GalleryColumns?.ToString() ?? "2";
+            set 
+            {
+                if (value != "") 
+                {
+                    Environment.GalleryColumns = short.Parse(value);
+                    OnPropertyChanged("GalleryColumns");
+                }
+            }
+        }
+
         public ObservableCollection<Category> Categories 
         {
             get 

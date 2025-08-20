@@ -12,7 +12,7 @@
     <ContentPage.Content>
         <CollectionView SelectionMode="Single" ItemsSource="{Binding ContentCollection}" SelectedItem="{Binding CurrentImage}" SelectionChanged="OnCurrentItemChanged">
             <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Horizontal" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                <GridItemsLayout Orientation="Horizontal" Span="{Binding ColumnsAmt}" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
             </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

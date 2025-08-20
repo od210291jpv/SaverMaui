@@ -17,6 +17,19 @@ namespace SaverMaui.ViewModels
             }
         }
 
+        public string ColumnsAmt 
+        { 
+            get => Environment.GalleryColumns?.ToString() ?? "2";
+            set 
+            {
+                if (value != "") 
+                {
+                    Environment.GalleryColumns = short.Parse(value);
+                    OnPropertyChanged(nameof(ColumnsAmt));
+                }
+            }
+        }
+
         private ImageRepresentationElement currentImage;
 
         public ImageRepresentationElement CurrentImage 
