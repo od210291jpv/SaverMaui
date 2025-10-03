@@ -15,14 +15,14 @@
                 <GridItemsLayout Orientation="Horizontal" Span="{Binding ColumnsAmt}" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
             </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                    
-                        <ffimageloading:CachedImage
+                <DataTemplate>
+                    <ffimageloading:CachedImage
                         Source="{Binding Path=Source}"
-                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" FadeAnimationEnabled="True">
-                        </ffimageloading:CachedImage>
-                    
-                    </DataTemplate>
+                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                        ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
+                        FadeAnimationEnabled="True">
+                    </ffimageloading:CachedImage>
+                </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
     </ContentPage.Content>

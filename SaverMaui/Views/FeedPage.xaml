@@ -29,13 +29,28 @@
                             <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0"
                                             Aspect="AspectFit"
                                             Source="{Binding Path=Source}"
-                                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  
+                                            ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"    FadeAnimationEnabled="True"
                                             FadeAnimationDuration="300"
+                                                        
                                             x:Name="Img">
                                     <ffimageloading:CachedImage.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
                                     </ffimageloading:CachedImage.GestureRecognizers>
                             </ffimageloading:CachedImage>
+                            <Button Grid.Row="0" 
+                            Grid.Column="0" 
+                            Text="D" FontAttributes="Bold" 
+                            TextColor="White"
+                            BackgroundColor="Orange" 
+                            CornerRadius="50" 
+                            VerticalOptions="End" 
+                            HorizontalOptions="End" 
+                            Margin="30" HeightRequest="60" 
+                            WidthRequest="60" 
+                            Padding="0" 
+                            Opacity="0.6" 
+                            x:Name="RateButton" Clicked="OnRemoveClicked"/>
                             <Button Grid.Row="0" 
                                 Grid.Column="0" 
                                 Text="R" FontAttributes="Bold" 
@@ -43,12 +58,12 @@
                                 BackgroundColor="DeepPink" 
                                 CornerRadius="50" 
                                 VerticalOptions="End" 
-                                HorizontalOptions="End" 
+                                HorizontalOptions="Start" 
                                 Margin="30" HeightRequest="60" 
                                 WidthRequest="60" 
                                 Padding="0" 
                                 Opacity="0.6" 
-                                x:Name="RateButton" Clicked="OnRateClicked"/>
+                                x:Name="DeleteButton" Clicked="OnRateClicked"/>
                         </Grid>
                     </DataTemplate>
                     </CarouselView.ItemTemplate>

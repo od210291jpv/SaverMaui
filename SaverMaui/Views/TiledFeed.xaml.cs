@@ -99,4 +99,14 @@ public partial class TiledFeed : ContentPage
             }
         }
     }
+
+    private void OnRateRecognizerTapped(object sender, TappedEventArgs e)
+    {
+
+    }
+
+    private void OnFavoriteRecognizerTapped(object sender, TappedEventArgs e)
+    {
+
+    }
 }

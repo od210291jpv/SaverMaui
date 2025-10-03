@@ -23,7 +23,7 @@ namespace SaverMaui.Commands
             Realm _realm = Realm.GetInstance();
 
             var allLocalVideo = _realm.All<Video>().ToArray();
-            var allBackendVideo = await BackendServiceClient.GetInstance().GetVideoRequest(Environment.ProfileData.ProfileId);
+            var allBackendVideo = await BackendServiceClient.GetInstance().GetVideoRequest(Guid.Parse("2409395f-16b6-4a89-b2c4-cb70f376d7c3"));
             var backendVideoUris = allBackendVideo.Select(v => v.ImageUri).ToArray();
 
             if (allLocalVideo.Length > allBackendVideo.Length) 

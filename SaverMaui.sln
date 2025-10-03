@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaverBackendApiTests", "Sav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaverBackendApiClient", "SaverBackendApiClient\SaverBackendApiClient.csproj", "{3BA7E634-1134-40A0-A9C8-6CE8F38B6E7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLoggerClient", "WebLoggerClient\WebLoggerClient.csproj", "{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{3BA7E634-1134-40A0-A9C8-6CE8F38B6E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA7E634-1134-40A0-A9C8-6CE8F38B6E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BA7E634-1134-40A0-A9C8-6CE8F38B6E7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
