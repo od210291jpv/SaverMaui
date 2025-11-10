@@ -4,7 +4,6 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using StackExchange.Redis;
 using System.Text;
-using WebLoggerClient;
 
 namespace SaverBackend.Services.RabbitMq
 {
@@ -13,7 +12,7 @@ namespace SaverBackend.Services.RabbitMq
         private IConnection _connection;
         private IModel _channel;
         private readonly IRabbitMqService mqService;
-        private LoggerClient webLogger = new LoggerClient("http://192.168.88.68:8081");
+        //private LoggerClient webLogger = new LoggerClient("http://192.168.88.68:8081");
 
         public ContentFilterListener(IRabbitMqService mqService)
         {
@@ -26,20 +25,20 @@ namespace SaverBackend.Services.RabbitMq
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Task.Run(async () => await this.webLogger.LogAsync("ContentFilterListener service started", LogSeverity.Verbose));
+            //Task.Run(async () => await this.webLogger.LogAsync("ContentFilterListener service started", LogSeverity.Verbose));
             var redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             var redisDb = redis.GetDatabase(2);
 
-            Task.Run(async () => await this.webLogger.LogAsync("Connected to Redis database 2 for content filtering", LogSeverity.Verbose));
+            //Task.Run(async () => await this.webLogger.LogAsync("Connected to Redis database 2 for content filtering", LogSeverity.Verbose));
             RedisKey[] allKeys = redis.GetServer("192.168.88.252:6379").Keys(2).ToArray();
             string[] allContent = allKeys.AsParallel().Select(k => redisDb.StringGet(k).ToString()).ToArray();
 
-            this.webLogger.LogAsync($"Total content items to filter: {allContent.Length}", LogSeverity.Verbose);
+            //this.webLogger.LogAsync($"Total content items to filter: {allContent.Length}", LogSeverity.Verbose);
             _ = allKeys.AsParallel().Select(k => redisDb.StringGetDelete(k).ToString()).ToArray();
 
-            this.webLogger.LogAsync("Cleared Redis database 2 after fetching content for filtering", LogSeverity.Verbose);
+            //this.webLogger.LogAsync("Cleared Redis database 2 after fetching content for filtering", LogSeverity.Verbose);
             
-            this.webLogger.LogAsync("Initializing ImageAnalyzer for content filtering", LogSeverity.Verbose);
+            //this.webLogger.LogAsync("Initializing ImageAnalyzer for content filtering", LogSeverity.Verbose);
             ImageAnalyzer nn = new ImageAnalyzer();
 
             stoppingToken.ThrowIfCancellationRequested();
@@ -47,14 +46,14 @@ namespace SaverBackend.Services.RabbitMq
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (ch, ea) =>
             {
-                this.webLogger.LogAsync("Message received in ContentFilterListener, starting content filtering process", LogSeverity.Verbose);
+                //this.webLogger.LogAsync("Message received in ContentFilterListener, starting content filtering process", LogSeverity.Verbose);
                 var category = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                this.webLogger.LogAsync($"Filtering content for category: {category}", LogSeverity.Verbose);
+                //this.webLogger.LogAsync($"Filtering content for category: {category}", LogSeverity.Verbose);
                 string[] filteredContent = Array.Empty<string>();
                 int counter = 0;
 
-                this.webLogger.LogAsync("Starting content analysis using ImageAnalyzer", LogSeverity.Verbose);
+                //this.webLogger.LogAsync("Starting content analysis using ImageAnalyzer", LogSeverity.Verbose);
                 foreach (var item in allContent) 
                 {
                     var label = await nn.AnalyzeImageByUrl(item);
@@ -66,14 +65,14 @@ namespace SaverBackend.Services.RabbitMq
                         mqService.SendMessage($"Items processed:{counter}/{allContent.Length}", "NotificationsQueue");
                     }
                 }
-                this.webLogger.LogAsync($"Content filtering completed. Total items matched for category '{category}': {counter}", LogSeverity.Verbose);
+               // this.webLogger.LogAsync($"Content filtering completed. Total items matched for category '{category}': {counter}", LogSeverity.Verbose);
 
                 _channel.BasicAck(ea.DeliveryTag, false);
-                this.webLogger.LogAsync("Message acknowledged in ContentFilterListener", LogSeverity.Verbose);
+               // this.webLogger.LogAsync("Message acknowledged in ContentFilterListener", LogSeverity.Verbose);
                 allKeys = Array.Empty<RedisKey>();
                 allContent = Array.Empty<string>();
                 filteredContent = Array.Empty<string>();
-                this.webLogger.LogAsync("Cleared temporary data in ContentFilterListener", LogSeverity.Verbose);
+               // this.webLogger.LogAsync("Cleared temporary data in ContentFilterListener", LogSeverity.Verbose);
             };
 
             _channel.BasicConsume("FilterContentQueue", false, consumer);
