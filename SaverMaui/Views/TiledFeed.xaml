@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.TiledFeed"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             Title="Gallery Feed (Pre-alfa)">
+    <ContentPage.BindingContext>
+        <vm:TiledFeedViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <CollectionView SelectionMode="Single" ItemsSource="{Binding ContentCollection}" SelectedItem="{Binding CurrentImage}" SelectionChanged="OnCurrentItemChanged">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Horizontal" Span="{Binding ColumnsAmt}" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <ffimageloading:CachedImage
+                        Source="{Binding Path=Source}"
+                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                        ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
+                        FadeAnimationEnabled="True">
+                    </ffimageloading:CachedImage>
+                </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

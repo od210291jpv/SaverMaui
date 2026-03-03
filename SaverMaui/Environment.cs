@@ -13,6 +13,8 @@ namespace SaverMaui
             get => Login != null && Password != null;
         }
 
+        public static short? GalleryColumns = 2;
+
         public static string Login;
 
         public static string Password;

@@ -3,10 +3,8 @@ using System.Collections.ObjectModel;
 
 namespace SaverMaui.ViewModels
 {
-    public class ContentCleanupViewModel : BaseViewModel
+    public class TiledFeedViewModel : BaseViewModel
     {
-        public static ContentCleanupViewModel Instance { get; private set; }
-
         private ObservableCollection<ImageRepresentationElement> contentCollection;
 
         public ObservableCollection<ImageRepresentationElement> ContentCollection
@@ -19,20 +17,34 @@ namespace SaverMaui.ViewModels
             }
         }
 
-        private ImageRepresentationElement currentImage;
-
-        public ImageRepresentationElement CurrentContent
-        {
-            get => currentImage;
-            set => currentImage = value;
+        public string ColumnsAmt 
+        { 
+            get => Environment.GalleryColumns?.ToString() ?? "2";
+            set 
+            {
+                if (value != "") 
+                {
+                    Environment.GalleryColumns = short.Parse(value);
+                    OnPropertyChanged(nameof(ColumnsAmt));
+                }
+            }
         }
 
-        public ContentCleanupViewModel()
-        {
-            this.contentCollection = new ObservableCollection<ImageRepresentationElement>();
-            this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
+        private ImageRepresentationElement currentImage;
 
-            Instance = this;
+        public ImageRepresentationElement CurrentImage 
+        { 
+            get => currentImage;
+            set 
+            {
+                this.currentImage = value;
+                OnPropertyChanged(nameof(CurrentImage));
+            }
+        }
+
+        public TiledFeedViewModel()
+        {
+            this.ContentCollection = new ObservableCollection<ImageRepresentationElement>();
         }
     }
 }

@@ -40,8 +40,10 @@
         <ShellContent ContentTemplate="{DataTemplate local:TopRatedFeedPage}" Title="Top rated content"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:RandomContentPage}" Title="Random content"></ShellContent>
     </FlyoutItem>
+    <FlyoutItem Title="Gallery">
+        <ShellContent ContentTemplate="{DataTemplate local:TiledFeed}" Title="Gallery"></ShellContent>
+    </FlyoutItem>
     <FlyoutItem Title="Administration">
-        <ShellContent ContentTemplate="{DataTemplate local:ContentCleanupPage}" Title="RemoveContent"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:SearchResultsPage}" Title="Add Content"></ShellContent>
     </FlyoutItem>
 

@@ -1,7 +1,8 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-
+using Realms;
 using SaverMaui.Custom_Elements;
+using SaverMaui.Models;
 using SaverMaui.Services;
 using SaverMaui.ViewModels;
 
@@ -129,4 +130,18 @@ public partial class FeedPage : ContentPage
         FeedViewModel.Instance?.RateImageCommand.Execute(FeedViewModel.Instance);
     }
 
+    private async void OnRemoveClicked(object sender, EventArgs e)
+    {
+        if (BindingContext is FeedViewModel viewModel) 
+        {
+            await BackendServiceClient.GetInstance().ContentActions.DeleteContentAsync(viewModel.CurrentContent.ContentId);
+
+            viewModel.ContentCollection.Remove(viewModel.CurrentContent);
+
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            var toast = Toast.Make($"Content was removed", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
+        }
+    }
 }

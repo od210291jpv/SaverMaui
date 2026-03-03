@@ -13,6 +13,7 @@ namespace SaverBackend.Controllers
         private ApplicationContext db;
         private ConnectionMultiplexer redis;
         private IDatabase redisDb;
+        //private LoggerClient webLogger = new LoggerClient("http://192.168.88.68:8081");
 
         public GetCategoryStatistics(ApplicationContext database)
         {
@@ -24,9 +25,10 @@ namespace SaverBackend.Controllers
         [HttpGet(Name = "GetStatistics")]
         public async Task<StatisticsDto> Index()
         {
-
+            //await this.webLogger.LogAsync("Getting category statistics from database", LogSeverity.Verbose);
             StatisticsDto statisticsData = new();
 
+            //await this.webLogger.LogAsync("Iterating through categories to compile statistics", LogSeverity.Verbose);
             foreach (var cat in this.db.Categories) 
             {
                 statisticsData.Items
@@ -39,6 +41,7 @@ namespace SaverBackend.Controllers
 
             }
 
+            //await this.webLogger.LogAsync($"Total categories processed for statistics: {statisticsData.Items.Count}", LogSeverity.Verbose);
             return statisticsData;
         }
     }

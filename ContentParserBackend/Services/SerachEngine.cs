@@ -1,6 +1,5 @@
 ﻿using HtmlAgilityPack;
 using RestSharp;
-using System;
 
 namespace ContentParserBackend.Services
 {
