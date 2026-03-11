@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.2.11430.68 d18.0
+VisualStudioVersion = 18.2.11430.68
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaverMaui", "SaverMaui\SaverMaui.csproj", "{AB3E48CC-1D88-41E2-BD85-30C0CEC32D85}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaverBackendApiClient", "SaverBackendApiClient\SaverBackendApiClient.csproj", "{3BA7E634-1134-40A0-A9C8-6CE8F38B6E7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLoggerClient", "WebLoggerClient\WebLoggerClient.csproj", "{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportAllContent", "ImportAllContent\ImportAllContent.csproj", "{97589CEE-C3D7-43CD-A1D3-41B1EA23A218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0371F9D5-C944-485D-AEFA-2BD4036CB3C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97589CEE-C3D7-43CD-A1D3-41B1EA23A218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97589CEE-C3D7-43CD-A1D3-41B1EA23A218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97589CEE-C3D7-43CD-A1D3-41B1EA23A218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97589CEE-C3D7-43CD-A1D3-41B1EA23A218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
