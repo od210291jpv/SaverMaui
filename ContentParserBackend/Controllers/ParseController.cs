@@ -22,7 +22,11 @@ namespace ContentParserBackend.Controllers
             {
                 this.mqService.SendMessage($"{keyword}:{parserId}", "ParcePediaContentQueue");
             }
-            else 
+            if (parserId == 3) 
+            {
+                this.mqService.SendMessage($"{keyword}:{parserId}", "ParceContentQueue");
+            }
+            else
             {
                 var rate = desiredRate ?? 0;
                 this.mqService.SendMessage($"{keyword}:{rate}", "ParceContentQueue");
