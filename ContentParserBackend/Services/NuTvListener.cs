@@ -38,17 +38,15 @@ namespace ContentParserBackend.Services
                 var inpm = Encoding.UTF8.GetString(ea.Body.ToArray());
                 var keyword = inpm.Split(":").First();
 
+                List<Task> tasks = new List<Task>();
+
                 foreach (var cha in alpha) 
                 {
-                    NuTvSearchEngine parser = new NuTvSearchEngine("https://nudostar.tv/", cha.ToString());
-                    var results = await parser.ParseAsync(keyword, mqService);
 
-                    foreach (var item in results)
-                    {
-                        await redisDb.StringSetAsync(Guid.NewGuid().ToString(), item);
-                    }
+                    Task task = Task.Run(async () => await new NuTvSearchEngine("https://nudostar.tv/", cha.ToString()).ParseAsync(keyword, mqService, redisDb));
+                    tasks.Add(task);
                 }
-
+                await Task.WhenAll(tasks);
                 await redisSearchStateDb.StringSetAsync("SearchStatus", "Passive");
             };
 

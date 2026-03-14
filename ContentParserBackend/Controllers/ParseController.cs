@@ -16,7 +16,7 @@ namespace ContentParserBackend.Controllers
         }
 
         [HttpGet()]
-        public async Task<HttpStatusCode> Index(string keyword, int parserId = 1, byte? desiredRate = null)
+        public async Task<HttpStatusCode> Index(string keyword, int parserId = 3, byte? desiredRate = null)
         {
             if (parserId == 2)
             {

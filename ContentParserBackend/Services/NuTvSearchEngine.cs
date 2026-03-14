@@ -3,12 +3,12 @@ using ContentParserBackend.Dto;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using RestSharp;
+using StackExchange.Redis;
 
 namespace ContentParserBackend.Services
 {
-    public class NuTvSearchEngine : ISerachEngine
+    public class NuTvSearchEngine
     {
-        private List<string> results = new();
         private string url = string.Empty;
         private string startLetter;
         private RestClient restClient;
@@ -20,11 +20,10 @@ namespace ContentParserBackend.Services
             this.startLetter = startLetter;
         }
 
-        public async Task<List<string>> ParseAsync(string keyword, IRabbitMqService mqClient)
+        public async Task ParseAsync(string keyword, IRabbitMqService mqClient, IDatabase? redis)
         {
             // open the start letter page
             List<string> intermediateLinks = new List<string>();
-            this.results.Clear();
             SendLogMessage("Starting nutv engine", LogSeverity.Verbose, ref mqClient);
             RestRequest request = new RestRequest($"models/{this.startLetter}/1/", Method.Get);
 
@@ -77,9 +76,8 @@ namespace ContentParserBackend.Services
                 HtmlDocument contentDocument = new HtmlDocument();
                 contentDocument.LoadHtml(contentPage);
 
-                SendLogMessage("Parsing thumbs", LogSeverity.Verbose, ref mqClient);
-                this.ParseThumbs(contentDocument, keyword);
-                SendLogMessage($"Current result amount {this.results.Count()}", LogSeverity.Verbose, ref mqClient);
+                SendLogMessage("Parsing thumbs", LogSeverity.Warn, ref mqClient);
+                await this.ParseThumbs(contentDocument, keyword, redis, mqClient);
 
                 var hasNext = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']") != null;
                 SendLogMessage($"Intermediate link has next page, parsing..", LogSeverity.Verbose, ref mqClient);
@@ -92,22 +90,25 @@ namespace ContentParserBackend.Services
                     var nextContentPage = nextContentResponse.Content;
                     contentDocument.LoadHtml(nextContentPage);
 
-                    this.ParseThumbs(contentDocument, keyword);
+                    await this.ParseThumbs(contentDocument, keyword, redis, mqClient);
 
                     hasNext = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']") != null;
                 }
             }
-            SendLogMessage($"Done parsing! Final results {results.Count()}", LogSeverity.Verbose, ref mqClient);
-            return this.results;
+            SendLogMessage($"Done parsing! ", LogSeverity.Warn, ref mqClient);
+
+
         }
 
-        private void ParseThumbs(HtmlDocument html, string keyword)
+        private async Task ParseThumbs(HtmlDocument html, string keyword, IDatabase redis, IRabbitMqService mqClient)
         {
             var thumbs = html.DocumentNode.SelectNodes("//img[@class = 'thumb']");
+
             if (thumbs != null)
             {
                 foreach (var thumb in thumbs)
                 {
+                    SendLogMessage($"Parsing {thumb}", LogSeverity.Warn, ref mqClient);
                     var src = thumb.GetAttributeValue("src", "");
                     if (src != "")
                     {
@@ -115,12 +116,15 @@ namespace ContentParserBackend.Services
                         {
                             if (src.ToLower().Contains(keyword.ToLower()))
                             {
-                                this.results.Add(src.Replace("_320px", ""));
+                                SendLogMessage($"Found match {thumb}, sending to redis..", LogSeverity.Warn, ref mqClient);
+                                await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
                             }
                         }
                         else 
                         {
-                            this.results.Add(src.Replace("_320px", ""));
+                            SendLogMessage($"Found {thumb}, sending to redis..", LogSeverity.Warn, ref mqClient);
+
+                            await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
                         }
                     }
                 }
