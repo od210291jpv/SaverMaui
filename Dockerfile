@@ -1,37 +1,28 @@
-# Use a .NET SDK image as the base
-# This image contains the .NET SDK required to build your project
-FROM mcr.microsoft.com/playwright/dotnet:v1.52.0 AS build
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 8080
 
-# Copy the .csproj file and restore dependencies
-# This is an optimization: if the csproj doesn't change, Docker can use a cached layer
-COPY SaverBackendApiClient ./SaverBackendApiClient
-COPY SaverBackendApiTests ./SaverBackendApiTests
-#WORKDIR SaverBackendApiTests
-RUN dotnet restore SaverBackendApiTests/SaverBackendApiTests.csproj
 
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG BUILD_CONFIGURATION=Debug
+WORKDIR /src
+COPY ["ContentParserBackend/ContentParserBackend.csproj", "ContentParserBackend/"]
+RUN dotnet restore "./ContentParserBackend/ContentParserBackend.csproj"
 COPY . .
+WORKDIR "/src/ContentParserBackend"
+RUN dotnet build "./ContentParserBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Publish the test project
-# --configuration Release: Builds in Release mode
-# -o /app/publish: Output directory for the published application
-RUN dotnet publish SaverBackendApiTests/SaverBackendApiTests.csproj -c Debug -o ../app/publish
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Debug
+RUN dotnet publish "./ContentParserBackend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Use a smaller runtime image for the final stage
-# This image only contains the .NET runtime, making the final image smaller
-FROM mcr.microsoft.com/playwright/dotnet:v1.52.0 AS final
-
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
 WORKDIR /app
-
-# Copy the published application from the build stage
-COPY --from=build /app/publish .
-
-# Define the entry point for running the tests
-# Assuming you're using `dotnet test`. You might need to specify the test assembly.
-# For example, if your test assembly is YourApiTests.dll
-ENTRYPOINT ["dotnet", "test", "SaverBackendApiTests.dll"] 
-# OR if your project file is in the root and dotnet test can discover it:
-# ENTRYPOINT ["dotnet", "test"]
-
-#CMD ["bash"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ContentParserBackend.dll"]
