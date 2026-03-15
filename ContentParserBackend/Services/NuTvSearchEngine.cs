@@ -4,6 +4,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using RestSharp;
 using StackExchange.Redis;
+using System.Collections.Concurrent;
 
 namespace ContentParserBackend.Services
 {
@@ -22,12 +23,16 @@ namespace ContentParserBackend.Services
 
         public async Task ParseAsync(string keyword, IRabbitMqService mqClient, IDatabase? redis)
         {
+            SendLogMessageAsync("Starting nutv engine thread..", LogSeverity.Verbose, mqClient);
+
+            var intermediateLinks = new ConcurrentBag<string>();
+            var semaphore = new SemaphoreSlim(2); 
+            var tasks = new List<Task>();
+
             // open the start letter page
-            List<string> intermediateLinks = new List<string>();
-            SendLogMessage("Starting nutv engine thread..", LogSeverity.Verbose, ref mqClient);
             RestRequest request = new RestRequest($"models/{this.startLetter}/1/", Method.Get);
 
-            SendLogMessage($"Parsing content for {startLetter} start letter", LogSeverity.Verbose, ref mqClient);
+            SendLogMessageAsync($"Parsing content for {startLetter} start letter", LogSeverity.Verbose, mqClient);
             var response = await this.restClient.ExecuteGetAsync<string>(request);
             var responseContent = response.Content;
 
@@ -36,37 +41,52 @@ namespace ContentParserBackend.Services
             // get the pages amount
             var paginationHolder = document.DocumentNode.SelectNodes("//div[@class = 'pagination-holder']")[1];
             var amountOfPages = paginationHolder.SelectNodes("//ul/li").ToArray().Length;
-            SendLogMessage($"Amount of pages for the letter {startLetter}: {amountOfPages}", LogSeverity.Verbose, ref mqClient);
+            SendLogMessageAsync($"Amount of pages for the letter {startLetter}: {amountOfPages}", LogSeverity.Verbose, mqClient);
 
             // parse preview links on each page and put in links collection
-            SendLogMessage($"Parsing preview linkns for {startLetter} keyword {keyword}", LogSeverity.Verbose, ref mqClient);
-            for (int i = 1; i <= amountOfPages; i++)
-            {
-                RestRequest pageRequest = new RestRequest($"models/{this.startLetter}/{i}/", Method.Get);
-                var pageResponse = await this.restClient.ExecuteGetAsync<string>(pageRequest);
-                var pageContent = pageResponse.Content;
+            SendLogMessageAsync($"Parsing preview linkns for {startLetter} keyword {keyword}", LogSeverity.Verbose, mqClient);
 
-                HtmlDocument pageDocument = new HtmlDocument();
-                pageDocument.LoadHtml(pageContent);
-                var imagesGrid = pageDocument.GetElementbyId("list_videos_related_videos_items");
-                var previewNodes = imagesGrid?.SelectNodes("//div[@class = 'item']/a").ToArray();
-                if (previewNodes != null)
+            for (int i = 1; i <= amountOfPages; i++) 
+            {
+                int pageNumber = i;
+
+                tasks.Add(Task.Run(async () => 
                 {
-                    foreach (var node in previewNodes)
+                    await semaphore.WaitAsync();
+                    try
                     {
-                        //var linkNode = node.SelectSingleNode("//a");
-                        var link = node?.GetAttributeValue("href", "");
-                        SendLogMessage($"Found preview link {link} checking agains {keyword} with start letter {startLetter}", LogSeverity.Verbose, ref mqClient);
-                        if (link != null && link.ToLower().Contains(keyword.ToLower()))
+                        RestRequest pageRequest = new RestRequest($"models/{this.startLetter}/{i}/", Method.Get);
+                        var pageResponse = await this.restClient.ExecuteGetAsync<string>(pageRequest);
+
+                        HtmlDocument pageDocument = new HtmlDocument();
+                        pageDocument.LoadHtml(pageResponse.Content);
+
+                        var imagesGrid = pageDocument.GetElementbyId("list_videos_related_videos_items");
+                        var previewNodes = imagesGrid?.SelectNodes("//div[@class = 'item']/a").ToArray();
+                        if (previewNodes != null)
                         {
-                            SendLogMessage($"Found mathing link {link} with keyword {keyword}. Adding intermediate link", LogSeverity.Warn, ref mqClient);
-                            intermediateLinks.Add(link);
+                            foreach (var node in previewNodes)
+                            {
+                                var link = node?.GetAttributeValue("href", "");
+                                SendLogMessageAsync($"Found preview link {link} checking against {keyword} with start letter {startLetter}", LogSeverity.Verbose, mqClient);
+                                if (!string.IsNullOrEmpty(link) && link.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    SendLogMessageAsync($"Found mathing link {link} with keyword {keyword}. Adding intermediate link", LogSeverity.Warn, mqClient);
+                                    intermediateLinks.Add(link);
+                                }
+                            }
                         }
                     }
-                }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
             }
 
-            SendLogMessage($"Starting parsing {intermediateLinks.Count()} intermediate links", LogSeverity.Verbose, ref mqClient);
+            await Task.WhenAll(tasks);
+
+            SendLogMessageAsync($"Starting parsing {intermediateLinks.Count()} intermediate links", LogSeverity.Verbose, mqClient);
             foreach (var link in intermediateLinks)
             {
                 //SendLogMessage($"Parsing intermediate link: {link}", LogSeverity.Verbose, ref mqClient);
@@ -76,14 +96,14 @@ namespace ContentParserBackend.Services
                 HtmlDocument contentDocument = new HtmlDocument();
                 contentDocument.LoadHtml(contentPage);
 
-                SendLogMessage("Parsing thumbs", LogSeverity.Warn, ref mqClient);
+                SendLogMessageAsync("Parsing thumbs", LogSeverity.Warn, mqClient);
                 await this.ParseThumbs(contentDocument, keyword, redis, mqClient);
 
                 var hasNext = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']") != null;
 
                 while (hasNext)
                 {
-                    SendLogMessage($"Intermediate link has next page, parsing.. has next: {hasNext}", LogSeverity.Verbose, ref mqClient);
+                    SendLogMessageAsync($"Intermediate link has next page, parsing.. has next: {hasNext}", LogSeverity.Verbose, mqClient);
                     var nextLink = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']/a")?.GetAttributeValue("href", "");
                     RestRequest nextContentRequest = new RestRequest(nextLink, Method.Get);
                     var nextContentResponse = await this.restClient.ExecuteGetAsync<string>(nextContentRequest);
@@ -95,13 +115,13 @@ namespace ContentParserBackend.Services
                     hasNext = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']") != null;
                 }
             }
-            SendLogMessage($"Done parsing! ", LogSeverity.Warn, ref mqClient);
+            SendLogMessageAsync($"Done parsing! ", LogSeverity.Warn, mqClient);
         }
 
         private async Task ParseThumbs(HtmlDocument html, string keyword, IDatabase redis, IRabbitMqService mqClient)
         {
             var thumbs = html.DocumentNode.SelectNodes("//img[@class = 'thumb']");
-            SendLogMessage($"Found {thumbs.Count()} to parse", LogSeverity.Warn, ref mqClient);
+            SendLogMessageAsync($"Found {thumbs.Count()} to parse", LogSeverity.Warn, mqClient);
 
             if (thumbs != null)
             {
@@ -110,32 +130,44 @@ namespace ContentParserBackend.Services
                     var src = thumb.GetAttributeValue("src", "");
                     if (src != "")
                     {
-                        SendLogMessage($"Parsing thumb: {src}", LogSeverity.Warn, ref mqClient);
+                        SendLogMessageAsync($"Parsing thumb: {src}", LogSeverity.Warn, mqClient);
 
                         if (keyword != "")
                         {
                             if (src.ToLower().Contains(keyword.ToLower()))
                             {
-                                SendLogMessage($"Found match {src} to the keyword {keyword}, sending to redis..", LogSeverity.Warn, ref mqClient);
+                                SendLogMessageAsync($"Found match {src} to the keyword {keyword}, sending to redis..", LogSeverity.Warn, mqClient);
                                 await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
+                                await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
+                                {
+                                    Keyword = keyword,
+                                    Url = src.Replace("_320px", ""),
+                                    Timestamp = DateTime.UtcNow
+                                }));
                             }
                         }
                         else 
                         {
-                            SendLogMessage($"Found {src}, sending to redis..", LogSeverity.Warn, ref mqClient);
+                            SendLogMessageAsync($"Found {src}, sending to redis..", LogSeverity.Warn, mqClient);
                             await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
+                            await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
+                            {
+                                Keyword = keyword,
+                                Url = src.Replace("_320px", ""),
+                                Timestamp = DateTime.UtcNow
+                            }));
                         }
                     }
                 }
-                SendLogMessage($"Done thumbs parsing!", LogSeverity.Warn, ref mqClient);
+                SendLogMessageAsync($"Done thumbs parsing!", LogSeverity.Warn, mqClient);
             }
             else
             {
-                SendLogMessage($"No thumbs found on the page", LogSeverity.Warn, ref mqClient);
+                SendLogMessageAsync($"No thumbs found on the page", LogSeverity.Warn, mqClient);
             }
         }
 
-        private void SendLogMessage(string message, LogSeverity severity, ref IRabbitMqService mqClient)
+        private void SendLogMessageAsync(string message, LogSeverity severity, IRabbitMqService mqClient)
         {
             LogDto log = new LogDto
             {

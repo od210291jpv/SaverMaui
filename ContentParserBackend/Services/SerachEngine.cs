@@ -56,7 +56,7 @@ namespace ContentParserBackend.Services
 
                         var link = cc.DocumentNode.SelectSingleNode("/a")?.GetAttributeValue("href", "");
 
-                        if (link != null && link.ToLower().Contains(keyword.ToLower()))
+                        if (!string.IsNullOrEmpty(link) && link.Contains(keyword, StringComparison.OrdinalIgnoreCase))
                         {
                             this.results.Add(link);
                         }

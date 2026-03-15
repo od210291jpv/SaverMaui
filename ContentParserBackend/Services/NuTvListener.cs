@@ -39,13 +39,26 @@ namespace ContentParserBackend.Services
                 var keyword = inpm.Split(":").First();
 
                 List<Task> tasks = new List<Task>();
-
+                var semaphore = new SemaphoreSlim(2);
                 foreach (var cha in alpha) 
                 {
 
-                    Task task = Task.Run(async () => await new NuTvSearchEngine("https://nudostar.tv/", cha.ToString()).ParseAsync(keyword, mqService, redisDb));
-                    tasks.Add(task);
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        await semaphore.WaitAsync();
+
+                        try 
+                        {
+                            await new NuTvSearchEngine("https://nudostar.tv/", cha.ToString()).ParseAsync(keyword, mqService, redisDb);
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+
+                    }));
                 }
+
                 await Task.WhenAll(tasks);
                 await redisSearchStateDb.StringSetAsync("SearchStatus", "Passive");
             };
