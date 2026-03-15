@@ -24,7 +24,7 @@ namespace ContentParserBackend.Services
         {
             // open the start letter page
             List<string> intermediateLinks = new List<string>();
-            SendLogMessage("Starting nutv engine", LogSeverity.Verbose, ref mqClient);
+            SendLogMessage("Starting nutv engine thread..", LogSeverity.Verbose, ref mqClient);
             RestRequest request = new RestRequest($"models/{this.startLetter}/1/", Method.Get);
 
             SendLogMessage($"Parsing content for {startLetter} start letter", LogSeverity.Verbose, ref mqClient);
@@ -59,7 +59,7 @@ namespace ContentParserBackend.Services
                         SendLogMessage($"Found preview link {link} checking agains {keyword} with start letter {startLetter}", LogSeverity.Verbose, ref mqClient);
                         if (link != null && link.ToLower().Contains(keyword.ToLower()))
                         {
-                            SendLogMessage($"Found mathing link {link} with keyword {keyword}. Adding intermediate link", LogSeverity.Verbose, ref mqClient);
+                            SendLogMessage($"Found mathing link {link} with keyword {keyword}. Adding intermediate link", LogSeverity.Warn, ref mqClient);
                             intermediateLinks.Add(link);
                         }
                     }
@@ -69,7 +69,7 @@ namespace ContentParserBackend.Services
             SendLogMessage($"Starting parsing {intermediateLinks.Count()} intermediate links", LogSeverity.Verbose, ref mqClient);
             foreach (var link in intermediateLinks)
             {
-                SendLogMessage($"Parsing intermediate link: {link}", LogSeverity.Verbose, ref mqClient);
+                //SendLogMessage($"Parsing intermediate link: {link}", LogSeverity.Verbose, ref mqClient);
                 RestRequest contentRequest = new RestRequest(link, Method.Get);
                 var contentResponse = await this.restClient.ExecuteGetAsync<string>(contentRequest);
                 var contentPage = contentResponse.Content;
@@ -80,10 +80,10 @@ namespace ContentParserBackend.Services
                 await this.ParseThumbs(contentDocument, keyword, redis, mqClient);
 
                 var hasNext = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']") != null;
-                SendLogMessage($"Intermediate link has next page, parsing..", LogSeverity.Verbose, ref mqClient);
 
                 while (hasNext)
                 {
+                    SendLogMessage($"Intermediate link has next page, parsing.. has next: {hasNext}", LogSeverity.Verbose, ref mqClient);
                     var nextLink = contentDocument.DocumentNode.SelectSingleNode("//li[@class = 'next']/a")?.GetAttributeValue("href", "");
                     RestRequest nextContentRequest = new RestRequest(nextLink, Method.Get);
                     var nextContentResponse = await this.restClient.ExecuteGetAsync<string>(nextContentRequest);
@@ -96,38 +96,42 @@ namespace ContentParserBackend.Services
                 }
             }
             SendLogMessage($"Done parsing! ", LogSeverity.Warn, ref mqClient);
-
-
         }
 
         private async Task ParseThumbs(HtmlDocument html, string keyword, IDatabase redis, IRabbitMqService mqClient)
         {
             var thumbs = html.DocumentNode.SelectNodes("//img[@class = 'thumb']");
+            SendLogMessage($"Found {thumbs.Count()} to parse", LogSeverity.Warn, ref mqClient);
 
             if (thumbs != null)
             {
                 foreach (var thumb in thumbs)
                 {
-                    SendLogMessage($"Parsing {thumb}", LogSeverity.Warn, ref mqClient);
                     var src = thumb.GetAttributeValue("src", "");
                     if (src != "")
                     {
+                        SendLogMessage($"Parsing thumb: {src}", LogSeverity.Warn, ref mqClient);
+
                         if (keyword != "")
                         {
                             if (src.ToLower().Contains(keyword.ToLower()))
                             {
-                                SendLogMessage($"Found match {thumb}, sending to redis..", LogSeverity.Warn, ref mqClient);
+                                SendLogMessage($"Found match {src} to the keyword {keyword}, sending to redis..", LogSeverity.Warn, ref mqClient);
                                 await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
                             }
                         }
                         else 
                         {
-                            SendLogMessage($"Found {thumb}, sending to redis..", LogSeverity.Warn, ref mqClient);
-
+                            SendLogMessage($"Found {src}, sending to redis..", LogSeverity.Warn, ref mqClient);
                             await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
                         }
                     }
                 }
+                SendLogMessage($"Done thumbs parsing!", LogSeverity.Warn, ref mqClient);
+            }
+            else
+            {
+                SendLogMessage($"No thumbs found on the page", LogSeverity.Warn, ref mqClient);
             }
         }
 
