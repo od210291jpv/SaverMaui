@@ -11,7 +11,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentCategory}" VerticalScrollBarVisibility="Always">
+            <CarouselView Loop="False" ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentCategory}" VerticalScrollBarVisibility="Always">
                 <CarouselView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="3"/>
                 </CarouselView.ItemsLayout>

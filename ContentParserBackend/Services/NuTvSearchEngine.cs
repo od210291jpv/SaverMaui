@@ -26,7 +26,7 @@ namespace ContentParserBackend.Services
             SendLogMessageAsync("Starting nutv engine thread..", LogSeverity.Verbose, mqClient);
 
             var intermediateLinks = new ConcurrentBag<string>();
-            var semaphore = new SemaphoreSlim(2); 
+            var semaphore = new SemaphoreSlim(6); 
             var tasks = new List<Task>();
 
             // open the start letter page

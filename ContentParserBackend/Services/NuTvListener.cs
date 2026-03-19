@@ -39,7 +39,7 @@ namespace ContentParserBackend.Services
                 var keyword = inpm.Split(":").First();
 
                 List<Task> tasks = new List<Task>();
-                var semaphore = new SemaphoreSlim(2);
+                var semaphore = new SemaphoreSlim(4);
                 foreach (var cha in alpha) 
                 {
 

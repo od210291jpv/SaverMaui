@@ -16,7 +16,7 @@
 
     <ContentPage.Content>
         <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" Loop="False" CurrentItemChanged="OnCurrentItemChanged">
+            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" Loop="False" ItemsUpdatingScrollMode="KeepScrollOffset" CurrentItemChanged="OnCurrentItemChanged">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="vd:ImageRepresentationElement">
                         <Grid x:Name="MainGrid">

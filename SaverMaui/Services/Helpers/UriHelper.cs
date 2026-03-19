@@ -108,7 +108,7 @@
 
         public static string SearchContent(string keyword) 
         {
-            return $"http://192.168.88.252:5011/Parse?keyword={keyword}";    
+            return $"http://192.168.88.252:5011/Parse?keyword={keyword}&parserId=3";    
         }
 
         public static string CleanSearchResults 
