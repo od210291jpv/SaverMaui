@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SaverBackend.DTO;
 using SaverBackend.Models;
 using StackExchange.Redis;
 using System.Net;
@@ -101,11 +102,46 @@ namespace SaverBackend.Controllers
         [HttpGet("searchResults")]
         public async Task<string[]> GetSearchResults() 
         {
-            //await this.webLogger.LogAsync("Fetching all search results from Redis database 2", LogSeverity.Verbose);
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(2).ToList() ?? new List<RedisKey>();
             var resultsDb = this.redis.GetDatabase(2);
-            //await this.webLogger.LogAsync($"Total keys found in Redis database 2: {allKeys.Count}", LogSeverity.Verbose);
             return allKeys.AsParallel().Select(k => resultsDb.StringGet(k).ToString()).Distinct().ToArray();
+        }
+
+        [HttpGet("searchResultsWithKeyword")]
+        public List<KeywordResult> GetSearchResultsKeyworded() 
+        {
+            List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(2).ToList() ?? new List<RedisKey>();
+            var resultsDb = this.redis.GetDatabase(2);
+
+            List<KeywordResult> results = new List<KeywordResult>();
+
+            foreach (var k in allKeys) 
+            {
+                var segments = k.ToString().Split(':');
+                if (segments.Length >= 2) 
+                {
+                    var keyword = segments[1];
+                    var contentId = segments[0];
+                    var resultValue = resultsDb.StringGet(k).ToString();
+
+                    var existingResult = results.FirstOrDefault(r => r.Key == keyword);
+
+                    if (existingResult != null) 
+                    {
+                        existingResult.Urls.Add(resultValue);
+                    }
+                    else 
+                    {
+                        results.Add(new KeywordResult 
+                        {
+                            Key = keyword,
+                            Urls = new List<string> { resultValue }
+                        });
+                    }
+                }
+            }
+
+            return results;
         }
 
         [HttpDelete("CleanResults")]

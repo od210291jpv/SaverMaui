@@ -137,7 +137,7 @@ namespace ContentParserBackend.Services
                             if (src.ToLower().Contains(keyword.ToLower()))
                             {
                                 SendLogMessageAsync($"Found match {src} to the keyword {keyword}, sending to redis..", LogSeverity.Warn, mqClient);
-                                await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
+                                await redis!.StringSetAsync($"{Guid.NewGuid().ToString()}:{keyword}", src.Replace("_320px", ""));
                                 await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
                                 {
                                     Keyword = keyword,
@@ -149,7 +149,7 @@ namespace ContentParserBackend.Services
                         else 
                         {
                             SendLogMessageAsync($"Found {src}, sending to redis..", LogSeverity.Warn, mqClient);
-                            await redis!.StringSetAsync(Guid.NewGuid().ToString(), src.Replace("_320px", ""));
+                            await redis!.StringSetAsync($"{Guid.NewGuid().ToString()}:{keyword}", src.Replace("_320px", ""));
                             await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
                             {
                                 Keyword = keyword,
