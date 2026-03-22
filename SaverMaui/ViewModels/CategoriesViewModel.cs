@@ -55,8 +55,8 @@ namespace SaverMaui.ViewModels
             this.categories = new ObservableCollection<CategoryDto>();
             this.AddFavoriteCategoryCmd = new AddFavoriteCategoryCommand(this);
 
-            this.selectedCategory = new CategoryDto();
-            this.SelectedCategory = new CategoryDto();
+            //this.selectedCategory = new CategoryDto();
+            //this.SelectedCategory = new CategoryDto();
 
             Instance = this;
         }

@@ -26,7 +26,7 @@ namespace ContentParserBackend.Services
             SendLogMessageAsync("Starting nutv engine thread..", LogSeverity.Verbose, mqClient);
 
             var intermediateLinks = new ConcurrentBag<string>();
-            var semaphore = new SemaphoreSlim(6); 
+            var semaphore = new SemaphoreSlim(4); 
             var tasks = new List<Task>();
 
             // open the start letter page
@@ -39,7 +39,43 @@ namespace ContentParserBackend.Services
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(responseContent);
             // get the pages amount
-            var paginationHolder = document.DocumentNode.SelectNodes("//div[@class = 'pagination-holder']")[1];
+
+            int paginationHlderRetryAmount = 10;
+            HtmlNode? paginationHolder = default;
+
+            try
+            {
+                paginationHolder = document.DocumentNode.SelectNodes("//div[@class = 'pagination-holder']").FirstOrDefault();
+                if (paginationHolder is null) 
+                {
+                    throw new Exception("Pagination holder not found on the page");
+                }
+            }
+            catch(Exception e)
+            {
+                SendLogMessageAsync($"Get pahination holder for letter {startLetter}: failed, Error {e.Message}, wiil attempt to retry", LogSeverity.Error, mqClient);
+                while (paginationHlderRetryAmount > 0)
+                {
+                    try
+                    {
+                        paginationHolder = document.DocumentNode.SelectNodes("//div[@class = 'pagination-holder']").FirstOrDefault();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        SendLogMessageAsync($"Get pahination holder for letter {startLetter}: failed, Error {ex.Message}, retry attempts left: {paginationHlderRetryAmount}", LogSeverity.Error, mqClient);
+                        paginationHlderRetryAmount--;
+                        await Task.Delay(5000);
+                    }
+                }
+            }
+
+            if (paginationHolder is null) 
+            {
+                SendLogMessageAsync($"Get pahination holder for letter {startLetter}: failed after retries, stopping parsing for the letter", LogSeverity.Error, mqClient);
+                return;
+            }
+
             var amountOfPages = paginationHolder.SelectNodes("//ul/li").ToArray().Length;
             SendLogMessageAsync($"Amount of pages for the letter {startLetter}: {amountOfPages}", LogSeverity.Verbose, mqClient);
 
