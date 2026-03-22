@@ -1,5 +1,6 @@
 ﻿using SaverMaui.ViewModels;
 using SaverMaui.Views;
+using System;
 using System.Windows.Input;
 
 namespace SaverMaui.Commands
@@ -22,7 +23,7 @@ namespace SaverMaui.Commands
 
         public async void Execute(object parameter)
         {
-            Environment.CurrectSearchResultCategory = this.viewModel.CurrentCategory;
+            Environment.CurrectSearchResultCategory = this.viewModel.ContentCollection[this.viewModel.CurrentKeyword];
 
             await Application.Current.MainPage.Navigation.PushAsync(new SearchCategoryFeedPage());
         }

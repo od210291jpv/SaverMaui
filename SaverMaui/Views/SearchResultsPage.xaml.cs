@@ -2,15 +2,15 @@
 using CommunityToolkit.Maui.Core;
 using SaverMaui.Commands;
 using SaverMaui.Custom_Elements;
-using SaverMaui.Services;
 using SaverMaui.ViewModels;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace SaverMaui.Views
 {
     public partial class SearchResultsPage : ContentPage
     {
+        public string Keyword { get; set; } = string.Empty;
+
         public SearchResultsPage()
         {
             InitializeComponent();
@@ -32,12 +32,15 @@ namespace SaverMaui.Views
                 return;
             }
 
-            string[] searchResults = await BackendServiceClient.GetInstance().ContentActions.GetSearchResults();
+            var vm = SearchKeywordsViewModel.Instance;
 
-            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key).ToArray();
+            var searchResults = vm?.SearchResults.Single(i => i.Key == this.Keyword).Urls.ToArray();
 
-            if (SearchResultsViewModel.Instance?.ContentCollection != null) 
+            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
+
+            if (SearchResultsViewModel.Instance?.ContentCollection != null)
             {
+                SearchResultsViewModel.Instance.CurrentKeyword = 0;
                 SearchResultsViewModel.Instance.ClearContent();
             }
 
@@ -62,16 +65,15 @@ namespace SaverMaui.Views
             } 
         }
 
-        private ObservableCollection<KeyValuePair<string, SearchResult[]>> GetGrouppedSearchResults(string[] results)
+        private List<KeyValuePair<string, SearchResult[]>> GetGrouppedSearchResults(string[] results)
         {
-            var fullResults = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
+            var fullResults = new List<KeyValuePair<string, SearchResult[]>>();
             var res = results.GroupBy((s) => s.Split("/").Last().Split("_").First()).ToArray();
 
             foreach (var r in res) 
             {
                 fullResults.Add(new KeyValuePair<string, SearchResult[]>(r.Key, r.Select(i => new SearchResult() { Name = r.Key, Url = i }).ToArray()));
             }
-
             return fullResults;
         }
 

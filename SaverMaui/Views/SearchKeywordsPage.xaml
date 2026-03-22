@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             x:Class="SaverMaui.Views.SearchKeywordsPage"
+             Title="SearchKeywordsPage">
+    <ContentPage.BindingContext>
+        <vm:SearchKeywordsViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <FlexLayout>
+            <CollectionView ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedKeyword, Mode=TwoWay}" SelectionMode="Single">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Open" BackgroundColor="OrangeRed" Clicked="OnKeywordOpen"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Grid HeightRequest="100">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Frame Grid.Column="0" Grid.Row="0" BorderColor="DeepPink" CornerRadius="0" Padding="0"  BackgroundColor="DeepPink" VerticalOptions="FillAndExpand" Margin="0">
+                                    <Label Text="{Binding Path=Key}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
+                                </Frame>
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

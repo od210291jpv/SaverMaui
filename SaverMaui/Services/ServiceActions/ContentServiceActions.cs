@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 
 using SaverMaui.Services.Contracts.Content;
+using SaverMaui.Services.Contracts.Search;
 using SaverMaui.Services.Helpers;
 
 using System.Net;
@@ -66,6 +67,19 @@ namespace SaverMaui.Services.ServiceActions
             }
 
             return Array.Empty<string>();
+        }
+
+        public async Task<List<KeywordResult>> GetKeywordedSearchResults() 
+        {
+            RestRequest request = new RestRequest(UriHelper.SearchResultsWithKeyword, Method.Get);
+            var response = await this.client.ExecuteGetAsync<List<KeywordResult>>(request);
+
+            if (response.Data != null)
+            {
+                return response.Data;
+            }
+
+            return default;
         }
 
         public async Task<RestResponse> SearchContent(string keyword) 
