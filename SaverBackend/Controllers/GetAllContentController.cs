@@ -128,10 +128,7 @@ namespace SaverBackend.Controllers
 
                     if (existingResult != null) 
                     {
-                        if (existingResult.Urls.Contains(resultValue) == false) 
-                        {
-                            existingResult.Urls.Add(resultValue);
-                        }
+                        existingResult.Urls.Add(resultValue);
                     }
                     else 
                     {
