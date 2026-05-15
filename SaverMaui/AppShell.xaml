@@ -44,7 +44,7 @@
         <ShellContent ContentTemplate="{DataTemplate local:TiledFeed}" Title="Gallery"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Administration">
-        <ShellContent ContentTemplate="{DataTemplate local:SearchResultsPage}" Title="Add Content"></ShellContent>
+        <ShellContent ContentTemplate="{DataTemplate local:SearchKeywordsPage}" Title="Add Content"></ShellContent>
     </FlyoutItem>
 
     <FlyoutItem Title="Video">

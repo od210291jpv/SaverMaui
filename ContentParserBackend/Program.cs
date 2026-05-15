@@ -17,18 +17,14 @@ namespace ContentParserBackend
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers().AddNewtonsoftJson();
             builder.Services.AddHostedService<PediarabbitMqListener>();
-            builder.Services.AddHostedService<RabbitMqListener>();
+            builder.Services.AddHostedService<NuTvListener>();
+            //builder.Services.AddHostedService<RabbitMqListener>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment() || !app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseStaticFiles();
-                app.UseSwaggerUI();
-            }
-
+            app.UseSwagger();
+            app.UseStaticFiles();
+            app.UseSwaggerUI();
             app.UseAuthorization();
             app.MapControllers();
 

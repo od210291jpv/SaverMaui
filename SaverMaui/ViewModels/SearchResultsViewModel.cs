@@ -10,6 +10,7 @@ namespace SaverMaui.ViewModels
         public static SearchResultsViewModel Instance;
 
         private ObservableCollection<KeyValuePair<string, SearchResult[]>> contentCollection;
+        private int currentKeyword;
 
         public ObservableCollection<KeyValuePair<string, SearchResult[]>> ContentCollection
         {
@@ -25,29 +26,41 @@ namespace SaverMaui.ViewModels
         {
             try 
             {
-                this.ContentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
+                this.contentCollection.Clear();
+                //this.ContentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
             }
             catch { }
         }
 
-        private KeyValuePair<string, SearchResult[]> currentCategory;
+        //private KeyValuePair<string, SearchResult[]> currentKeyword;
 
+        //public KeyValuePair<string, SearchResult[]> CurrentKeyword
+        //{
+        //    get => currentKeyword;
+        //    set 
+        //    {
+        //        currentKeyword = value;
+        //        OnPropertyChanged(nameof(CurrentKeyword));
+        //    }
+        //}
 
-        public KeyValuePair<string, SearchResult[]> CurrentCategory
-        {
-            get => currentCategory;
-            set => currentCategory = value;
+        public int CurrentKeyword 
+        { 
+            get => currentKeyword;
+            set 
+            {
+                currentKeyword = value;
+                OnPropertyChanged(nameof(CurrentKeyword));
+            }
         }
-
-        public ICommand ItemChangedCommand { get; }
 
         public SearchResultsViewModel()
         {
-            this.ContentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
             this.contentCollection = new ObservableCollection<KeyValuePair<string, SearchResult[]>>();
 
-            this.currentCategory = new();
-            this.CurrentCategory = new();
+            //this.currentKeyword = new();
+            //this.CurrentKeyword = new();
+
             Instance = this;
         }
     }

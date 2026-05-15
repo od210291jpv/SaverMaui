@@ -34,6 +34,7 @@ namespace SaverMaui.Services
         {
             this.httpClient = new HttpClient();
             this.httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            this.httpClient.Timeout = TimeSpan.FromSeconds(200);
 
             this.hostIp = hostIp;
         }

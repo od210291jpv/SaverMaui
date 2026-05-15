@@ -16,13 +16,17 @@ namespace ContentParserBackend.Controllers
         }
 
         [HttpGet()]
-        public async Task<HttpStatusCode> Index(string keyword, int parserId = 1, byte? desiredRate = null)
+        public async Task<HttpStatusCode> Index(string keyword, int parserId = 3, byte? desiredRate = null)
         {
             if (parserId == 2)
             {
                 this.mqService.SendMessage($"{keyword}:{parserId}", "ParcePediaContentQueue");
             }
-            else 
+            if (parserId == 3) 
+            {
+                this.mqService.SendMessage($"{keyword}:{parserId}", "ParceContentQueue");
+            }
+            else
             {
                 var rate = desiredRate ?? 0;
                 this.mqService.SendMessage($"{keyword}:{rate}", "ParceContentQueue");

@@ -176,18 +176,14 @@ namespace SaverBackend.Controllers
         [HttpGet("SearchStatus")]
         public async Task<string> GetSearchStatus() 
         {             
-            //await this.webLogger.LogAsync("Fetching search status from Redis", LogSeverity.Verbose);
             var redisSearchStateDb = this.redis.GetDatabase(6);
-            //await this.webLogger.LogAsync("Connected to Redis database 6 for search status", LogSeverity.Verbose);
             var searchStatus = await redisSearchStateDb.StringGetAsync("SearchStatus");
             
             if (searchStatus.HasValue)
             {
-                //await this.webLogger.LogAsync($"Search status found: {searchStatus}", LogSeverity.Verbose);
                 return searchStatus.ToString();
             }
 
-            //await this.webLogger.LogAsync("No search status found in Redis. Returning 'Inactive'", LogSeverity.Warn);
             return "Inactive";
         }
     }

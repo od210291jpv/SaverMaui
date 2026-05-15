@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using SaverMaui.Commands;
 using SaverMaui.Services;
+using SaverMaui.Services.Contracts.Category;
 using SaverMaui.Services.ServiceExtensions;
 using SaverMaui.ViewModels;
 using System.Windows.Input;
@@ -51,6 +52,15 @@ public partial class CategoriesPageV2 : ContentPage
 	{
         if (Environment.Login != null)
         {
+            var swipeItem = (SwipeItem)sender;
+
+            // 2. Extract the data model for this row
+            var selectedCat = (CategoryDto)swipeItem.BindingContext;
+
+            // 3. Manually update the ViewModel
+            var vm = (CategoriesViewModel)BindingContext;
+            vm.SelectedCategory = selectedCat;
+
             this.NavigateToFeedItemCommand.Execute(CategoriesViewModel.Instance);
         }
         else 

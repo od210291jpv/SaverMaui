@@ -60,4 +60,9 @@ public partial class ProfilePage : ContentPage
             await this.SearchProgress.ProgressTo(result, 500, Easing.Linear);
         }
     }
+
+    private void OnOnlineButtonClicked(object sender, EventArgs e)
+    {
+
+    }
 }

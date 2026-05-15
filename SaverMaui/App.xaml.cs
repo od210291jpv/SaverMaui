@@ -1,4 +1,5 @@
-﻿namespace SaverMaui;
+﻿[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+namespace SaverMaui;
 
 public partial class App : Application
 {
