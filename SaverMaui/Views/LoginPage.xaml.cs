@@ -8,8 +8,20 @@ public partial class LoginPage : ContentPage
 {
 	public LoginPage()
 	{
-		InitializeComponent();
-		this.Loaded += OnPageLoaded;
+        try
+        {
+            InitializeComponent();
+            this.Loaded += OnPageLoaded;
+        }
+        catch (Exception ex)
+        {
+            // Поставте тут точку зупинки (breakpoint) під час дебагу
+            // і перевірте значення ex.InnerException.Message
+            var realError = ex.InnerException?.Message ?? ex.Message;
+            System.Diagnostics.Debug.WriteLine($"КРИТИЧНА ПОМИЛКА XAML: {realError}");
+            throw;
+        }
+
 	}
 
     public async void OnPageLoaded(object sender, EventArgs e)

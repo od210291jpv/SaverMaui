@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace SaverMaui.ViewModels
 {
-    internal class LoginPageViewModel : BaseViewModel
+    public class LoginPageViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; }
 

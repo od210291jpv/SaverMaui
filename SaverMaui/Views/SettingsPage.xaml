@@ -3,90 +3,116 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.SettingsPage"
-             Title="SettingsPage" BackgroundColor="Black">
+             Title="Settings"
+             BackgroundColor="#121212">
+
     <ContentPage.BindingContext>
         <vm:SettingsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-            <ScrollView Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                    <Grid Margin="1" Padding="0" RowSpacing="5" ColumnSpacing="5" VerticalOptions="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                    <RowDefinition/>
-                    </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" Text="Add Content Item:" FontAttributes="Bold"/>
-                    <Entry Grid.Row="1" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Name" Text="{Binding ContentTitle}"/>
-                    <Entry Grid.Row="2" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" Placeholder="Uri" Text="{Binding ContentUri}"/>
-                    <Picker BackgroundColor="Black" Grid.Row="3" Grid.ColumnSpan="2" TextColor="White" IsVisible="false" Title="Select Category:" TitleColor="White" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}">
-                    </Picker>
+        <ScrollView Orientation="Vertical" 
+                     HorizontalOptions="FillAndExpand" 
+                     VerticalOptions="Start">
 
-                    <Button Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="MediumSlateBlue" BorderWidth="2" BorderColor="White" TextColor="White" Text="Recognize image category with AI" CornerRadius="0"></Button>
-                    <Button Grid.Row="5" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Content" CornerRadius="5" Command="{Binding AddContentCommand}"/>
+            <VerticalStackLayout Spacing="20" Padding="20" BackgroundColor="#121212">
+                <!-- 3. Global Actions Card -->
+                <Frame CornerRadius="15" 
+                       BackgroundColor="#1E1E1E" 
+                       HasShadow="True" 
+                       Padding="20">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="⚙️ Global Actions" 
+                               FontSize="22" 
+                               FontAttributes="Bold" 
+                               TextColor="#FFFFFF"/>
 
-                    <Label Grid.Row="6" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" IsVisible="false" Text="Add Category:" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Entry Grid.Row="7" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" TextColor="White" IsVisible="false" Placeholder="Category Name" Text="{Binding NewCategoryName, Mode=TwoWay}"/>
-                    <Button Grid.Row="8" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Submit New Category" IsVisible="false" CornerRadius="5" Command="{Binding AddCategoryCommand}" CommandParameter="{Binding NewCategoryName}"/>
+                        <!-- Sync/Post Buttons -->
+                        <Button Text="🔄 Sync Content with Backend" 
+                                Command="{Binding SyncContextCommand}"
+                                BackgroundColor="#2196F3" 
+                                TextColor="White" 
+                                FontSize="16" 
+                                CornerRadius="10" 
+                                HeightRequest="50"/>
 
-                    <Label Grid.Row="9" Grid.Column="0" Text="Categories now:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Label Grid.Row="10" Grid.Column="1" Text="{Binding CategoriesAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                        <Button Text="📤 Post All Data to Backend" 
+                                Command="{Binding PostNewContentCommand}"
+                                BackgroundColor="#FF9800" 
+                                TextColor="White" 
+                                FontSize="16" 
+                                CornerRadius="10" 
+                                HeightRequest="50"/>
 
-                    <Label Grid.Row="11" Grid.Column="0" Text="Content amt:" HorizontalTextAlignment="Start" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                    <Label Grid.Row="12" Grid.Column="1" Text="{Binding ContentAmount}" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
+                        <!-- Data Management Buttons -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <Button Grid.Column="0" Text="🗑️ Erase Empty Categories" 
+                                    Command="{Binding EraseEmptyCategoriesCommand}"
+                                    BackgroundColor="#F44336" 
+                                    TextColor="White" 
+                                    CornerRadius="10" 
+                                    HeightRequest="45"/>
+                            <Button Grid.Column="1" Text="🧹 Wipe All Data" 
+                                    Command="{Binding WipeAllDataCommand}"
+                                    BackgroundColor="#D32F2F" 
+                                    TextColor="White" 
+                                    CornerRadius="10" 
+                                    HeightRequest="45"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
 
-                <Button Grid.Row="13" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Erase Empty Categories" FontAttributes="Bold" CornerRadius="5" Command="{Binding EraseEmptyCategoriesCommand}" />
+                <!-- 4. Search & Toggles Card -->
+                <Frame CornerRadius="15" 
+                       BackgroundColor="#1E1E1E" 
+                       HasShadow="True" 
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="🔍 Search and Preferences" 
+                               FontSize="22" 
+                               FontAttributes="Bold" 
+                               TextColor="#FFFFFF"/>
 
-                <Button Grid.Row="14" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Sync Content with backend" FontAttributes="Bold" CornerRadius="5" Command="{Binding SyncContextCommand}"/>
-                <Button Grid.Row="15" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Post all data to backend" FontAttributes="Bold" CornerRadius="5" Command="{Binding PostNewContentCommand}"/>
-                <Entry Grid.Row="16" Grid.ColumnSpan="2" Placeholder="Amount of columns in gallery" Keyboard="Numeric" TextColor="White" Text="{Binding GalleryColumns}" x:Name="GalleryColumnsAmt"/>
-                <Button Grid.Row="17" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" Text="Wipe All Data" FontAttributes="Bold" CornerRadius="5" Command="{Binding WipeAllDataCommand}"/>
-                <Label Grid.Row="18" IsVisible="false" Grid.Column="0" Text="Log feeds content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                <Switch IsVisible="false" Grid.Row="19" Grid.Column="1" OnColor="Orange" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}"/>
-                <Label Grid.Row="20" IsVisible="false" Grid.Column="0" Text="Log Categories content" TextColor="White" FontAttributes="Bold" VerticalTextAlignment="Center"/>
-                <Switch IsVisible="false" Grid.Row="21" Grid.Column="1" OnColor="Orange" IsToggled="{Binding LogCategoriesEnabled, Mode=TwoWay}"/>
-                <Label Grid.Row="22" Grid.Column="0" Text="Refresh search results" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Start"/>
-                <Switch Grid.Row="22" Grid.Column="1" OnColor="Orange" IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}" Toggled="Handle_Toggled">
-                </Switch>
-                <Label Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontAttributes="Bold" Text="Search For A Content"/>
-                <Entry Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalOptions="Center" PlaceholderColor="Gray" Placeholder="Keyword" x:Name="SearchInput" Text="{Binding SearchRequest, Mode=TwoWay}"/>
-                <Button Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="Orange" TextColor="White" FontAttributes="Bold" CornerRadius="5" Text="Search" Command="{Binding SearchContent}"/>
-                <Button Grid.Row="26" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="ForestGreen" BorderColor="White" FontAttributes="Bold" TextColor="White" Text="Clean Search Results" VerticalOptions="Center" CornerRadius="5" BorderWidth="1" Command="{Binding CleanSearchResults}"/>
-                <Button Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="OrangeRed" BorderColor="White" BorderWidth="1" Text="QuitApp" TextColor="White" FontAttributes="Bold" CornerRadius="5" Command="{Binding CloseAppCommand}"/>
-            </Grid>
-            </ScrollView>
+                        <!-- Search Input -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <Entry Grid.Column="0" 
+                                   Placeholder="Keyword" 
+                                   Text="{Binding SearchRequest, Mode=TwoWay}" 
+                                   TextColor="#FFFFFF" 
+                                   BackgroundColor="#252525" 
+                                   HeightRequest="45"/>
+                            <Button Grid.Column="1" 
+                                    Text="Search" 
+                                    Command="{Binding SearchContent}"
+                                    BackgroundColor="#FF5722" 
+                                    TextColor="White" 
+                                    CornerRadius="10" 
+                                    HeightRequest="45"/>
+                        </Grid>
+
+                        <!-- Search Results Button -->
+                        <Button Text="🧹 Clean Search Results" 
+                                Command="{Binding CleanSearchResults}"
+                                BackgroundColor="#424242" 
+                                TextColor="White" 
+                                FontSize="16" 
+                                CornerRadius="10" 
+                                HeightRequest="45"/>
+
+                        <!-- Toggles (Switches) -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
+                            <Label Grid.Column="0" Text="Log Feeds Content" VerticalOptions="Center" TextColor="#AAAAAA"/>
+                            <Switch Grid.Column="1" OnColor="#FF5722" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
+                            <Label Grid.Column="0" Text="Refresh Search Results" VerticalOptions="Center" TextColor="#AAAAAA"/>
+                            <Switch Grid.Row="22" Grid.Column="1" OnColor="#FF5722" IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}" Toggled="Handle_Toggled"></Switch>
+
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

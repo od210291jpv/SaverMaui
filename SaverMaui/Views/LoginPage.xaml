@@ -3,16 +3,115 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.LoginPage"
-             Title="LoginPage" Opacity="50">
+             Title="LoginPage"
+             BackgroundColor="#121212">
+
     <ContentPage.BindingContext>
         <vm:LoginPageViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout  Padding="5" HorizontalOptions="FillAndExpand">
-        <Label Text="Welcome" TextColor="Orange" FontSize="Large" HorizontalTextAlignment="Center"/>
-        <Entry HorizontalOptions="Center" PlaceholderColor="White" TextColor="Orange" Placeholder="Login" Text="{Binding Login, Mode=TwoWay}"/>
-        <Entry HorizontalOptions="Center" PlaceholderColor="White" TextColor="Orange" Placeholder="Password" Text="{Binding Password, Mode=TwoWay}" IsPassword="True"/>
-        <Button Text="Login" TextColor="White" BackgroundColor="Orange" Opacity="10" CornerRadius="5" Margin="5" Command="{Binding LoginCommand}"/>
-        <Button Text="Register" TextColor="White" BackgroundColor="Orange" Opacity="10" CornerRadius="5" Margin="5" Command="{Binding RegisterCommand}"/>
-    </VerticalStackLayout>
+    <Grid Padding="1">
+
+        <Border BackgroundColor="#1E1E1E" 
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 20"
+                Padding="30, 40"
+                MaximumWidthRequest="400"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill">
+
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,15" Radius="30" Opacity="0.4" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="25">
+
+                <Label Text="Welcome" 
+                       TextColor="White" 
+                       FontSize="32" 
+                       FontAttributes="Bold" 
+                       HorizontalTextAlignment="Center" 
+                       Margin="0,0,0,10"/>
+
+                <Border Stroke="#333333" 
+                        StrokeThickness="2" 
+                        BackgroundColor="#252525" 
+                        StrokeShape="RoundRectangle 12" 
+                        Padding="15, 5">
+                    <Entry Placeholder="Login" 
+                           Text="{Binding Login, Mode=TwoWay}" 
+                           TextColor="White" 
+                           HorizontalTextAlignment="Center"
+                           PlaceholderColor="#888888" 
+                           BackgroundColor="Transparent"
+                           ClearButtonVisibility="WhileEditing"/>
+                </Border>
+
+                <Border Stroke="#333333" 
+                        StrokeThickness="2" 
+                        BackgroundColor="#252525" 
+                        StrokeShape="RoundRectangle 12" 
+                        Padding="15, 5">
+                    <Entry Placeholder="Password" 
+                           Text="{Binding Password, Mode=TwoWay}" 
+                           IsPassword="True" 
+                           TextColor="White" 
+                           HorizontalTextAlignment="Center"
+                           PlaceholderColor="#888888" 
+                           BackgroundColor="Transparent"
+                           ClearButtonVisibility="WhileEditing"/>
+                </Border>
+
+                <VerticalStackLayout Spacing="15" Margin="0, 15, 0, 0">
+
+                    <Button Text="LOGIN" 
+                            Command="{Binding LoginCommand}" 
+                            BackgroundColor="#FF5722" 
+                            TextColor="White" 
+                            FontAttributes="Bold" 
+                            CornerRadius="12" 
+                            HeightRequest="55">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Property="Scale" Value="0.95" />
+                                            <Setter Property="Opacity" Value="0.8" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+
+                    <Button Text="REGISTER" 
+                            Command="{Binding RegisterCommand}" 
+                            BackgroundColor="Transparent" 
+                            TextColor="#FF5722" 
+                            BorderColor="#FF5722"
+                            BorderWidth="2"
+                            FontAttributes="Bold" 
+                            CornerRadius="12" 
+                            HeightRequest="55">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.95" />
+                                        <Setter Property="BackgroundColor" Value="#2A1A15" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
 </ContentPage>
