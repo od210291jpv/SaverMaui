@@ -3,22 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SaverMaui.Views.NotificationCenterPage"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
-             Title="NotificationCenterPage">
-
+             Title="Notifications">
     <ContentPage.BindingContext>
         <vm:NotificationCenterViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Spacing="15" Padding="20" BackgroundColor="#121212">
 
-    <StackLayout Orientation="Vertical" Spacing="5">
-        <Button Text="Connect" Command="{Binding NotifyClientsCommand}" BackgroundColor="DeepPink" CornerRadius="0" TextColor="White"></Button>
-        <ListView ItemsSource="{Binding Messages}" HasUnevenRows="True" SeparatorVisibility="Default">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Label Text="{Binding Path=Message}" BackgroundColor="Black" TextColor="DeepPink"/>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+                <Button Text="Connect Clients" 
+                        Command="{Binding NotifyClientsCommand}" 
+                        BackgroundColor="#00BCD4" 
+                        TextColor="White" 
+                        HeightRequest="55"
+                        Padding="15, 0"
+                        HorizontalOptions="FillAndExpand"
+                        WidthRequest="300"
+                        Margin="0, 10, 0, 20"
+                        CornerRadius="8"/>
+
+                <CollectionView ItemsSource="{Binding Messages}" 
+                                SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="12" 
+                                   BackgroundColor="#1E1E1E" 
+                                   HasShadow="True" 
+                                   Padding="15"
+                                   Margin="0, 5, 0, 5">
+
+                                <VerticalStackLayout Spacing="8">
+                                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                        <Label Text="{Binding SenderName, FallbackValue='System'}" 
+                                               TextColor="#00BCD4" 
+                                               FontAttributes="Bold" 
+                                               FontSize="Medium"/>
+                                        <Label Text="{Binding Timestamp, FallbackValue='Just now'}" 
+                                               TextColor="#888888" 
+                                               FontSize="Small"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label Text="{Binding Message}" 
+                                           TextColor="White" 
+                                           FontSize="Medium" 
+                                           LineBreakMode="WordWrap"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>
