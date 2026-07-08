@@ -1,50 +1,80 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:vm="clr-namespace:SaverMaui.ViewModels"
+             xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.CategoriesPageV2"
-             Title="CategoriesPageV2">
-    
+             Title="Categories"
+             BackgroundColor="Black">
+
     <ContentPage.BindingContext>
         <vm:CategoriesViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CollectionView ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" BackgroundColor="Black" SelectionMode="Single">
-                <CollectionView.Header>
-                    <StackLayout BackgroundColor="Gray">
-                        <Label Text="Categories" TextColor="White" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HeightRequest="100"/>
-                    </StackLayout>
-                </CollectionView.Header>
+        <Grid RowDefinitions="Auto, *" Padding="16, 16, 16, 0">
+
+            <Border Grid.Row="0"
+                    BackgroundColor="#FF5722" 
+                    StrokeThickness="0" 
+                    Margin="0, 0, 0, 20"
+                    Padding="24, 16">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#FF5722" Offset="0,6" Radius="12" Opacity="0.3" />
+                </Border.Shadow>
+
+                <Label Text="Categories" 
+                       TextColor="White" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalTextAlignment="Start" 
+                       VerticalOptions="Center"/>
+            </Border>
+
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding Categories}" 
+                            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" 
+                            SelectionMode="Single">
+
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="16" HorizontalItemSpacing="16"/>
                 </CollectionView.ItemsLayout>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Open" BackgroundColor="Pink" Clicked="OnCategoryOpen"/>
-                                    <SwipeItem Text="Set Favorite" BackgroundColor="Pink" Clicked="OnAddToFavorites"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <Grid HeightRequest="100">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Frame Grid.Column="0" Grid.Row="0" BorderColor="DeepPink" CornerRadius="0" Padding="0"  BackgroundColor="DeepPink" VerticalOptions="FillAndExpand" Margin="0">
-                                    <Label Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
-                                </Frame>
-                            </Grid>
-                        </SwipeView>
+                        <Border BackgroundColor="#FF5722" 
+                                StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.08" />
+                            </Border.Shadow>
+
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Open" BackgroundColor="#6750A4" Clicked="OnCategoryOpen"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+
+                                <Grid HeightRequest="120" Padding="16">
+                                    <Label Text="{Binding Path=Name}" 
+                                           TextColor="White" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           HorizontalTextAlignment="Center"/>
+                                </Grid>
+                            </SwipeView>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
-        </FlexLayout>
-    </ContentPage.Content>
 
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

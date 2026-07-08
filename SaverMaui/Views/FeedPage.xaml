@@ -5,69 +5,100 @@
              xmlns:vd="clr-namespace:SaverMaui.Custom_Elements"
              x:Class="SaverMaui.Views.FeedPage"
              xmlns:local="clr-namespace:SaverMaui.ViewModels"
-             xmlns:cv="clr-namespace:CarouselView.Abstractions;assembly=CarouselView.Maui"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             x:DataType="local:FeedViewModel"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             x:DataType="local:FeedViewModel"
              Title="FeedPage">
+
     <ContentPage.BindingContext>
         <vm:FeedViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" Loop="False" ItemsUpdatingScrollMode="KeepScrollOffset" CurrentItemChanged="OnCurrentItemChanged">
+        <Grid>
+            <CarouselView ItemsSource="{Binding ContentCollection}" 
+                          CurrentItem="{Binding CurrentContent}" 
+                          Loop="False" 
+                          ItemsUpdatingScrollMode="KeepScrollOffset" 
+                          CurrentItemChanged="OnCurrentItemChanged">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="vd:ImageRepresentationElement">
                         <Grid x:Name="MainGrid">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0"
-                                            Aspect="AspectFit"
-                                            Source="{Binding Path=Source}"
-                                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  
-                                            ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"    FadeAnimationEnabled="True"
-                                            FadeAnimationDuration="300"
-                                                        
-                                            x:Name="Img">
-                                    <ffimageloading:CachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                                    </ffimageloading:CachedImage.GestureRecognizers>
+
+                            <ffimageloading:CachedImage Aspect="AspectFit"
+                                                        Source="{Binding Path=Source}"
+                                                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                                        ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
+                                                        FadeAnimationEnabled="True"
+                                                        FadeAnimationDuration="300"
+                                                        x:Name="Img">
+                                <ffimageloading:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                </ffimageloading:CachedImage.GestureRecognizers>
                             </ffimageloading:CachedImage>
-                            <Button Grid.Row="0" 
-                            Grid.Column="0" 
-                            Text="D" FontAttributes="Bold" 
-                            TextColor="White"
-                            BackgroundColor="Orange" 
-                            CornerRadius="50" 
-                            VerticalOptions="End" 
-                            HorizontalOptions="End" 
-                            Margin="30" HeightRequest="60" 
-                            WidthRequest="60" 
-                            Padding="0" 
-                            Opacity="0.6" 
-                            x:Name="RateButton" Clicked="OnRemoveClicked"/>
-                            <Button Grid.Row="0" 
-                                Grid.Column="0" 
-                                Text="R" FontAttributes="Bold" 
-                                TextColor="White"
-                                BackgroundColor="DeepPink" 
-                                CornerRadius="50" 
-                                VerticalOptions="End" 
-                                HorizontalOptions="Start" 
-                                Margin="30" HeightRequest="60" 
-                                WidthRequest="60" 
-                                Padding="0" 
-                                Opacity="0.6" 
-                                x:Name="DeleteButton" Clicked="OnRateClicked"/>
+
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" 
+                                                 x:Name="FabContainer" 
+                                                 IsVisible="False" 
+                                                 VerticalOptions="End" 
+                                                 HorizontalOptions="End" 
+                                                 Margin="20,20,20,96" 
+                                Spacing="12">
+
+                                <Button Text="Rate" 
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        BackgroundColor="#00C853"
+                                        CornerRadius="24"
+                                        HeightRequest="48"
+                                        WidthRequest="120"
+                                        Padding="0"
+                                        Clicked="OnRateClicked"
+                                        x:Name="RateFabButton">
+                                    <Button.Shadow>
+                                        <Shadow Brush="Black" Offset="0,4" Radius="6" Opacity="0.25"/>
+                                    </Button.Shadow>
+                                </Button>
+
+                                <Button Text="Delete" 
+                                        FontAttributes="Bold"
+                                        TextColor="White"
+                                        BackgroundColor="#D50000"
+                                        CornerRadius="24"
+                                        HeightRequest="48"
+                                        WidthRequest="120"
+                                        Padding="0"
+                                        Clicked="OnRemoveClicked"
+                                        x:Name="DeleteFabButton">
+                                    <Button.Shadow>
+                                        <Shadow Brush="Black" Offset="0,4" Radius="6" Opacity="0.25"/>
+                                    </Button.Shadow>
+                                </Button>
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="0" Grid.Column="0"
+                                    Text="+" 
+                                    FontSize="28"
+                                    FontAttributes="Bold"
+                                    TextColor="White"
+                                    BackgroundColor="#6750A4" 
+                                    CornerRadius="16"
+                                    VerticalOptions="End"
+                                    HorizontalOptions="End"
+                                    Margin="20" 
+                                    HeightRequest="56"
+                                    WidthRequest="56"
+                                    Padding="0"
+                                    Clicked="OnToggleFabClicked"
+                                    x:Name="ToggleButton">
+                                <Button.Shadow>
+                                    <Shadow Brush="Black" Offset="0,6" Radius="8" Opacity="0.3"/>
+                                </Button.Shadow>
+                            </Button>
+
                         </Grid>
                     </DataTemplate>
-                    </CarouselView.ItemTemplate>
+                </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

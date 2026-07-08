@@ -75,7 +75,7 @@ namespace SaverBackend.Controllers
 
                         await db.Contents.AddAsync(newContent);
                         await this.redisDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
-                        await this.redisDb.ListLeftPushAsync("logstash-logs", JsonConvert.SerializeObject(newContent));
+                        //await this.redisDb.ListLeftPushAsync("logstash-logs", JsonConvert.SerializeObject(newContent));
                         await this.AddContentIntoLatest(new List<Content>() { newContent });
                     }
                 }

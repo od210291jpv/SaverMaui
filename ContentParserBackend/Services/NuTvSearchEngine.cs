@@ -174,24 +174,24 @@ namespace ContentParserBackend.Services
                             {
                                 SendLogMessageAsync($"Found match {src} to the keyword {keyword}, sending to redis..", LogSeverity.Warn, mqClient);
                                 await redis!.StringSetAsync($"{Guid.NewGuid().ToString()}:{keyword}", src.Replace("_320px", ""));
-                                await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
-                                {
-                                    Keyword = keyword,
-                                    Url = src.Replace("_320px", ""),
-                                    Timestamp = DateTime.UtcNow
-                                }));
+                                //await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
+                                //{
+                                //    Keyword = keyword,
+                                //    Url = src.Replace("_320px", ""),
+                                //    Timestamp = DateTime.UtcNow
+                                //}));
                             }
                         }
                         else 
                         {
                             SendLogMessageAsync($"Found {src}, sending to redis..", LogSeverity.Warn, mqClient);
                             await redis!.StringSetAsync($"{Guid.NewGuid().ToString()}:{keyword}", src.Replace("_320px", ""));
-                            await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
-                            {
-                                Keyword = keyword,
-                                Url = src.Replace("_320px", ""),
-                                Timestamp = DateTime.UtcNow
-                            }));
+                            //await redis.ListLeftPushAsync("logstash-parsing-logs", JsonConvert.SerializeObject(new SarchLogDto 
+                            //{
+                            //    Keyword = keyword,
+                            //    Url = src.Replace("_320px", ""),
+                            //    Timestamp = DateTime.UtcNow
+                            //}));
                         }
                     }
                 }

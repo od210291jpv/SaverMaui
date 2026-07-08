@@ -144,4 +144,33 @@ public partial class FeedPage : ContentPage
             await toast.Show(cancellationTokenSource.Token);
         }
     }
+
+    private void OnToggleFabClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button toggleButton)
+            return;
+
+        if (toggleButton.Parent is not Grid parentGrid)
+            return;
+
+        var fabContainer = parentGrid.FindByName<VerticalStackLayout>("FabContainer");
+
+        if (fabContainer != null)
+        {
+            bool isOpening = !fabContainer.IsVisible;
+            fabContainer.IsVisible = isOpening;
+
+            if (isOpening)
+            {
+                toggleButton.RotateTo(45, 250, Easing.SpringOut);
+
+                fabContainer.Opacity = 0;
+                fabContainer.FadeTo(1, 250);
+            }
+            else
+            {
+                toggleButton.RotateTo(0, 250, Easing.SpringIn);
+            }
+        }
+    }
 }
