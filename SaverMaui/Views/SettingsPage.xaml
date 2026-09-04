@@ -4,115 +4,120 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.SettingsPage"
              Title="Settings"
-             BackgroundColor="#121212">
+             BackgroundColor="{StaticResource SurfaceBg}">
 
     <ContentPage.BindingContext>
         <vm:SettingsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <ScrollView Orientation="Vertical" 
-                     HorizontalOptions="FillAndExpand" 
-                     VerticalOptions="Start">
+        <ScrollView Orientation="Vertical"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Start"
+                    BackgroundColor="{StaticResource SurfaceBg}">
 
-            <VerticalStackLayout Spacing="20" Padding="20" BackgroundColor="#121212">
-                <!-- 3. Global Actions Card -->
-                <Frame CornerRadius="15" 
-                       BackgroundColor="#1E1E1E" 
-                       HasShadow="True" 
-                       Padding="20">
+            <VerticalStackLayout Spacing="16" Padding="16">
+
+                <!-- Card 1 — Global Actions -->
+                <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Spacing="10">
-                        <Label Text="⚙️ Global Actions" 
-                               FontSize="22" 
-                               FontAttributes="Bold" 
-                               TextColor="#FFFFFF"/>
 
-                        <!-- Sync/Post Buttons -->
-                        <Button Text="🔄 Sync Content with Backend" 
+                        <Label Text="⚙️ Global Actions"
+                               Style="{StaticResource SectionLabel}"
+                               Margin="0,0,0,12" />
+
+                        <!-- Sync / Post Buttons -->
+                        <Button Text="🔄  Sync Content with Backend"
                                 Command="{Binding SyncContextCommand}"
-                                BackgroundColor="#2196F3" 
-                                TextColor="White" 
-                                FontSize="16" 
-                                CornerRadius="10" 
-                                HeightRequest="50"/>
+                                Style="{StaticResource SecondaryButton}" />
 
-                        <Button Text="📤 Post All Data to Backend" 
+                        <Button Text="📤  Post All Data to Backend"
                                 Command="{Binding PostNewContentCommand}"
-                                BackgroundColor="#FF9800" 
-                                TextColor="White" 
-                                FontSize="16" 
-                                CornerRadius="10" 
-                                HeightRequest="50"/>
+                                Style="{StaticResource PrimaryButton}" />
 
                         <!-- Data Management Buttons -->
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                            <Button Grid.Column="0" Text="🗑️ Erase Empty Categories" 
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button Grid.Column="0"
+                                    Text="🗑️ Erase Empty"
                                     Command="{Binding EraseEmptyCategoriesCommand}"
-                                    BackgroundColor="#F44336" 
-                                    TextColor="White" 
-                                    CornerRadius="10" 
-                                    HeightRequest="45"/>
-                            <Button Grid.Column="1" Text="🧹 Wipe All Data" 
+                                    Style="{StaticResource DangerButton}" />
+                            <Button Grid.Column="1"
+                                    Text="⚠️ Wipe All Data"
                                     Command="{Binding WipeAllDataCommand}"
-                                    BackgroundColor="#D32F2F" 
-                                    TextColor="White" 
-                                    CornerRadius="10" 
-                                    HeightRequest="45"/>
+                                    Style="{StaticResource DangerButton}" />
                         </Grid>
+
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <!-- 4. Search & Toggles Card -->
-                <Frame CornerRadius="15" 
-                       BackgroundColor="#1E1E1E" 
-                       HasShadow="True" 
-                       Padding="20">
-                    <VerticalStackLayout Spacing="15">
-                        <Label Text="🔍 Search and Preferences" 
-                               FontSize="22" 
-                               FontAttributes="Bold" 
-                               TextColor="#FFFFFF"/>
+                <!-- Card 2 — Search & Preferences -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="12">
 
-                        <!-- Search Input -->
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                            <Entry Grid.Column="0" 
-                                   Placeholder="Keyword" 
-                                   Text="{Binding SearchRequest, Mode=TwoWay}" 
-                                   TextColor="#FFFFFF" 
-                                   BackgroundColor="#252525" 
-                                   HeightRequest="45"/>
-                            <Button Grid.Column="1" 
-                                    Text="Search" 
-                                    Command="{Binding SearchContent}"
-                                    BackgroundColor="#FF5722" 
-                                    TextColor="White" 
-                                    CornerRadius="10" 
-                                    HeightRequest="45"/>
-                        </Grid>
+                        <Label Text="🔍 Search &amp; Preferences"
+                               Style="{StaticResource SectionLabel}"
+                               Margin="0,0,0,12" />
 
-                        <!-- Search Results Button -->
-                        <Button Text="🧹 Clean Search Results" 
+                        <!-- Search Entry -->
+                        <Border BackgroundColor="{StaticResource SurfaceCardHigh}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="12,0">
+                            <Entry Style="{StaticResource StyledEntry}"
+                                   Placeholder="Search keyword..."
+                                   Text="{Binding SearchRequest, Mode=TwoWay}" />
+                        </Border>
+
+                        <!-- Search Button -->
+                        <Button Text="Search"
+                                Command="{Binding SearchContent}"
+                                Style="{StaticResource PrimaryButton}" />
+
+                        <!-- Clean Results Button -->
+                        <Button Text="🧹 Clean Results"
                                 Command="{Binding CleanSearchResults}"
-                                BackgroundColor="#424242" 
-                                TextColor="White" 
-                                FontSize="16" 
-                                CornerRadius="10" 
-                                HeightRequest="45"/>
+                                Style="{StaticResource SecondaryButton}" />
 
-                        <!-- Toggles (Switches) -->
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
-                            <Label Grid.Column="0" Text="Log Feeds Content" VerticalOptions="Center" TextColor="#AAAAAA"/>
-                            <Switch Grid.Column="1" OnColor="#FF5722" IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
-                            <Label Grid.Column="0" Text="Refresh Search Results" VerticalOptions="Center" TextColor="#AAAAAA"/>
-                            <Switch Grid.Row="22" Grid.Column="1" OnColor="#FF5722" IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}" Toggled="Handle_Toggled"></Switch>
+                        <!-- Switch Row — Log Feeds Content -->
+                        <Border BackgroundColor="{StaticResource SurfaceCardHigh}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12,10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="Log Feeds Content"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
+                                <Switch Grid.Column="1"
+                                        OnColor="{StaticResource AccentPrimary}"
+                                        IsToggled="{Binding LogFeedsEnabled, Mode=TwoWay}" />
+                            </Grid>
+                        </Border>
 
-                        </Grid>
+                        <!-- Switch Row — Refresh Search Results -->
+                        <Border BackgroundColor="{StaticResource SurfaceCardHigh}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12,10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="Refresh Search Results"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
+                                <Switch Grid.Column="1"
+                                        OnColor="{StaticResource AccentPrimary}"
+                                        IsToggled="{Binding RefreshSearchResults, Mode=TwoWay}"
+                                        Toggled="Handle_Toggled" />
+                            </Grid>
+                        </Border>
+
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>
+
 </ContentPage>

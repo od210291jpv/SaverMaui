@@ -3,32 +3,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.FavoriteCategoriesPage"
-             Title="FavoriteCategoriesPage">
+             Title="Favorite Categories"
+             BackgroundColor="{StaticResource SurfaceBg}">
     <ContentPage.BindingContext>
         <vm:FavoritesViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout BackgroundColor="Black">
-            <Button Command="{Binding NavigateToFeedItemCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
-            <Button Command="{Binding NavigateToPersonalFeedCommand}" Text="Personal Feed" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
-            <ListView ItemsSource="{Binding FavoriteCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedFavoriteCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
-                <ListView.ItemTemplate>
+        <Grid RowDefinitions="Auto,*,Auto" Padding="16">
+
+            <!-- Row 0: Header -->
+            <VerticalStackLayout Grid.Row="0" Spacing="4" Margin="0,0,0,16">
+                <Label Text="📁 Favorite Categories"
+                       Style="{StaticResource SectionLabel}" />
+                <Label Text="Categories you follow"
+                       Style="{StaticResource SubLabel}" />
+            </VerticalStackLayout>
+
+            <!-- Row 1: Category list -->
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding FavoriteCategories}"
+                            SelectedItem="{Binding SelectedFavoriteCategory}"
+                            SelectionMode="Single">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid Margin="5" Padding="5" RowSpacing="15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        <Border Style="{StaticResource CardBorder}" Padding="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="60">
+                                <Label Grid.Column="0"
+                                       Text="🗂️"
+                                       FontSize="22"
+                                       VerticalOptions="Center"
+                                       Margin="16,0,0,0" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Path=Name}"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       Margin="12,0" />
+                                <Label Grid.Column="2"
+                                       Text=">"
+                                       TextColor="{StaticResource TextSecondary}"
+                                       FontSize="18"
+                                       VerticalOptions="Center"
+                                       Margin="0,0,16,0" />
                             </Grid>
-                        </ViewCell>
+                        </Border>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Row 2: Bottom action bar -->
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="12"
+                  Margin="0,16,0,0">
+                <Button Grid.Column="0"
+                        Text="Open Feed"
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding NavigateToFeedItemCommand}" />
+                <Button Grid.Column="1"
+                        Text="Personal Feed"
+                        Style="{StaticResource OutlineButton}"
+                        Command="{Binding NavigateToPersonalFeedCommand}" />
+            </Grid>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

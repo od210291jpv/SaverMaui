@@ -4,77 +4,105 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.CategoriesPageV2"
              Title="Categories"
-             BackgroundColor="Black">
+             BackgroundColor="{StaticResource SurfaceBg}">
 
     <ContentPage.BindingContext>
         <vm:CategoriesViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto, *" Padding="16, 16, 16, 0">
+        <Grid RowDefinitions="Auto,Auto,*" Padding="16">
 
-            <Border Grid.Row="0"
-                    BackgroundColor="#FF5722" 
-                    StrokeThickness="0" 
-                    Margin="0, 0, 0, 20"
-                    Padding="24, 16">
+            <!-- Row 0: Title row -->
+            <HorizontalStackLayout Grid.Row="0" Spacing="0">
+                <Label Text="🗂️ Categories"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       VerticalOptions="Center" />
+                <BoxView HorizontalOptions="FillAndExpand"
+                         Color="Transparent" />
+            </HorizontalStackLayout>
+
+            <!-- Row 1: Search bar wrapped in Border for styled background -->
+            <Border Grid.Row="1"
+                    BackgroundColor="{StaticResource SurfaceCardHigh}"
+                    StrokeThickness="0"
+                    Margin="0,12">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
+                    <RoundRectangle CornerRadius="12" />
                 </Border.StrokeShape>
-                <Border.Shadow>
-                    <Shadow Brush="#FF5722" Offset="0,6" Radius="12" Opacity="0.3" />
-                </Border.Shadow>
-
-                <Label Text="Categories" 
-                       TextColor="White" 
-                       FontSize="24" 
-                       FontAttributes="Bold" 
-                       HorizontalTextAlignment="Start" 
-                       VerticalOptions="Center"/>
+                <SearchBar Placeholder="Filter categories..."
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextSecondary}"
+                           CancelButtonColor="{StaticResource AccentPrimary}"
+                           BackgroundColor="Transparent" />
             </Border>
 
-            <CollectionView Grid.Row="1"
-                            ItemsSource="{Binding Categories}" 
-                            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" 
+            <!-- Row 2: Category grid -->
+            <CollectionView Grid.Row="2"
+                            ItemsSource="{Binding Categories}"
+                            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
                             SelectionMode="Single">
 
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="16" HorizontalItemSpacing="16"/>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="2"
+                                     VerticalItemSpacing="12"
+                                     HorizontalItemSpacing="12" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border BackgroundColor="#FF5722" 
-                                StrokeThickness="0">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="16" />
-                            </Border.StrokeShape>
-                            <Border.Shadow>
-                                <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.08" />
-                            </Border.Shadow>
+                        <Border Style="{StaticResource CardBorder}" Padding="0">
 
                             <SwipeView>
                                 <SwipeView.LeftItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Open" BackgroundColor="#6750A4" Clicked="OnCategoryOpen"/>
+                                        <SwipeItem Text="Open"
+                                                   BackgroundColor="{StaticResource AccentPrimary}"
+                                                   Clicked="OnCategoryOpen" />
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
 
-                                <Grid HeightRequest="120" Padding="16">
-                                    <Label Text="{Binding Path=Name}" 
-                                           TextColor="White" 
-                                           FontSize="18" 
+                                <!-- Card content: accent bar + name + chevron -->
+                                <Grid HeightRequest="90"
+                                      Padding="16,0"
+                                      ColumnDefinitions="Auto,*,Auto">
+
+                                    <!-- Accent left bar -->
+                                    <BoxView Grid.Column="0"
+                                             WidthRequest="4"
+                                             BackgroundColor="{StaticResource AccentPrimary}"
+                                             VerticalOptions="FillAndExpand"
+                                             CornerRadius="2" />
+
+                                    <!-- Category name -->
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           FontSize="16"
                                            FontAttributes="Bold"
-                                           HorizontalOptions="Center"
                                            VerticalOptions="Center"
-                                           HorizontalTextAlignment="Center"/>
+                                           Margin="12,0,0,0" />
+
+                                    <!-- Chevron -->
+                                    <Label Grid.Column="2"
+                                           Text="›"
+                                           TextColor="{StaticResource TextSecondary}"
+                                           FontSize="18"
+                                           VerticalOptions="Center" />
+
                                 </Grid>
                             </SwipeView>
+
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
             </CollectionView>
+
         </Grid>
     </ContentPage.Content>
+
 </ContentPage>

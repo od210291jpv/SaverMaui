@@ -4,28 +4,29 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.CategoryFeedPage"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             Title="CategoryFeedPage">
+             Title="Category Feed"
+             BackgroundColor="Black">
     <ContentPage.BindingContext>
         <vm:CategoryFeedViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView x:Name="Feed" ItemsSource="{Binding ContentCollection}" Loop="True">
+        <Grid>
+
+            <!-- Full-screen carousel -->
+            <CarouselView x:Name="Feed"
+                          ItemsSource="{Binding ContentCollection}"
+                          Loop="True"
+                          IndicatorView="FeedIndicator">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Grid x:Name="ContentGrid">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <ffimageloading:CachedImage Grid.Row="0"
-                                                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
-                                                        Grid.Column="0" Grid.ColumnSpan="3" Source="{Binding Path=ImageUri}" Margin="0">
+                        <Grid>
+                            <ffimageloading:CachedImage
+                                Source="{Binding Path=ImageUri}"
+                                Margin="0"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                FadeAnimationEnabled="True">
                                 <ffimageloading:CachedImage.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
                                 </ffimageloading:CachedImage.GestureRecognizers>
@@ -34,6 +35,54 @@
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+
+            <!-- Indicator dots -->
+            <IndicatorView x:Name="FeedIndicator"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,80"
+                           IndicatorColor="#555555"
+                           SelectedIndicatorColor="{StaticResource AccentPrimary}" />
+
+            <!-- Top overlay -->
+            <Border VerticalOptions="Start"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,12">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#CC000000" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Text="🖼️ Category Feed"
+                       TextColor="White"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+            </Border>
+
+            <!-- Bottom overlay -->
+            <Border VerticalOptions="End"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="Transparent" Offset="0" />
+                        <GradientStop Color="#CC000000" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <Label Text="&#x2665;"
+                           FontSize="32"
+                           TextColor="{StaticResource AccentPrimary}" />
+                    <Label Text="double-tap to save"
+                           Style="{StaticResource SubLabel}"
+                           VerticalOptions="Center"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+            </Border>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

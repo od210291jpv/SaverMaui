@@ -4,20 +4,28 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.FavoriteContentPage"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             Title="FavoriteContentPage">
+             Title="Favorites"
+             BackgroundColor="Black">
 
     <ContentPage.BindingContext>
         <vm:FavoriteContentViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}" CurrentItemChangedCommand="{Binding ItemChangedCommand}">
+        <Grid>
+            <!-- Full-screen CarouselView -->
+            <CarouselView Grid.Row="0"
+                          ItemsSource="{Binding ContentCollection}"
+                          CurrentItem="{Binding CurrentContent}"
+                          CurrentItemChangedCommand="{Binding ItemChangedCommand}"
+                          IndicatorView="indicatorView">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <ffimageloading:CachedImage 
+                        <ffimageloading:CachedImage
                             Source="{Binding Path=Source}"
-                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"    FadeAnimationEnabled="True"
+                            LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                            ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                            FadeAnimationEnabled="True"
                             Aspect="AspectFit">
                             <ffimageloading:CachedImage.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
@@ -26,6 +34,30 @@
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+
+            <!-- Dot indicator -->
+            <IndicatorView x:Name="indicatorView"
+                           Grid.Row="0"
+                           IndicatorColor="{StaticResource SurfaceCardHigh}"
+                           SelectedIndicatorColor="{StaticResource AccentPrimary}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"
+                           Margin="0,0,0,80" />
+
+            <!-- Bottom overlay bar -->
+            <Border Grid.Row="0"
+                    BackgroundColor="#CC000000"
+                    StrokeThickness="0"
+                    VerticalOptions="End"
+                    Padding="20,12">
+                <HorizontalStackLayout Spacing="16" HorizontalOptions="Center">
+                    <Label Text="♥ Saved"
+                           TextColor="{StaticResource AccentPrimary}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -3,57 +3,100 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SaverMaui.Views.NotificationCenterPage"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
-             Title="Notifications">
+             Title="Notifications"
+             BackgroundColor="{StaticResource SurfaceBg}">
+
     <ContentPage.BindingContext>
         <vm:NotificationCenterViewModel />
     </ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <ScrollView>
-            <VerticalStackLayout Spacing="15" Padding="20" BackgroundColor="#121212">
+        <Grid RowDefinitions="*,Auto">
 
-                <Button Text="Connect Clients" 
-                        Command="{Binding NotifyClientsCommand}" 
-                        BackgroundColor="#00BCD4" 
-                        TextColor="White" 
-                        HeightRequest="55"
-                        Padding="15, 0"
-                        HorizontalOptions="FillAndExpand"
-                        WidthRequest="300"
-                        Margin="0, 10, 0, 20"
-                        CornerRadius="8"/>
+            <!-- Row 0: Messages area -->
+            <ScrollView Grid.Row="0"
+                        BackgroundColor="{StaticResource SurfaceBg}">
+                <VerticalStackLayout Spacing="12"
+                                     Padding="16,16,16,80">
 
-                <CollectionView ItemsSource="{Binding Messages}" 
-                                SelectionMode="None">
+                    <!-- Header -->
+                    <HorizontalStackLayout Spacing="12"
+                                           Margin="0,0,0,8">
+                        <Label Text="🔔 Notifications"
+                               Style="{StaticResource SectionLabel}" />
+                    </HorizontalStackLayout>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame CornerRadius="12" 
-                                   BackgroundColor="#1E1E1E" 
-                                   HasShadow="True" 
-                                   Padding="15"
-                                   Margin="0, 5, 0, 5">
-
-                                <VerticalStackLayout Spacing="8">
-                                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                                        <Label Text="{Binding SenderName, FallbackValue='System'}" 
-                                               TextColor="#00BCD4" 
-                                               FontAttributes="Bold" 
-                                               FontSize="Medium"/>
-                                        <Label Text="{Binding Timestamp, FallbackValue='Just now'}" 
-                                               TextColor="#888888" 
-                                               FontSize="Small"/>
-                                    </HorizontalStackLayout>
-
-                                    <Label Text="{Binding Message}" 
-                                           TextColor="White" 
-                                           FontSize="Medium" 
-                                           LineBreakMode="WordWrap"/>
+                    <!-- Messages list -->
+                    <CollectionView x:Name="MessagesList"
+                                    ItemsSource="{Binding Messages}"
+                                    SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Border Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout Spacing="12"
+                                                     HorizontalOptions="Center"
+                                                     Padding="0,24">
+                                    <Label Text="&#x1F514;"
+                                           FontSize="48"
+                                           HorizontalOptions="Center" />
+                                    <Label Text="No notifications yet"
+                                           Style="{StaticResource SectionLabel}"
+                                           HorizontalTextAlignment="Center" />
+                                    <Label Text="Connect to start receiving updates"
+                                           Style="{StaticResource SubLabel}"
+                                           HorizontalTextAlignment="Center" />
                                 </VerticalStackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>
+                            </Border>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource CardBorder}"
+                                        Margin="0,0,0,2"
+                                        Padding="16">
+                                    <VerticalStackLayout Spacing="8">
+
+                                        <!-- Sender + timestamp row -->
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="&#x1F4EC;"
+                                                   FontSize="16"
+                                                   VerticalOptions="Center" />
+                                            <Label Text="{Binding SenderName, FallbackValue=System}"
+                                                   TextColor="{StaticResource AccentSecondary}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center" />
+                                            <BoxView HorizontalOptions="FillAndExpand"
+                                                     Color="Transparent" />
+                                            <Label Text="{Binding Timestamp, FallbackValue='Just now'}"
+                                                   Style="{StaticResource SubLabel}"
+                                                   VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+
+                                        <!-- Message body -->
+                                        <Label Text="{Binding Message}"
+                                               TextColor="{StaticResource TextPrimary}"
+                                               FontSize="14"
+                                               LineBreakMode="WordWrap" />
+
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Row 1: Sticky bottom bar -->
+            <Border Grid.Row="1"
+                    BackgroundColor="{StaticResource SurfaceCard}"
+                    StrokeThickness="0"
+                    Padding="16,12">
+                <Button Text="🔗  Connect"
+                        Style="{StaticResource PrimaryButton}"
+                        BackgroundColor="{StaticResource AccentSecondary}"
+                        Command="{Binding NotifyClientsCommand}" />
+            </Border>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

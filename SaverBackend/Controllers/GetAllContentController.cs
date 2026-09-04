@@ -34,7 +34,7 @@ namespace SaverBackend.Controllers
         }
 
         [HttpGet("GetAllContentPaged")]
-        public async Task<Content[]> GetAllContentPaged(short page = 0, short pageSize = 200) 
+        public async Task<PaginatedContentDto> GetAllContentPaged(short page = 0, short pageSize = 200) 
         {
             int howManyToSkip = 0;
             
@@ -61,7 +61,17 @@ namespace SaverBackend.Controllers
                 }
             }
 
-            return allValues.OrderByDescending(v => v.DateCreated).ToArray();
+            PaginatedContentDto result = new PaginatedContentDto
+            {
+                Items = allValues.OrderByDescending(v => v.DateCreated).ToList(),
+                TotalCount = this.redis.GetServer("192.168.88.252:6379").Keys(1).Count(),
+                CurrentPage = page,
+                PageSize = pageSize,
+                PageCount = (int)Math.Ceiling((double)this.redis.GetServer("192.168.88.252:6379").Keys(1).Count() / pageSize),
+
+            };
+
+            return result;
         }
 
         [HttpGet("GetLatestContent")]

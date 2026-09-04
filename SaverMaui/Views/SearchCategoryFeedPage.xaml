@@ -7,24 +7,88 @@
              xmlns:vd="clr-namespace:SaverMaui.Custom_Elements"
              x:DataType="local:SearchCategoryFeedViewModel"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             Title="CategoryFeedPage">
+             Title="Search Results"
+             BackgroundColor="Black">
     <ContentPage.BindingContext>
         <vm:SearchCategoryFeedViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView x:Name="Feed" ItemsSource="{Binding SearchResults}" CurrentItem="{Binding CurrentResult}" Loop="False" PropertyChanged="Feed_PropertyChanged" CurrentItemChanged="Feed_CurrentItemChanged">
+        <Grid>
+
+            <!-- Full-screen carousel -->
+            <CarouselView x:Name="Feed"
+                          ItemsSource="{Binding SearchResults}"
+                          CurrentItem="{Binding CurrentResult}"
+                          Loop="False"
+                          PropertyChanged="Feed_PropertyChanged"
+                          CurrentItemChanged="Feed_CurrentItemChanged"
+                          IndicatorView="FeedIndicator">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="vd:SearchResult">
-                        <ffimageloading:CachedImage Source="{Binding Path=Url}" Margin="0" LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" FadeAnimationEnabled="True">
-                            <ffimageloading:CachedImage.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                            </ffimageloading:CachedImage.GestureRecognizers>
-                        </ffimageloading:CachedImage>
+                        <Grid>
+                            <ffimageloading:CachedImage
+                                Source="{Binding Path=Url}"
+                                Margin="0"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                FadeAnimationEnabled="True">
+                                <ffimageloading:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                                </ffimageloading:CachedImage.GestureRecognizers>
+                            </ffimageloading:CachedImage>
+                        </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+
+            <!-- Indicator dots -->
+            <IndicatorView x:Name="FeedIndicator"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,80"
+                           IndicatorColor="#555555"
+                           SelectedIndicatorColor="{StaticResource AccentPrimary}" />
+
+            <!-- Top overlay -->
+            <Border VerticalOptions="Start"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,12">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#CC000000" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Text="&#x1F50D; Search Results"
+                       TextColor="White"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+            </Border>
+
+            <!-- Bottom overlay -->
+            <Border VerticalOptions="End"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="Transparent" Offset="0" />
+                        <GradientStop Color="#CC000000" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <Label Text="&#x2665;"
+                           FontSize="32"
+                           TextColor="{StaticResource AccentPrimary}" />
+                    <Label Text="double-tap to save"
+                           Style="{StaticResource SubLabel}"
+                           VerticalOptions="Center"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+            </Border>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

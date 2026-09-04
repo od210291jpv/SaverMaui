@@ -4,117 +4,173 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.ProfilePage"
              Title="Profile"
-             BackgroundColor="#121212">
+             BackgroundColor="{StaticResource SurfaceBg}">
 
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <RefreshView IsRefreshing="{Binding IsRefreshing}" BackgroundColor="#121212">
-            <ScrollView Orientation="Vertical" 
-                         HorizontalOptions="Center" 
-                         VerticalOptions="FillAndExpand" 
-                         Padding="20" 
-                         BackgroundColor="#121212">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     BackgroundColor="{StaticResource SurfaceBg}">
+            <ScrollView Orientation="Vertical"
+                        HorizontalOptions="Center"
+                        VerticalOptions="FillAndExpand"
+                        Padding="20"
+                        BackgroundColor="{StaticResource SurfaceBg}">
 
                 <VerticalStackLayout Spacing="20" VerticalOptions="Start">
 
-                    <!-- Online Status Card (Material Card) -->
-                    <Frame CornerRadius="15" 
-                           BackgroundColor="#1E1E1E" 
-                           HasShadow="True" 
-                           Padding="15"
-                           HorizontalOptions="FillAndExpand">
-                        <Grid ColumnDefinitions="Auto, *">
-                            <!-- Online Button -->
-                            <Button Grid.Column="0" 
+                    <!-- Card 1 — Online Status Card -->
+                    <Border Style="{StaticResource CardBorder}"
+                            HorizontalOptions="FillAndExpand">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+
+                            <!-- Online indicator dot + status text -->
+                            <HorizontalStackLayout Grid.Column="0"
+                                                   Spacing="8"
+                                                   VerticalOptions="Center">
+                                <BoxView WidthRequest="12"
+                                         HeightRequest="12"
+                                         CornerRadius="6"
+                                         Color="{Binding OnlineButtonBackgroundColor}"
+                                         VerticalOptions="Center" />
+                                <Label Text="{Binding OnlineStatusText, FallbackValue=Offline}"
+                                       TextColor="{StaticResource TextSecondary}"
+                                       FontSize="14"
+                                       VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <!-- Tappable hit-area to keep OnOnlineButtonClicked wired up -->
+                            <Button Grid.Column="0"
                                     x:Name="OnlineButton"
-                                    Text="" 
-                                    CornerRadius="90" 
-                                    BackgroundColor="{Binding OnlineButtonBackgroundColor}" 
-                                    TextColor="White"
-                                    BorderColor="White"
+                                    Text=""
+                                    BackgroundColor="Transparent"
+                                    BorderColor="Transparent"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    Opacity="0"
                                     VerticalOptions="Center"
-                                    HeightRequest="30"
-                                    WidthRequest="30"
-                                    Clicked="OnOnlineButtonClicked"/>
+                                    Clicked="OnOnlineButtonClicked" />
 
-                            <!-- Profile Greeting/Status -->
-                            <Label Grid.Column="1" 
-                                   Text="Not Registered yet? Create personal profile to get access to all features!" 
-                                   TextColor="#AAAAAA" 
-                                   FontSize="16" 
+                            <!-- Status / registration message -->
+                            <Label Grid.Column="1"
+                                   Text="{Binding StatusMessage, FallbackValue='Create a profile to unlock all features'}"
+                                   TextColor="{StaticResource TextSecondary}"
+                                   FontSize="13"
                                    VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   HorizontalTextAlignment="Center"/>
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Start" />
                         </Grid>
-                    </Frame>
+                    </Border>
 
-                    <!-- User Info Card (Material Card) -->
-                    <Frame CornerRadius="15" 
-                           BackgroundColor="#1E1E1E" 
-                           HasShadow="True" 
-                           Padding="20"
-                           HorizontalOptions="FillAndExpand">
+                    <!-- Card 2 — User Info Card -->
+                    <Border Style="{StaticResource CardBorder}"
+                            HorizontalOptions="FillAndExpand">
                         <VerticalStackLayout Spacing="10">
-                            <Label Text="User Profile" 
-                                   FontSize="24" 
-                                   FontAttributes="Bold" 
+
+                            <!-- Avatar circle -->
+                            <Border WidthRequest="72"
+                                    HeightRequest="72"
+                                    StrokeThickness="0"
+                                    BackgroundColor="{StaticResource AccentPrimary}"
+                                    StrokeShape="RoundRectangle 36"
+                                    HorizontalOptions="Center">
+                                <Label Text="👤"
+                                       FontSize="32"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+
+                            <!-- Section header -->
+                            <Label Text="User Profile"
+                                   Style="{StaticResource SectionLabel}"
                                    HorizontalTextAlignment="Center"
-                                   TextColor="#FFFFFF"/>
+                                   HorizontalOptions="Center" />
 
-                            <!-- Username Display -->
-                            <Label Text="{Binding UserName, Mode=TwoWay}" 
-                                   TextColor="#FF5722" 
-                                   FontAttributes="Bold" 
-                                   FontSize="28" 
-                                   HorizontalOptions="Center"/>
+                            <!-- Username -->
+                            <Label Text="{Binding UserName, Mode=TwoWay}"
+                                   TextColor="{StaticResource AccentPrimary}"
+                                   FontAttributes="Bold"
+                                   FontSize="26"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
 
-                    <!-- Search Progress Card (Material Card) -->
-                    <Frame CornerRadius="15" 
-                           BackgroundColor="#1E1E1E" 
-                           HasShadow="True" 
-                           Padding="20"
-                           HorizontalOptions="FillAndExpand">
-                        <VerticalStackLayout Spacing="15">
-                            <Label Text="Search Progress" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" 
-                                   TextColor="#FFFFFF"/>
+                    <!-- Card 3 — Search Progress Card -->
+                    <Border Style="{StaticResource CardBorder}"
+                            HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="12">
 
-                            <!-- Progress Bar -->
-                            <ProgressBar x:Name="SearchProgress" 
-                                         ProgressColor="#FF5722" 
-                                         HeightRequest="10" />
+                            <!-- Header -->
+                            <Label Text="Search Progress"
+                                   Style="{StaticResource SectionLabel}"
+                                   Margin="0,0,0,10" />
 
-                            <!-- Status Details -->
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Total Content: " TextColor="#AAAAAA" FontSize="16"/>
-                                <Label Grid.Column="1" x:Name="TotalContentAmount" Text="{Binding TotalContentAmount}" TextColor="#FFFFFF" FontSize="16" VerticalOptions="Center"/>
+                            <!-- Progress bar -->
+                            <ProgressBar x:Name="SearchProgress"
+                                         ProgressColor="{StaticResource AccentPrimary}"
+                                         HeightRequest="6" />
+
+                            <!-- Stat row: Total Content -->
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                <Label Grid.Column="0"
+                                       Text="Total Content: "
+                                       Style="{StaticResource SubLabel}" />
+                                <Label Grid.Column="1"
+                                       x:Name="TotalContentAmount"
+                                       Text="{Binding TotalContentAmount}"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
                             </Grid>
 
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Funds: " TextColor="#AAAAAA" FontSize="16"/>
-                                <Label Grid.Column="1" x:Name="Funds" Text="{Binding Funds}" TextColor="#FFFFFF" FontSize="16" VerticalOptions="Center"/>
+                            <!-- Stat row: Funds -->
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                <Label Grid.Column="0"
+                                       Text="Funds: "
+                                       Style="{StaticResource SubLabel}" />
+                                <Label Grid.Column="1"
+                                       x:Name="Funds"
+                                       Text="{Binding Funds}"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
                             </Grid>
 
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Results found: " TextColor="#AAAAAA" FontSize="16"/>
-                                <Label Grid.Column="1" x:Name="ResultsAmt" Text="{Binding ResultsAmnt}" TextColor="#FFFFFF" FontSize="16" VerticalOptions="Center"/>
+                            <!-- Stat row: Results Found -->
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                <Label Grid.Column="0"
+                                       Text="Results found: "
+                                       Style="{StaticResource SubLabel}" />
+                                <Label Grid.Column="1"
+                                       x:Name="ResultsAmt"
+                                       Text="{Binding ResultsAmnt}"
+                                       TextColor="{StaticResource TextPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
                             </Grid>
 
-                            <Grid ColumnDefinitions="Auto, *">
-                                <Label Grid.Column="0" Text="Search status: " TextColor="#AAAAAA" FontSize="16"/>
-                                <Label Grid.Column="1" x:Name="SearchStatuslabel" Text="{Binding SearchStatus}" TextColor="#FF5722" FontSize="16" VerticalOptions="Center"/>
+                            <!-- Stat row: Search Status -->
+                            <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                                <Label Grid.Column="0"
+                                       Text="Search status: "
+                                       Style="{StaticResource SubLabel}" />
+                                <Label Grid.Column="1"
+                                       x:Name="SearchStatuslabel"
+                                       Text="{Binding SearchStatus}"
+                                       TextColor="{StaticResource AccentPrimary}"
+                                       FontSize="15"
+                                       VerticalOptions="Center" />
                             </Grid>
+
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
 
                 </VerticalStackLayout>
             </ScrollView>
         </RefreshView>
     </ContentPage.Content>
+
 </ContentPage>

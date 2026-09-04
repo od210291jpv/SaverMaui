@@ -1,38 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
-             x:Class="SaverMaui.Views.SearchResultsPage" 
+             x:Class="SaverMaui.Views.SearchResultsPage"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             Title="Search Results">
+             Title="Search Results"
+             BackgroundColor="Black">
     <ContentPage.BindingContext>
         <vm:SearchResultsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView Loop="False" ItemsSource="{Binding ContentCollection}" Position="{Binding CurrentKeyword}" VerticalScrollBarVisibility="Always">
+        <Grid>
+            <CarouselView Loop="False"
+                          ItemsSource="{Binding ContentCollection}"
+                          Position="{Binding CurrentKeyword}"
+                          VerticalScrollBarVisibility="Always">
                 <CarouselView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="3"/>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="0" />
                 </CarouselView.ItemsLayout>
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BorderColor="Orange" BackgroundColor="Black">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding Path=Value[0].Url}" Aspect="AspectFit" LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" FadeAnimationEnabled="True">
-                                    <ffimageloading:CachedImage.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCategoryOpen" NumberOfTapsRequired="2" />
-                                    </ffimageloading:CachedImage.GestureRecognizers>
-                                </ffimageloading:CachedImage>
-                                <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" FontSize="25" VerticalOptions="Start" FontAttributes="Bold" TextColor="White" Text="{Binding Path=Key}"/>
-                            </Grid>
-                        </Frame>
+                        <Grid>
+                            <!-- Full-screen image -->
+                            <ffimageloading:CachedImage
+                                Source="{Binding Path=Value[0].Url}"
+                                Aspect="AspectFill"
+                                FadeAnimationEnabled="True"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg">
+                                <ffimageloading:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCategoryOpen" NumberOfTapsRequired="2" />
+                                </ffimageloading:CachedImage.GestureRecognizers>
+                            </ffimageloading:CachedImage>
+
+                            <!-- Top overlay bar -->
+                            <Border BackgroundColor="#CC000000"
+                                    VerticalOptions="Start"
+                                    Padding="16,12"
+                                    StrokeThickness="0">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Path=Key}"
+                                           TextColor="White"
+                                           FontAttributes="Bold"
+                                           FontSize="22" />
+                                    <Label Text="Swipe to browse"
+                                           TextColor="{StaticResource TextSecondary}"
+                                           FontSize="12"
+                                           Margin="0,4,0,0" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
