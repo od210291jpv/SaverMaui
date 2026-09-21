@@ -71,6 +71,7 @@ namespace SaverBackend.Controllers
                             Title = content.Title,
                             Rating = content.Rating,
                             Id = newId,
+                            CmsExternalId = content.CmsRefId ?? 0,
                         };
 
                         await db.Contents.AddAsync(newContent);
