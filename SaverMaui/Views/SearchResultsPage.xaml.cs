@@ -32,27 +32,31 @@ namespace SaverMaui.Views
                 return;
             }
 
-            var vm = SearchKeywordsViewModel.Instance;
-
-            var searchResults = vm?.SearchResults.Single(i => i.Key == this.Keyword).Urls.ToArray();
-
-            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
-
-            if (SearchResultsViewModel.Instance?.ContentCollection != null)
+            if (BindingContext is SearchKeywordsViewModel vm) 
             {
-                SearchResultsViewModel.Instance.CurrentKeyword = 0;
-                SearchResultsViewModel.Instance.ClearContent();
+                var searchResults = vm.SearchResults.Single(i => i.Key == this.Keyword).Urls.ToArray();
+
+                var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
+
+                if (SearchResultsViewModel.Instance?.ContentCollection != null)
+                {
+                    SearchResultsViewModel.Instance.CurrentKeyword = 0;
+                    SearchResultsViewModel.Instance.ClearContent();
+                }
+
+                foreach (KeyValuePair<string, SearchResult[]> g in sotredGroupped)
+                {
+                    SearchResultsViewModel.Instance?.ContentCollection.Add(g);
+                }
+
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                var toast = Toast.Make($"Content found: {searchResults.Length}", ToastDuration.Short, 14);
+                await toast.Show(cancellationTokenSource.Token);
             }
 
-            foreach (KeyValuePair<string, SearchResult[]> g in sotredGroupped) 
-            {
-                SearchResultsViewModel.Instance?.ContentCollection.Add(g);
-            }
-
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-            var toast = Toast.Make($"Content found: {searchResults.Length}", ToastDuration.Short, 14);
-            await toast.Show(cancellationTokenSource.Token);
+            // list of KeyValuePair<string, string> where key is the keyword and value is url
+            
         }
 
         private ICommand navigateToSearchCategoryFeedCommand;
@@ -65,14 +69,14 @@ namespace SaverMaui.Views
             } 
         }
 
-        private List<KeyValuePair<string, SearchResult[]>> GetGrouppedSearchResults(string[] results)
+        private List<KeyValuePair<string, SearchResult[]>> GetGrouppedSearchResults(KeyValuePair<int, string>[] results)
         {
             var fullResults = new List<KeyValuePair<string, SearchResult[]>>();
-            var res = results.GroupBy((s) => s.Split("/").Last().Split("_").First()).ToArray();
+            var res = results.GroupBy((s) => s.Value.Split("/").Last().Split("_").First()).ToArray();
 
             foreach (var r in res) 
             {
-                fullResults.Add(new KeyValuePair<string, SearchResult[]>(r.Key, r.Select(i => new SearchResult() { Name = r.Key, Url = i }).ToArray()));
+                fullResults.Add(new KeyValuePair<string, SearchResult[]>(r.Key, r.Select(i => new SearchResult() { Name = r.Key, Url = new KeyValuePair<int, string>(i.Key, i.Value) }).ToArray()));
             }
             return fullResults;
         }

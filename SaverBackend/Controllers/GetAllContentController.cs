@@ -127,14 +127,19 @@ namespace SaverBackend.Controllers
 
                     if (existingResult != null) 
                     {
-                        existingResult.Urls.Add(resultValue);
+                        int intContentId;
+                        int.TryParse(contentId, out intContentId);
+                        existingResult.Urls.Add(new KeyValuePair<int, string>(intContentId, resultValue));
                     }
                     else 
                     {
+                        int intContentId;
+                        int.TryParse(contentId, out intContentId);
+
                         results.Add(new KeywordResult 
                         {
                             Key = keyword,
-                            Urls = new List<string> { resultValue }
+                            Urls = new () { new KeyValuePair<int, string>(intContentId, resultValue) }
                         });
                     }
                 }

@@ -8,6 +8,6 @@ namespace SaverMaui.Services.Contracts.Search
     {
         public string Key { get; set; } = string.Empty;
 
-        public List<string> Urls { get; set; } = new();
+        public List<KeyValuePair<int, string>> Urls { get; set; } = new();
     }
 }

@@ -24,5 +24,8 @@ namespace SaverMaui.Services.Contracts.Content
 
         [JsonProperty("cost")]
         public decimal Cost { get; set; } = 0.0m;
+
+        [JsonProperty("CmsRefId")]
+        public int CmsRefId { get; set; } = 0;
     }
 }

@@ -4,6 +4,6 @@
     {
         public string Name { get; set; } = string.Empty;
 
-        public string Url { get; set; }
+        public KeyValuePair<int, string> Url { get; set; }
     }
 }
