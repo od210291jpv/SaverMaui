@@ -24,7 +24,7 @@
                         <Grid>
                             <!-- Full-screen image -->
                             <ffimageloading:CachedImage
-                                Source="{Binding Path=Value[0].Url}"
+                                Source="{Binding Path=Value[0].Url.Value}"
                                 Aspect="AspectFill"
                                 FadeAnimationEnabled="True"
                                 LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"

@@ -32,28 +32,26 @@ namespace SaverMaui.Views
                 return;
             }
 
-            if (BindingContext is SearchKeywordsViewModel vm) 
+            var vm = SearchKeywordsViewModel.Instance;
+
+            var searchResults = vm?.SearchResults.Single(i => i.Key == this.Keyword).Urls.ToArray();
+            var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
+
+            if (SearchResultsViewModel.Instance?.ContentCollection != null)
             {
-                var searchResults = vm.SearchResults.Single(i => i.Key == this.Keyword).Urls.ToArray();
-
-                var sotredGroupped = this.GetGrouppedSearchResults(searchResults).OrderBy(g => g.Key);
-
-                if (SearchResultsViewModel.Instance?.ContentCollection != null)
-                {
-                    SearchResultsViewModel.Instance.CurrentKeyword = 0;
-                    SearchResultsViewModel.Instance.ClearContent();
-                }
-
-                foreach (KeyValuePair<string, SearchResult[]> g in sotredGroupped)
-                {
-                    SearchResultsViewModel.Instance?.ContentCollection.Add(g);
-                }
-
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-                var toast = Toast.Make($"Content found: {searchResults.Length}", ToastDuration.Short, 14);
-                await toast.Show(cancellationTokenSource.Token);
+                SearchResultsViewModel.Instance.CurrentKeyword = 0;
+                SearchResultsViewModel.Instance.ClearContent();
             }
+
+            foreach (KeyValuePair<string, SearchResult[]> g in sotredGroupped)
+            {
+                SearchResultsViewModel.Instance?.ContentCollection.Add(g);
+            }
+
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            var toast = Toast.Make($"Content found: {searchResults.Length}", ToastDuration.Short, 14);
+            await toast.Show(cancellationTokenSource.Token);
 
             // list of KeyValuePair<string, string> where key is the keyword and value is url
             

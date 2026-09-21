@@ -80,7 +80,8 @@ public partial class SearchCategoryFeedPage : ContentPage
                     Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value.Split("/").Last().Split("_").First(),
                     ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value,
                     Id = content.Id,
-                    CmsRefId = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Key
+                    CmsRefId = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Key,
+                    
                 }}
             };
 
