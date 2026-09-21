@@ -38,7 +38,7 @@ public partial class TiledFeed : ContentPage
             {
                 viewModel.ContentCollection.Clear();
 
-                foreach (var item in allContent.OrderByDescending(c => c.DateCreated))
+                foreach (var item in allContent.Items.OrderByDescending(c => c.DateCreated))
                 {
                     viewModel.ContentCollection.Add(new ImageRepresentationElement()
                     {
@@ -76,11 +76,11 @@ public partial class TiledFeed : ContentPage
                 await toast.Show(cancellationTokenSource.Token);
 
                 CurrentPage += 1;
-                Services.Contracts.Content.ContentDto[] allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 50);
+                Services.Contracts.Content.PaginatedContentDto allContent = await BackendServiceClient.GetInstance().ContentActions.GetAllContentWithPaginationAsync(CurrentPage, 50);
 
                 if (allContent != null)
                 {
-                    foreach (var item in allContent.OrderBy(c => c.DateCreated))
+                    foreach (var item in allContent.Items.OrderBy(c => c.DateCreated))
                     {
                         viewModel.ContentCollection.Add(new ImageRepresentationElement()
                         {

@@ -35,17 +35,17 @@ namespace SaverMaui.Services.ServiceActions
             return Array.Empty<ContentDto>();
         }
 
-        public async Task<ContentDto[]> GetAllContentWithPaginationAsync(short page, short size) 
+        public async Task<PaginatedContentDto> GetAllContentWithPaginationAsync(short page, short size) 
         {
             RestRequest request = new RestRequest(UriHelper.GetPaginatedContent(page, size));
 
-            var result = await this.client.ExecuteGetAsync<ContentDto[]>(request);
+            var result = await this.client.ExecuteGetAsync<PaginatedContentDto>(request);
             if (result.StatusCode == HttpStatusCode.OK)
             {
                 return result.Data;
             }
 
-            return Array.Empty<ContentDto>();
+            return default;
         }
 
         public async Task<HttpStatusCode> DeleteContentAsync(int contentId) 
@@ -133,7 +133,7 @@ namespace SaverMaui.Services.ServiceActions
 
         public async Task<int> GetAllContentCount() 
         {
-            var response = await this.client.ExecuteGetAsync<int>(new RestRequest(UriHelper.AllContentCount, Method.Get));
+            RestResponse<int> response = await this.client.ExecuteGetAsync<int>(new RestRequest(UriHelper.AllContentCount, Method.Get));
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 return response.Data;

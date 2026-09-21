@@ -23,6 +23,7 @@ builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddHostedService<NotificationsListener>();
 builder.Services.AddHostedService<ContentInfoListener>();
 builder.Services.AddHostedService<GetContentRateListener>();
+builder.Services.AddHostedService<CmsUpdatesListener>();
 builder.Services.AddScoped<ContentFilterListener>();
 
 builder.Services.AddResponseCompression(options =>

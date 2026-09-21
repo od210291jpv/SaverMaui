@@ -124,7 +124,7 @@ namespace SaverBackend.Controllers
         public async Task<Content> GetRandomContent() 
         {
             //await this.webLogger.LogAsync("Fetching random content", LogSeverity.Verbose);
-            var all = await this.db.Contents.ToArrayAsync();
+            var all = await this.db.Contents.Where(rr => rr != null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false).ToArrayAsync();
             //await this.webLogger.LogAsync($"Total content items available: {all.Length}", LogSeverity.Verbose);
             Content random = all.ElementAt(new Random().Next(1, this.db.Contents.Count()));
             //await this.webLogger.LogAsync($"Random content selected: {random.Id} - {random.Title}", LogSeverity.Verbose);
@@ -156,7 +156,7 @@ namespace SaverBackend.Controllers
             foreach (var value in allValues)
             {
                 var deserialised = JsonConvert.DeserializeObject<Content>(value);
-                if (deserialised != null && deserialised!.Rating >= targetRating)
+                if (deserialised != null && deserialised!.Rating >= targetRating && deserialised.IsPublic == true && deserialised.IsEnabled == true && deserialised.IsDeleted == false)
                 {
                     result.Add(deserialised);
                 }
@@ -170,7 +170,7 @@ namespace SaverBackend.Controllers
         public async Task<int> GetTotalcontentCount()
         {
             //await this.webLogger.LogAsync("Fetching total content count", LogSeverity.Verbose);
-            return await this.db.Contents.CountAsync();
+            return await this.db.Contents.Where(rr => rr != null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false).CountAsync();
         }
 
         [HttpGet("SearchStatus")]

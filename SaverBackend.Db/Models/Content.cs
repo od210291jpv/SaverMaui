@@ -8,6 +8,8 @@ namespace SaverBackend.Models
         [ForeignKey(nameof(Id))]
         public int Id { get; set; }
 
+        public int CmsExternalId { get; set; }
+
         public string Title { get; set; } = string.Empty;
 
         public string ImageUri { get; set; } = string.Empty;
@@ -23,5 +25,13 @@ namespace SaverBackend.Models
         public short Rating { get; set; } = 0;
 
         public decimal Cost { get; set; } = 0m;
+
+        public bool IsPublic { get; set; } = true;
+
+        public bool IsEnabled { get; set; } = true;
+
+        public bool IsDeleted { get; set; } = true;
+
+        public bool IsAiGenerated { get; set; } = true;
     }
 }

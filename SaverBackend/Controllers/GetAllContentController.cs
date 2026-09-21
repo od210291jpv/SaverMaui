@@ -17,6 +17,7 @@ namespace SaverBackend.Controllers
         private IDatabase redisDb;
         private IDatabase LatestUpdatesRedisDb;
 
+
         public GetAllContentController(ApplicationContext database)
         {
             this.db = database;
@@ -30,7 +31,7 @@ namespace SaverBackend.Controllers
         {
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
             Content?[] all =  allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).ToArray();
-            return all;
+            return all.Where(rr => rr is not null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false)?.ToArray();
         }
 
         [HttpGet("GetAllContentPaged")]
@@ -54,7 +55,7 @@ namespace SaverBackend.Controllers
                 {
                     var rr = JsonConvert.DeserializeObject<Content>(redisValue);
 
-                    if (rr is not null) 
+                    if (rr is not null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false) 
                     {
                         allValues.add(rr);
                     }
