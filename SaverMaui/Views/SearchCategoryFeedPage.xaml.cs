@@ -50,10 +50,11 @@ public partial class SearchCategoryFeedPage : ContentPage
 
         var ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url;
 
-        var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(ImageUri.Value)}";
-        RestResponse<string> resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
+        //var ur = $"{UriHelper.ImageRecognitionApi}{HttpUtility.UrlEncode(ImageUri.Value)}";
+        //RestResponse<string> resp = await new RestClient().ExecuteGetAsync<string>(new RestRequest(ur, Method.Get));
 
-        var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
+        var reqCat = catss.Single(c => c.Name.ToLower() == "rest");
+        //var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
 
         var lastIdResponse = await BackendServiceClient.GetInstance().GetAllContentAsync();
         var lastId = lastIdResponse.Select(c => c.Id).Max();

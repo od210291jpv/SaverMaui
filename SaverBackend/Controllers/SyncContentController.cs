@@ -16,7 +16,6 @@ namespace SaverBackend.Controllers
         private ApplicationContext db;
         private ConnectionMultiplexer redis;
         private IDatabase redisDb;
-        private IDatabase LatestUpdatesRedisDb;
 
         private IHubContext<MainNotificationsHub> notificationsHubContext { get; set; }
 
@@ -24,7 +23,6 @@ namespace SaverBackend.Controllers
         {
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
             this.redisDb = redis.GetDatabase(1);
-            this.LatestUpdatesRedisDb = redis.GetDatabase(4);
             this.db = database;
             this.notificationsHubContext = hubcontext;
         }
@@ -34,35 +32,13 @@ namespace SaverBackend.Controllers
         {
             if (contentRepresentation is not null) 
             {
-                foreach (var category in contentRepresentation.Categories) 
-                {
-                    if (await db.Categories.Where(c => c.CategoryId == category.CategoryId).CountAsync().ConfigureAwait(false) == 0) 
-                    {
-                        var newCategory = new Category()
-                        {
-                            CategoryId = category.CategoryId,
-                            Name = category.Name,
-                            AmountOfOpenings = category.AmountOfOpenings,
-                            AmountOfFavorites = category.AmountOfFavorites,                            
-                        };
-
-                        if (category.PublisherProfileId != null) 
-                        {
-                            var publisherProfile = await this.db.Profiles.SingleAsync(pr => pr.ProfileId == category.PublisherProfileId);
-                            newCategory.Profile = publisherProfile;
-                        }
-
-                        await this.db.Categories.AddAsync(newCategory);
-                    }
-                }
-
                 foreach (var content in contentRepresentation.Content)
                 {
                     if (this.db.Contents.Where(ct => ct.ImageUri == content.ImageUri && ct.CategoryId == content.CategoryId).Count() == 0) 
                     {
-                        List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
 
-                        var newId = allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).Select(c => c.Id).Max() + 2;
+                        await this.InitializeMaxIdCounterAsync();
+                        var newId = this.redisDb.StringIncrement("Content:MaxId", 2);
 
                         Content newContent = new Content()
                         {
@@ -70,7 +46,7 @@ namespace SaverBackend.Controllers
                             ImageUri = content.ImageUri,
                             Title = content.Title,
                             Rating = content.Rating,
-                            Id = newId,
+                            Id = (int)newId,
                             CmsExternalId = content.CmsRefId ?? 0,
                             IsDeleted = false,
                             IsEnabled = true,
@@ -80,8 +56,6 @@ namespace SaverBackend.Controllers
 
                         await db.Contents.AddAsync(newContent);
                         await this.redisDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
-                        //await this.redisDb.ListLeftPushAsync("logstash-logs", JsonConvert.SerializeObject(newContent));
-                        await this.AddContentIntoLatest(new List<Content>() { newContent });
                     }
                 }
 
@@ -100,41 +74,49 @@ namespace SaverBackend.Controllers
             return StatusCode(404);
         }
 
-        private async Task AddContentIntoLatest(List<Content> content) 
+        public async Task InitializeMaxIdCounterAsync()
         {
-            RedisKey[] allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(4).ToArray();
-            if (content.Count >= 100) 
+            var counterKey = new RedisKey("Content:MaxId");
+
+            if (await this.redisDb.KeyExistsAsync(counterKey))
             {
-                foreach (var k in allKeys) 
-                {
-                    await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
-                }
-
-                foreach (var con in content) 
-                {
-                    await this.redisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
-                }
-
                 return;
             }
 
-            int contentToUpdate = 100 - content.Count;
+            long maxId = 0;
+            var server = this.redis.GetServer("192.168.88.252:6379");
 
-            if (allKeys.Length >= 100) 
+            var keys = server.Keys(1).ToArray();
+
+            if (keys.Length == 0)
             {
-                var keysToDelete = allKeys.Take(contentToUpdate).ToArray();
+                await this.redisDb.StringSetAsync(counterKey, 0);
+                return;
+            }
 
-                foreach (var k in keysToDelete)
-                {
-                    await this.LatestUpdatesRedisDb.KeyDeleteAsync(k);
-                }
+            int batchSize = 1000;
 
-                foreach (var con in content)
+            for (int i = 0; i < keys.Length; i += batchSize)
+            {
+                var batchKeys = keys.Skip(i).Take(batchSize).ToArray();
+                var values = await this.redisDb.StringGetAsync(batchKeys);
+
+                foreach (var val in values)
                 {
-                    await this.LatestUpdatesRedisDb.StringSetAsync(con.Id.ToString(), JsonConvert.SerializeObject(con));
+                    if (!val.HasValue) continue;
+
+                    using var doc = System.Text.Json.JsonDocument.Parse(val.ToString());
+                    if (doc.RootElement.TryGetProperty("Id", out var idProp) && idProp.TryGetInt64(out long id))
+                    {
+                        if (id > maxId)
+                        {
+                            maxId = id;
+                        }
+                    }
                 }
             }
-            return;
+
+            await this.redisDb.StringSetAsync(counterKey, maxId);
         }
 
         [HttpPost]
