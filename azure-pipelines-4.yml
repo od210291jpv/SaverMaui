@@ -4,7 +4,7 @@ trigger: none # Prevents triggering on code commits; relies on the build pipelin
 resources:
   pipelines:
   - pipeline: BuildPipeline              # An identifier you choose for this resource
-    source: 'SaverBackend - build only' # The EXACT name of your build pipeline in Azure DevOps
+    source: 'SaverBackend - build only'  # The EXACT name of your build pipeline in Azure DevOps
     trigger: true                        # Automatically triggers when the build pipeline succeeds
 
 jobs:
@@ -24,12 +24,15 @@ jobs:
             sudo service bananas stop
             
             echo "Syncing new build files..."
-            # Note the updated source path using $(Pipeline.Workspace)
-            # Ensure the path inside the artifact matches your project's output structure
-            sudo rsync -a --delete $(Pipeline.Workspace)/BuildPipeline/BuildDrop/SaverBackend/bin/Debug/net6.0/ /var/www/saverbackend/BuildDrop/Debug/net6.0/
+            # Оновлений шлях: тепер беремо файли прямо з кореня папки BuildDrop
+            sudo rsync -a --delete $(Pipeline.Workspace)/BuildPipeline/BuildDrop/ /var/www/saverbackend/BuildDrop/Debug/net6.0/
             
             echo "Restoring libtensorflow..."
             sudo cp /var/www/libtensorflow.so /var/www/saverbackend/BuildDrop/Debug/net6.0/
+            
+            echo "Granting execution permissions..."
+            # Обов'язково надаємо права на запуск скомпільованому файлу для Linux
+            sudo chmod +x /var/www/saverbackend/BuildDrop/Debug/net6.0/SaverBackend
             
             echo "Restarting services..."
             sudo service redis-server start
