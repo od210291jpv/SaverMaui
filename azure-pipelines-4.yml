@@ -1,0 +1,38 @@
+trigger: none # Prevents triggering on code commits; relies on the build pipeline trigger below
+
+# Links this release pipeline to your existing build pipeline
+resources:
+  pipelines:
+  - pipeline: BuildPipeline              # An identifier you choose for this resource
+    source: 'SaverBackend - build only' # The EXACT name of your build pipeline in Azure DevOps
+    trigger: true                        # Automatically triggers when the build pipeline succeeds
+
+jobs:
+- deployment: DeployToRaspberryPi
+  displayName: 'Deploy Backend to Pi'
+  pool: 
+    name: 'MyPool' # Replace with the name of the Agent Pool where your Pi is registered
+  environment: 'Production' # Optional: Allows you to set approval checks in DevOps environments
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        # In a deployment job, Azure DevOps automatically downloads the artifact to $(Pipeline.Workspace)
+        
+        - script: |
+            echo "Stopping Bananas service..."
+            sudo service bananas stop
+            
+            echo "Syncing new build files..."
+            # Note the updated source path using $(Pipeline.Workspace)
+            # Ensure the path inside the artifact matches your project's output structure
+            sudo rsync -a --delete $(Pipeline.Workspace)/BuildPipeline/BuildDrop/SaverBackend/bin/Debug/net6.0/ /var/www/saverbackend/BuildDrop/Debug/net6.0/
+            
+            echo "Restoring libtensorflow..."
+            sudo cp /var/www/libtensorflow.so /var/www/saverbackend/BuildDrop/Debug/net6.0/
+            
+            echo "Restarting services..."
+            sudo service redis-server start
+            sudo service nginx restart
+            sudo service bananas restart
+          displayName: 'Execute Deployment Script'
