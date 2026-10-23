@@ -1,11 +1,10 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
   - master
   - feature/*
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Debug' # Рекомендую змінити на 'Release' для Raspberry Pi
 
 stages:
 - stage: BuildApplication
@@ -17,16 +16,19 @@ stages:
       demands: 
       - dotnet
       - nunit-console
-    variables:
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Debug'
     steps:
-    - task: DotNetCoreCLI@0
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish Backend for Raspberry Pi'
       inputs:
-        command: build
-        projects: SaverBackend/SaverBackend.csproj
+        command: publish
+        publishWebProjects: false
+        projects: 'SaverBackend/SaverBackend.csproj'
+        arguments: '-c $(buildConfiguration) -r linux-arm /p:PublishSingleFile=true --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: false
+
     - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact'
       inputs:
-        targetPath: '$(Pipeline.Workspace)/s'
+        targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'BuildDrop'
         publishLocation: 'pipeline'
