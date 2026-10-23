@@ -120,28 +120,21 @@ namespace SaverBackend.Controllers
 
         private async Task LoadContentToRedis() 
         {
-            //await this.webLogger.LogAsync("Checking if content is already synced to Redis", LogSeverity.Verbose);
             var isSynced = await this.redisDb.StringGetAsync("content_synced");
 
-            //await this.webLogger.LogAsync($"Content sync status: {isSynced}", LogSeverity.Verbose);
             if (isSynced == "true")
             {
-                //await this.webLogger.LogAsync("Content is already synced to Redis, skipping sync", LogSeverity.Verbose);
                 return;
             }
 
-            //await this.webLogger.LogAsync("Starting content sync to Redis", LogSeverity.Verbose);
             var allContent = this.dbContext.Contents.ToArray();
 
-            //await this.webLogger.LogAsync($"Total content items to sync: {allContent.Length}", LogSeverity.Verbose);
             foreach (var content in allContent) 
             {
                 await this.redisContentDb.StringSetAsync(content.Id.ToString(), JsonConvert.SerializeObject(content));
             }
 
-            //await this.webLogger.LogAsync("Content sync to Redis completed", LogSeverity.Verbose);
             this.redisDb.StringSet("content_synced", "true");
-            //await this.webLogger.LogAsync("Set content_synced flag in Redis to true", LogSeverity.Verbose);
         }
 
         [HttpPost("Logout")]

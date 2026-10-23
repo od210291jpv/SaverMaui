@@ -1,64 +1,72 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.RandomContentPage" 
              xmlns:local="clr-namespace:SaverMaui.ViewModels"
              x:DataType="local:FeedRandomContentViewModel"
-             Title="Random Content">
+             Title="Random Content"
+             BackgroundColor="Black">
 
     <ContentPage.BindingContext>
         <vm:FeedRandomContentViewModel />
     </ContentPage.BindingContext>
 
-        <ContentPage.Content>
+    <ContentPage.Content>
         <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <ScrollView FlowDirection="LeftToRight">
-                <FlexLayout>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Row="0" Grid.Column="0" Source="{Binding CurrentImage.Source}" Aspect="AspectFit" IsAnimationPlaying="True">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                        <Button Grid.Row="0" 
-                            Grid.Column="0" 
-                            Text="R" FontAttributes="Bold" 
-                            TextColor="White"
-                            BackgroundColor="Orange" 
-                            CornerRadius="50" 
-                            VerticalOptions="End" 
-                            HorizontalOptions="End" 
-                            Margin="30" HeightRequest="60" 
-                            WidthRequest="60" 
-                            Padding="0" 
-                            Opacity="0.6" 
-                            x:Name="RateButton" Clicked="OnRateClicked"/>
-                        <Button Grid.Row="0" 
-                                Grid.Column="0"
-                                Text="D"
-                                FontAttributes="Bold"
-                                TextColor="White"
-                                BackgroundColor="DeepPink"
-                                CornerRadius="50"
-                                VerticalOptions="End"
-                                HorizontalOptions="Start"
-                                Margin="30"
-                                HeightRequest="60"
-                                WidthRequest="60"
-                                Padding="0"
-                                Opacity="0.6"
-                                x:Name="DeleteButton"
+            <ScrollView>
+                <Grid MinimumHeightRequest="{Binding Height, Source={RelativeSource AncestorType={x:Type ContentPage}}}">
+                    <!-- Main Image -->
+                    <Image Source="{Binding CurrentImage.Source}" Aspect="AspectFit" IsAnimationPlaying="True">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <!-- Top overlay -->
+                <Border VerticalOptions="Start"
+                        Stroke="Transparent"
+                        BackgroundColor="Transparent"
+                        Padding="16,12">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#CC000000" Offset="0" />
+                            <GradientStop Color="Transparent" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Label Text="&#x1F3B2; Random"
+                           TextColor="White"
+                           FontSize="18"
+                           FontAttributes="Bold" />
+                </Border>
+
+                <!-- Bottom overlay -->
+                <Border VerticalOptions="End"
+                        Stroke="Transparent"
+                        BackgroundColor="Transparent"
+                        Padding="16,16">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="Transparent" Offset="0" />
+                            <GradientStop Color="#CC000000" Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                        <Button x:Name="DeleteButton"
+                                Text="&#x1F5D1;"
+                                Style="{StaticResource FabButton}"
+                                BackgroundColor="{StaticResource AccentDanger}"
                                 Clicked="OnDeleteClicked"/>
-                    </Grid>
-                </FlexLayout>
+                        <BoxView WidthRequest="20" Color="Transparent" />
+                        <Button x:Name="RateButton" 
+                                Text="&#x2713;"
+                                Style="{StaticResource FabButton}"
+                                BackgroundColor="{StaticResource AccentSuccess}"
+                                Clicked="OnRateClicked"/>
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
             </ScrollView>
         </RefreshView>
-        </ContentPage.Content>
+    </ContentPage.Content>
 </ContentPage>

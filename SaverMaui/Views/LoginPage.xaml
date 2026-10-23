@@ -3,74 +3,99 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.LoginPage"
-             Title="LoginPage"
-             BackgroundColor="#121212">
+             Title="Sign In"
+             BackgroundColor="{StaticResource SurfaceBg}">
 
     <ContentPage.BindingContext>
         <vm:LoginPageViewModel />
     </ContentPage.BindingContext>
 
-    <Grid Padding="1">
+    <ScrollView>
+        <Grid Padding="16" MinimumHeightRequest="{Binding Height, Source={RelativeSource AncestorType={x:Type ContentPage}}}">
 
-        <Border BackgroundColor="#1E1E1E" 
-                StrokeThickness="0"
-                StrokeShape="RoundRectangle 20"
-                Padding="30, 40"
-                MaximumWidthRequest="400"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill">
+            <Border BackgroundColor="{StaticResource SurfaceCard}"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="20,40"
+                    MaximumWidthRequest="400"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Fill">
 
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="0,15" Radius="30" Opacity="0.4" />
-            </Border.Shadow>
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,15" Radius="30" Opacity="0.4" />
+                </Border.Shadow>
 
             <VerticalStackLayout Spacing="25">
 
-                <Label Text="Welcome" 
-                       TextColor="White" 
-                       FontSize="32" 
-                       FontAttributes="Bold" 
-                       HorizontalTextAlignment="Center" 
-                       Margin="0,0,0,10"/>
+                <!-- Logo / title area -->
+                <VerticalStackLayout Spacing="10"
+                                     HorizontalOptions="Center"
+                                     Margin="0,0,0,30">
 
-                <Border Stroke="#333333" 
-                        StrokeThickness="2" 
-                        BackgroundColor="#252525" 
-                        StrokeShape="RoundRectangle 12" 
-                        Padding="15, 5">
-                    <Entry Placeholder="Login" 
-                           Text="{Binding Login, Mode=TwoWay}" 
-                           TextColor="White" 
-                           HorizontalTextAlignment="Center"
-                           PlaceholderColor="#888888" 
+                    <!-- Circular logo badge -->
+                    <Border BackgroundColor="{StaticResource AccentPrimary}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 30"
+                            WidthRequest="60"
+                            HeightRequest="60"
+                            HorizontalOptions="Center">
+                        <Label Text="💾"
+                               FontSize="30"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center" />
+                    </Border>
+
+                    <!-- App name -->
+                    <Label Text="Bananas Saver"
+                           TextColor="{StaticResource TextPrimary}"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+
+                    <!-- Subtitle -->
+                    <Label Text="Sign in to continue"
+                           Style="{StaticResource SubLabel}"
+                           HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
+
+                <!-- Login entry -->
+                <Border Stroke="{StaticResource SurfaceCardHigh}"
+                        StrokeThickness="2"
+                        BackgroundColor="{StaticResource SurfaceCardHigh}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="15,5">
+                    <Entry Placeholder="Login"
+                           Text="{Binding Login, Mode=TwoWay}"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextSecondary}"
                            BackgroundColor="Transparent"
-                           ClearButtonVisibility="WhileEditing"/>
+                           ClearButtonVisibility="WhileEditing" />
                 </Border>
 
-                <Border Stroke="#333333" 
-                        StrokeThickness="2" 
-                        BackgroundColor="#252525" 
-                        StrokeShape="RoundRectangle 12" 
-                        Padding="15, 5">
-                    <Entry Placeholder="Password" 
-                           Text="{Binding Password, Mode=TwoWay}" 
-                           IsPassword="True" 
-                           TextColor="White" 
-                           HorizontalTextAlignment="Center"
-                           PlaceholderColor="#888888" 
+                <!-- Password entry -->
+                <Border Stroke="{StaticResource SurfaceCardHigh}"
+                        StrokeThickness="2"
+                        BackgroundColor="{StaticResource SurfaceCardHigh}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="15,5">
+                    <Entry Placeholder="Password"
+                           Text="{Binding Password, Mode=TwoWay}"
+                           IsPassword="True"
+                           TextColor="{StaticResource TextPrimary}"
+                           PlaceholderColor="{StaticResource TextSecondary}"
                            BackgroundColor="Transparent"
-                           ClearButtonVisibility="WhileEditing"/>
+                           ClearButtonVisibility="WhileEditing" />
                 </Border>
 
-                <VerticalStackLayout Spacing="15" Margin="0, 15, 0, 0">
+                <!-- Action buttons -->
+                <VerticalStackLayout Spacing="15" Margin="0,15,0,0">
 
-                    <Button Text="LOGIN" 
-                            Command="{Binding LoginCommand}" 
-                            BackgroundColor="#FF5722" 
-                            TextColor="White" 
-                            FontAttributes="Bold" 
-                            CornerRadius="12" 
-                            HeightRequest="55">
+                    <Button Text="LOGIN"
+                            Command="{Binding LoginCommand}"
+                            Style="{StaticResource PrimaryButton}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroupList>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -86,26 +111,20 @@
                         </VisualStateManager.VisualStateGroups>
                     </Button>
 
-                    <Button Text="REGISTER" 
-                            Command="{Binding RegisterCommand}" 
-                            BackgroundColor="Transparent" 
-                            TextColor="#FF5722" 
-                            BorderColor="#FF5722"
-                            BorderWidth="2"
-                            FontAttributes="Bold" 
-                            CornerRadius="12" 
-                            HeightRequest="55">
+                    <Button Text="REGISTER"
+                            Command="{Binding RegisterCommand}"
+                            Style="{StaticResource OutlineButton}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroupList>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="Pressed">
-                                    <VisualState.Setters>
-                                        <Setter Property="Scale" Value="0.95" />
-                                        <Setter Property="BackgroundColor" Value="#2A1A15" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Property="Scale" Value="0.95" />
+                                            <Setter Property="BackgroundColor" Value="#2A1A15" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
                             </VisualStateGroupList>
                         </VisualStateManager.VisualStateGroups>
                     </Button>
@@ -113,5 +132,6 @@
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </Border>
-    </Grid>
+        </Grid>
+    </ScrollView>
 </ContentPage>

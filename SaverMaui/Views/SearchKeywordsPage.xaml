@@ -3,41 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.SearchKeywordsPage"
-             Title="SearchKeywordsPage">
+             Title="Add Content"
+             BackgroundColor="{StaticResource SurfaceBg}">
     <ContentPage.BindingContext>
         <vm:SearchKeywordsViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CollectionView ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedKeyword, Mode=TwoWay}" SelectionMode="Single">
+        <Grid RowDefinitions="Auto,Auto,*" Padding="16">
+
+            <!-- Row 0: Header -->
+            <VerticalStackLayout Grid.Row="0" Spacing="4" Margin="0,0,0,16">
+                <Label Text="🔎 Add Content" Style="{StaticResource SectionLabel}"/>
+                <Label Text="Manage search keywords" Style="{StaticResource SubLabel}"/>
+            </VerticalStackLayout>
+
+            <!-- Row 1: Spacing (empty) -->
+
+            <!-- Row 2: Keywords grid -->
+            <CollectionView Grid.Row="2"
+                            ItemsSource="{Binding SearchResults}"
+                            SelectedItem="{Binding SelectedKeyword, Mode=TwoWay}"
+                            SelectionMode="Single">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="2"
+                                     VerticalItemSpacing="10"
+                                     HorizontalItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+                        <Border Style="{StaticResource CardBorder}" Padding="0">
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Open"
+                                                   BackgroundColor="{StaticResource AccentPrimary}"
+                                                   Clicked="OnKeywordOpen"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
 
-                        <SwipeView>
-                            <SwipeView.LeftItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Open" BackgroundColor="OrangeRed" Clicked="OnKeywordOpen"/>
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <Grid HeightRequest="100">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Frame Grid.Column="0" Grid.Row="0" BorderColor="DeepPink" CornerRadius="0" Padding="0"  BackgroundColor="DeepPink" VerticalOptions="FillAndExpand" Margin="0">
-                                    <Label Text="{Binding Path=Key}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="FillAndExpand"/>
-                                </Frame>
-                            </Grid>
-                        </SwipeView>
+                                <!-- Card inner content -->
+                                <Grid HeightRequest="80" Padding="12,0"
+                                      ColumnDefinitions="Auto,*,Auto">
+                                    <!-- Accent bar -->
+                                    <BoxView Grid.Column="0"
+                                             Width="4"
+                                             BackgroundColor="{StaticResource AccentPrimary}"
+                                             VerticalOptions="FillAndExpand"
+                                             CornerRadius="2"/>
+                                    <!-- Keyword text -->
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Path=Key}"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           FontAttributes="Bold"
+                                           FontSize="15"
+                                           VerticalOptions="Center"
+                                           Margin="10,0"/>
+                                    <!-- Chevron -->
+                                    <Label Grid.Column="2"
+                                           Text=">"
+                                           TextColor="{StaticResource TextSecondary}"
+                                           FontSize="16"
+                                           VerticalOptions="Center"/>
+                                </Grid>
+                            </SwipeView>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </FlexLayout>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

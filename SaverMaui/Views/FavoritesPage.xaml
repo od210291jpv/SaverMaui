@@ -3,28 +3,108 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.FavoritesPage"
-             Title="FavoritesPage">
+             Title="Favorites"
+             BackgroundColor="{StaticResource SurfaceBg}">
     <ContentPage.BindingContext>
         <vm:FavoritesViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Padding="5" BackgroundColor="Black">
-            <Grid Padding="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <VerticalStackLayout Spacing="0" Padding="16">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <!-- Header -->
+            <Label Text="❤️ Favorites"
+                   Style="{StaticResource SectionLabel}"
+                   Margin="0,0,0,8"/>
+            <Label Text="Your saved content"
+                   Style="{StaticResource SubLabel}"
+                   Margin="0,0,0,24"/>
 
-                <Button Grid.Row="0" Grid.Column="0" Text="Categories" HorizontalOptions="FillAndExpand" BackgroundColor="OrangeRed" CornerRadius="5" TextColor="White" HeightRequest="200" Margin="5" IsEnabled="False" Command="{Binding NavigateToFavoriteCategoriesCommand}"/>
-                <Button Grid.Row="0" Grid.Column="1" Text="Content" HorizontalOptions="FillAndExpand" BackgroundColor="OrangeRed" CornerRadius="5" TextColor="White" HeightRequest="200" Margin="5" Command="{Binding NavigateToFavoriteContentCommand}"/>
-                <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" BackgroundColor="OrangeRed" Margin="5" CornerRadius="5" TextColor="White" HeightRequest="200" Text="My Content" FontAttributes="Bold"/>
-            </Grid>
-        </StackLayout>
+            <!-- Card A: Categories (disabled / coming soon) -->
+            <Border Style="{StaticResource CardBorder}"
+                    BackgroundColor="{StaticResource SurfaceCard}"
+                    Opacity="0.5"
+                    Margin="0,0,0,12">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToFavoriteCategoriesCommand}"/>
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56">
+                    <Label Grid.Column="0"
+                           Text="📁"
+                           FontSize="28"
+                           VerticalOptions="Center"
+                           Margin="0,0,12,0"/>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="Categories"
+                               TextColor="{StaticResource TextPrimary}"
+                               FontAttributes="Bold"
+                               FontSize="16"/>
+                        <Label Text="Coming soon"
+                               Style="{StaticResource SubLabel}"/>
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2"
+                           Text="›"
+                           TextColor="{StaticResource TextSecondary}"
+                           FontSize="22"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Card B: Content -->
+            <Border Style="{StaticResource CardBorder}"
+                    BackgroundColor="{StaticResource SurfaceCard}"
+                    Margin="0,0,0,12">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NavigateToFavoriteContentCommand}"/>
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56">
+                    <Label Grid.Column="0"
+                           Text="🖼️"
+                           FontSize="28"
+                           VerticalOptions="Center"
+                           Margin="0,0,12,0"/>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="Content"
+                               TextColor="{StaticResource TextPrimary}"
+                               FontAttributes="Bold"
+                               FontSize="16"/>
+                        <Label Text="Your liked images"
+                               Style="{StaticResource SubLabel}"/>
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2"
+                           Text="›"
+                           TextColor="{StaticResource TextSecondary}"
+                           FontSize="22"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Card C: My Content (no command yet) -->
+            <Border Style="{StaticResource CardBorder}"
+                    BackgroundColor="{StaticResource SurfaceCard}"
+                    Margin="0,0,0,12">
+                <Grid ColumnDefinitions="Auto,*,Auto" HeightRequest="56">
+                    <Label Grid.Column="0"
+                           Text="⭐"
+                           FontSize="28"
+                           VerticalOptions="Center"
+                           Margin="0,0,12,0"/>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="My Content"
+                               TextColor="{StaticResource TextPrimary}"
+                               FontAttributes="Bold"
+                               FontSize="16"/>
+                        <Label Text="Content you created"
+                               Style="{StaticResource SubLabel}"/>
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2"
+                           Text="›"
+                           TextColor="{StaticResource TextSecondary}"
+                           FontSize="22"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

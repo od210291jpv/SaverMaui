@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
@@ -6,47 +6,80 @@
              xmlns:vd="clr-namespace:SaverMaui.Custom_Elements"
              x:DataType="local:TopRatedFeedViewModel"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             x:Class="SaverMaui.Views.TopRatedFeedPage">
-    
+             x:Class="SaverMaui.Views.TopRatedFeedPage"
+             Title="Top Rated"
+             BackgroundColor="Black">
+
     <ContentPage.BindingContext>
         <vm:TopRatedFeedViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <FlexLayout>
-            <CarouselView ItemsSource="{Binding ContentCollection}" CurrentItem="{Binding CurrentContent}">
+        <Grid>
+
+            <!-- Full-screen carousel -->
+            <CarouselView ItemsSource="{Binding ContentCollection}"
+                          CurrentItem="{Binding CurrentContent}"
+                          IndicatorView="FeedIndicator">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="vd:ImageRepresentationElement">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <ffimageloading:CachedImage Grid.Column="0" LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"  ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" Grid.Row="0" Source="{Binding Path=Source}" Aspect="AspectFit">
-                            </ffimageloading:CachedImage>
-                            <Button Grid.Row="0" 
-                                Grid.Column="0"
-                                Text="D"
-                                FontAttributes="Bold"
-                                TextColor="White"
-                                BackgroundColor="DeepPink"
-                                CornerRadius="50"
-                                VerticalOptions="End"
-                                HorizontalOptions="Start"
-                                Margin="30"
-                                HeightRequest="60"
-                                WidthRequest="60"
-                                Padding="0"
-                                Opacity="0.6"
-                                x:Name="DeleteButton"
-                                Clicked="OnDeleteClicked"/>
+                            <ffimageloading:CachedImage
+                                Source="{Binding Path=Source}"
+                                Aspect="AspectFit"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                ErrorPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg" />
                         </Grid>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-        </FlexLayout>
+
+            <!-- Indicator dots -->
+            <IndicatorView x:Name="FeedIndicator"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,80"
+                           IndicatorColor="#555555"
+                           SelectedIndicatorColor="{StaticResource AccentPrimary}" />
+
+            <!-- Top overlay -->
+            <Border VerticalOptions="Start"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,12">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#CC000000" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Text="&#x2B50; Top Rated"
+                       TextColor="White"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+            </Border>
+
+            <!-- Bottom overlay -->
+            <Border VerticalOptions="End"
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent"
+                    Padding="16,16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="Transparent" Offset="0" />
+                        <GradientStop Color="#CC000000" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <HorizontalStackLayout HorizontalOptions="End" Spacing="16">
+                    <Button x:Name="DeleteButton"
+                            Text="&#x1F5D1;"
+                            Style="{StaticResource FabButton}"
+                            BackgroundColor="{StaticResource AccentDanger}"
+                            Clicked="OnDeleteClicked" />
+                </HorizontalStackLayout>
+            </Border>
+
+        </Grid>
     </ContentPage.Content>
 
 </ContentPage>

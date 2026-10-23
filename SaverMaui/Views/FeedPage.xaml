@@ -24,17 +24,14 @@
                     <DataTemplate x:DataType="vd:ImageRepresentationElement">
                         <Grid x:Name="MainGrid">
 
-                            <ffimageloading:CachedImage Aspect="AspectFit"
-                                                        Source="{Binding Path=Source}"
-                                                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
-                                                        ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
-                                                        FadeAnimationEnabled="True"
-                                                        FadeAnimationDuration="300"
-                                                        x:Name="Img">
-                                <ffimageloading:CachedImage.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnTapGestureRecognizerTapped" NumberOfTapsRequired="2" />
-                                </ffimageloading:CachedImage.GestureRecognizers>
-                            </ffimageloading:CachedImage>
+                            <vd:ZoomableImage ImageAspect="AspectFit"
+                                                ImageSource="{Binding Path=Source}"
+                                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                                ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
+                                                FadeAnimationEnabled="True"
+                                                FadeAnimationDuration="300"
+                                                DoubleTapped="OnTapGestureRecognizerTapped"
+                                                x:Name="Img" />
 
                             <VerticalStackLayout Grid.Row="0" Grid.Column="0" 
                                                  x:Name="FabContainer" 

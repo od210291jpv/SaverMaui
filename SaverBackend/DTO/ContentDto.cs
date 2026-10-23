@@ -30,5 +30,7 @@ namespace SaverBackend.DTO
 
         [JsonProperty("cost")]
         public decimal Cost { get; set; } = 0.0m;
+
+        public int? CmsRefId { get; set; }
     }
 }

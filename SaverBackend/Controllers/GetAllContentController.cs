@@ -17,6 +17,7 @@ namespace SaverBackend.Controllers
         private IDatabase redisDb;
         private IDatabase LatestUpdatesRedisDb;
 
+
         public GetAllContentController(ApplicationContext database)
         {
             this.db = database;
@@ -30,11 +31,11 @@ namespace SaverBackend.Controllers
         {
             List<RedisKey> allKeys = this.redis.GetServer("192.168.88.252:6379").Keys(1).ToList() ?? new List<RedisKey>();
             Content?[] all =  allKeys.AsParallel().Select(k => JsonConvert.DeserializeObject<Content>(this.redisDb.StringGet(k))).ToArray();
-            return all;
+            return all.Where(rr => rr is not null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false)?.ToArray();
         }
 
         [HttpGet("GetAllContentPaged")]
-        public async Task<Content[]> GetAllContentPaged(short page = 0, short pageSize = 200) 
+        public async Task<PaginatedContentDto> GetAllContentPaged(short page = 0, short pageSize = 200) 
         {
             int howManyToSkip = 0;
             
@@ -54,14 +55,24 @@ namespace SaverBackend.Controllers
                 {
                     var rr = JsonConvert.DeserializeObject<Content>(redisValue);
 
-                    if (rr is not null) 
+                    if (rr is not null && rr.IsPublic == true && rr.IsEnabled == true && rr.IsDeleted == false) 
                     {
                         allValues.add(rr);
                     }
                 }
             }
 
-            return allValues.OrderByDescending(v => v.DateCreated).ToArray();
+            PaginatedContentDto result = new PaginatedContentDto
+            {
+                Items = allValues.OrderByDescending(v => v.DateCreated).ToList(),
+                TotalCount = this.redis.GetServer("192.168.88.252:6379").Keys(1).Count(),
+                CurrentPage = page,
+                PageSize = pageSize,
+                PageCount = (int)Math.Ceiling((double)this.redis.GetServer("192.168.88.252:6379").Keys(1).Count() / pageSize),
+
+            };
+
+            return result;
         }
 
         [HttpGet("GetLatestContent")]
@@ -116,14 +127,19 @@ namespace SaverBackend.Controllers
 
                     if (existingResult != null) 
                     {
-                        existingResult.Urls.Add(resultValue);
+                        int intContentId;
+                        int.TryParse(contentId, out intContentId);
+                        existingResult.Urls.Add(new KeyValuePair<int, string>(intContentId, resultValue));
                     }
                     else 
                     {
+                        int intContentId;
+                        int.TryParse(contentId, out intContentId);
+
                         results.Add(new KeywordResult 
                         {
                             Key = keyword,
-                            Urls = new List<string> { resultValue }
+                            Urls = new () { new KeyValuePair<int, string>(intContentId, resultValue) }
                         });
                     }
                 }

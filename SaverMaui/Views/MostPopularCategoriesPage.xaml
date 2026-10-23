@@ -4,35 +4,86 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.MostPopularCategoriesPage"
              x:Name="PopularCategoriesPage"
-             Title="MostPopularCategoriesPage">
+             Title="Most Popular"
+             BackgroundColor="{StaticResource SurfaceBg}">
 
     <ContentPage.BindingContext>
         <vm:MostPopularCategoriesViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-            <StackLayout BackgroundColor="Black" HorizontalOptions="StartAndExpand">
-                <Button Command="{Binding NavigateToCategoryCommand}" Text="Open" BackgroundColor="DeepPink" TextColor="White" CornerRadius="0" Margin="5"/>
-            <RefreshView Command="{Binding GetMostPopularCategories}" HorizontalOptions="Center">
-                <ListView ItemsSource="{Binding MostPopularCategories}" HasUnevenRows="True" SelectedItem="{Binding SelectedCategory}" BackgroundColor="Black" Margin="5" SeparatorColor="Gold">
-                    <ListView.ItemTemplate>
+        <Grid RowDefinitions="Auto,*,Auto" Padding="16">
+
+            <!-- Row 0: Header -->
+            <VerticalStackLayout Grid.Row="0" Spacing="4">
+                <Label Text="🔥 Most Popular"
+                       Style="{StaticResource SectionLabel}" />
+                <Label Text="Top categories by engagement"
+                       Style="{StaticResource SubLabel}"
+                       Margin="0,0,0,16" />
+            </VerticalStackLayout>
+
+            <!-- Row 1: Category list -->
+            <RefreshView Grid.Row="1"
+                         Command="{Binding GetMostPopularCategories}">
+                <CollectionView ItemsSource="{Binding MostPopularCategories}"
+                                SelectedItem="{Binding SelectedCategory}"
+                                SelectionMode="Single">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                           ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid Margin="5" Padding="5" RowSpacing="5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Path=Name}" TextColor="White" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="End"/>
+                            <Border Style="{StaticResource CardBorder}"
+                                    Padding="0">
+                                <Grid ColumnDefinitions="Auto,*"
+                                      HeightRequest="64">
+
+                                    <!-- Star icon circle -->
+                                    <Border Grid.Column="0"
+                                            WidthRequest="44"
+                                            HeightRequest="44"
+                                            BackgroundColor="{StaticResource SurfaceCardHigh}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 22"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Margin="12,0,0,0">
+                                        <Label Text="★"
+                                               TextColor="{StaticResource AccentWarning}"
+                                               FontSize="20"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+
+                                    <!-- Category name -->
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Path=Name}"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           VerticalOptions="Center"
+                                           Margin="12,0" />
+
                                 </Grid>
-                            </ViewCell>
+                            </Border>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
             </RefreshView>
-            </StackLayout>
+
+            <!-- Row 2: Open button -->
+            <Button Grid.Row="2"
+                    Text="▶️  Open Selected"
+                    Style="{StaticResource PrimaryButton}"
+                    Command="{Binding NavigateToCategoryCommand}"
+                    Margin="0,12,0,0" />
+
+        </Grid>
     </ContentPage.Content>
 
 </ContentPage>

@@ -4,26 +4,63 @@
              xmlns:vm="clr-namespace:SaverMaui.ViewModels"
              x:Class="SaverMaui.Views.TiledFeed"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
-             Title="Gallery Feed (Pre-alfa)">
+             Title="Gallery"
+             BackgroundColor="{StaticResource SurfaceBg}">
     <ContentPage.BindingContext>
         <vm:TiledFeedViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <CollectionView SelectionMode="Single" ItemsSource="{Binding ContentCollection}" SelectedItem="{Binding CurrentImage}" SelectionChanged="OnCurrentItemChanged">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Horizontal" Span="{Binding ColumnsAmt}" VerticalItemSpacing="5" HorizontalItemSpacing="5"/>
-            </CollectionView.ItemsLayout>
+        <Grid RowDefinitions="Auto,*" Padding="16,16,16,0">
+
+            <!-- Row 0: Header -->
+            <HorizontalStackLayout Grid.Row="0" Margin="0,0,0,12">
+                <Label Text="🖼️ Gallery" Style="{StaticResource SectionLabel}" />
+            </HorizontalStackLayout>
+
+            <!-- Row 1: Gallery CollectionView -->
+            <CollectionView Grid.Row="1"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding ContentCollection}"
+                            SelectedItem="{Binding CurrentImage}"
+                            SelectionChanged="OnCurrentItemChanged">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout HorizontalOptions="Center"
+                                         VerticalOptions="Center">
+                        <Label Text="&#x1F5BC;&#xFE0F;"
+                               FontSize="64"
+                               HorizontalOptions="Center" />
+                        <Label Text="Gallery is empty"
+                               Style="{StaticResource SectionLabel}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Content will appear here"
+                               Style="{StaticResource SubLabel}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="{Binding ColumnsAmt}"
+                                     VerticalItemSpacing="4"
+                                     HorizontalItemSpacing="4" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <ffimageloading:CachedImage
-                        Source="{Binding Path=Source}"
-                        LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
-                        ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
-                        FadeAnimationEnabled="True">
-                    </ffimageloading:CachedImage>
-                </DataTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="0"
+                                BackgroundColor="{StaticResource SurfaceCard}"
+                                StrokeShape="RoundRectangle 8"
+                                HeightRequest="120">
+                            <ffimageloading:CachedImage
+                                Source="{Binding Path=Source}"
+                                LoadingPlaceholder="https://png.pngtree.com/png-vector/20190817/ourmid/pngtree-image-icon---vector-loading-download-and-upload-png-image_1694005.jpg"
+                                ErrorPlaceholder="https://wallpapers.com/images/hd/error-placeholder-image-ozordu8s6n3xhi9h-ozordu8s6n3xhi9h.jpg"
+                                FadeAnimationEnabled="True"
+                                Aspect="AspectFill" />
+                        </Border>
+                    </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

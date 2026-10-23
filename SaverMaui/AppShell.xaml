@@ -4,61 +4,88 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SaverMaui.Views"
-    Shell.FlyoutBehavior="Flyout">
+    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBackgroundColor="{StaticResource SurfaceBg}">
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
-            <Grid BackgroundColor="Black">
-                <Image Aspect="Fill"   
-                       Source="tits.svg"
-               Opacity="0.6" />
-                <Label Text="Bananas Saver"
-               TextColor="White"
-               FontAttributes="Bold"
-                       FontSize="Large"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Start" Margin="35"/>
+            <Grid BackgroundColor="{StaticResource SurfaceCard}"
+                  HeightRequest="140"
+                  Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <HorizontalStackLayout Grid.Row="0"
+                                       Spacing="14"
+                                       VerticalOptions="Center">
+                    <Border WidthRequest="48"
+                            HeightRequest="48"
+                            BackgroundColor="{StaticResource AccentPrimary}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12">
+                        <Label Text="💾"
+                               FontSize="24"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="White" />
+                    </Border>
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="Bananas Saver"
+                               TextColor="{StaticResource TextPrimary}"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                        <Label Text="Content Manager"
+                               TextColor="{StaticResource TextSecondary}"
+                               FontSize="13" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
             </Grid>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
     <TabBar>
-        <ShellContent Title="Welcome" ContentTemplate="{DataTemplate local:LoginPage}" Route="Login"/>
+        <ShellContent Title="Sign In" ContentTemplate="{DataTemplate local:LoginPage}" Route="Login"/>
     </TabBar>
-    <FlyoutItem Title="Profile">
+
+    <FlyoutItem Title="👤 Profile">
         <ShellContent ContentTemplate="{DataTemplate local:ProfilePage}" Title="Profile" Route="Profile"/>
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Title="Settings" Route="Settings"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Categories" FlyoutDisplayOptions="AsSingleItem">
+
+    <FlyoutItem Title="🗂️ Categories" FlyoutDisplayOptions="AsSingleItem">
         <ShellContent ContentTemplate="{DataTemplate local:CategoriesPageV2}" Title="Categories" x:Name="AndroidCategories"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:CategoriesPage}" Title="Categories (Windows)" x:Name="WindowsCategories"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:MostPopularCategoriesPage}" Title="Most Popular Categories"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Feeds">
+    <FlyoutItem Title="📱 Feeds">
         <ShellContent ContentTemplate="{DataTemplate local:FeedPage}" Title="MainFeed"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:TopRatedFeedPage}" Title="Top rated content"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:RandomContentPage}" Title="Random content"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Gallery">
+
+    <FlyoutItem Title="🖼️ Gallery">
         <ShellContent ContentTemplate="{DataTemplate local:TiledFeed}" Title="Gallery"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Administration">
+
+    <FlyoutItem Title="⚙️ Administration">
         <ShellContent ContentTemplate="{DataTemplate local:SearchKeywordsPage}" Title="Add Content"></ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem Title="Video">
+    <FlyoutItem Title="🎥 Video">
         <ShellContent ContentTemplate="{DataTemplate local:VideoManagementPage}" Title="VideoManagement"></ShellContent>
         <ShellContent ContentTemplate="{DataTemplate local:VideoPage}" Title="Video"></ShellContent>
     </FlyoutItem>
 
-    <FlyoutItem Title="Web Content">
+    <FlyoutItem Title="🌐 Web Content">
         <ShellContent ContentTemplate="{DataTemplate local:WebContentPage}"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Favorites">
+
+    <FlyoutItem Title="❤️ Favorites">
         <ShellContent ContentTemplate="{DataTemplate local:FavoritesPage}"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Notification Center">
+
+    <FlyoutItem Title="🔔 Notifications">
         <ShellContent ContentTemplate="{DataTemplate local:NotificationCenterPage}"></ShellContent>
     </FlyoutItem>
 
