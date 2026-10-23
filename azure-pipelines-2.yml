@@ -4,7 +4,7 @@ trigger:
 
 variables:
   buildPlatform: 'Any CPU'
-  buildConfiguration: 'Debug' # Рекомендую змінити на 'Release' для Raspberry Pi
+  buildConfiguration: 'Debug'
 
 stages:
 - stage: BuildApplication
@@ -17,18 +17,30 @@ stages:
       - dotnet
       - nunit-console
     steps:
+    # Збираємо проєкт стандартним чином (без прив'язки до архітектури)
     - task: DotNetCoreCLI@2
-      displayName: 'Publish Backend for Raspberry Pi'
+      displayName: 'Publish Backend'
       inputs:
         command: publish
         publishWebProjects: false
         projects: 'SaverBackend/SaverBackend.csproj'
-        arguments: '-c $(buildConfiguration) -r linux-arm /p:PublishSingleFile=true --output $(Build.ArtifactStagingDirectory)'
+        arguments: '-c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish_output'
         zipAfterPublish: false
 
+    # Пакуємо всі дрібні файли в один ZIP-архів
+    - task: ArchiveFiles@2
+      displayName: 'Zip files for Raspberry Pi'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish_output'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/BuildDrop.zip'
+        replaceExistingArchive: true
+
+    # Публікуємо лише один ZIP-архів
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact'
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
+        targetPath: '$(Build.ArtifactStagingDirectory)/BuildDrop.zip'
         artifact: 'BuildDrop'
         publishLocation: 'pipeline'
