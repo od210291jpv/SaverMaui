@@ -1,38 +1,38 @@
-trigger: none # Prevents triggering on code commits; relies on the build pipeline trigger below
+trigger: none # Запобігає запуску при комітах; покладається на тригер від пайплайну збірки нижче
 
-# Links this release pipeline to your existing build pipeline
+# Зв'язує цей пайплайн розгортання з існуючим пайплайном збірки
 resources:
   pipelines:
-  - pipeline: BuildPipeline              # An identifier you choose for this resource
-    source: 'SaverBackend - build only'  # The EXACT name of your build pipeline in Azure DevOps
-    trigger: true                        # Automatically triggers when the build pipeline succeeds
+  - pipeline: BuildPipeline              # Ідентифікатор цього ресурсу
+    source: 'SaverBackend - build only'  # ТОЧНА назва вашого пайплайну збірки в Azure DevOps
+    trigger: true                        # Автоматичний запуск після успішної збірки
 
 jobs:
 - deployment: DeployToRaspberryPi
   displayName: 'Deploy Backend to Pi'
   pool: 
-    name: 'MyPool' # Replace with the name of the Agent Pool where your Pi is registered
-  environment: 'Production' # Optional: Allows you to set approval checks in DevOps environments
+    name: 'MyPool' # Назва Agent Pool, де зареєстровано ваш Raspberry Pi
+  environment: 'Production'
   strategy:
     runOnce:
       deploy:
         steps:
-        # In a deployment job, Azure DevOps automatically downloads the artifact to $(Pipeline.Workspace)
+        # Azure DevOps автоматично завантажує артефакт у $(Pipeline.Workspace)
         
         - script: |
             echo "Stopping Bananas service..."
             sudo service bananas stop
             
-            echo "Syncing new build files..."
-            # Оновлений шлях: тепер беремо файли прямо з кореня папки BuildDrop
-            sudo rsync -a --delete $(Pipeline.Workspace)/BuildPipeline/BuildDrop/ /var/www/saverbackend/BuildDrop/Debug/net6.0/
+            echo "Cleaning up old files..."
+            # Видаляємо старі файли перед розпакуванням
+            sudo rm -rf /var/www/saverbackend/BuildDrop/Debug/net6.0/*
+            
+            echo "Unzipping the new build..."
+            # Розпаковуємо єдиний ZIP-архів безпосередньо в цільову директорію
+            sudo unzip -q -o $(Pipeline.Workspace)/BuildPipeline/BuildDrop/BuildDrop.zip -d /var/www/saverbackend/BuildDrop/Debug/net6.0/
             
             echo "Restoring libtensorflow..."
             sudo cp /var/www/libtensorflow.so /var/www/saverbackend/BuildDrop/Debug/net6.0/
-            
-            echo "Granting execution permissions..."
-            # Обов'язково надаємо права на запуск скомпільованому файлу для Linux
-            sudo chmod +x /var/www/saverbackend/BuildDrop/Debug/net6.0/SaverBackend
             
             echo "Restarting services..."
             sudo service redis-server start
