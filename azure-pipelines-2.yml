@@ -10,7 +10,7 @@ stages:
 - stage: BuildApplication
   jobs:
   - job: buildJob
-    timeoutInMinutes: 10
+    timeoutInMinutes: 0
     pool:
       name: MyPool
       demands: 
