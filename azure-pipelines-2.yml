@@ -1,32 +1,46 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
   - master
   - feature/*
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Debug'
 
 stages:
 - stage: BuildApplication
   jobs:
   - job: buildJob
-    timeoutInMinutes: 10
+    timeoutInMinutes: 0
     pool:
       name: MyPool
       demands: 
       - dotnet
       - nunit-console
-    variables:
-      buildPlatform: 'Any CPU'
-      buildConfiguration: 'Debug'
     steps:
-    - task: DotNetCoreCLI@0
+    # Збираємо проєкт стандартним чином (без прив'язки до архітектури)
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish Backend'
       inputs:
-        command: build
-        projects: SaverBackend/SaverBackend.csproj
+        command: publish
+        publishWebProjects: false
+        projects: 'SaverBackend/SaverBackend.csproj'
+        arguments: '-c $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish_output'
+        zipAfterPublish: false
+
+    # Пакуємо всі дрібні файли в один ZIP-архів
+    - task: ArchiveFiles@2
+      displayName: 'Zip files for Raspberry Pi'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish_output'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/BuildDrop.zip'
+        replaceExistingArchive: true
+
+    # Публікуємо лише один ZIP-архів
     - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact'
       inputs:
-        targetPath: '$(Pipeline.Workspace)/s'
+        targetPath: '$(Build.ArtifactStagingDirectory)/BuildDrop.zip'
         artifact: 'BuildDrop'
         publishLocation: 'pipeline'
