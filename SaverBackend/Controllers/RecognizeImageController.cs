@@ -1,4 +1,4 @@
-﻿using ImageRecognitionNN;
+using ImageRecognitionNN;
 using Microsoft.AspNetCore.Mvc;
 using RateRecognitionNN;
 using SaverBackend.Services.RabbitMq;
