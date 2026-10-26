@@ -1,34 +1,30 @@
-trigger: none # Запобігає запуску при комітах; покладається на тригер від пайплайну збірки нижче
+trigger: none
 
-# Зв'язує цей пайплайн розгортання з існуючим пайплайном збірки
 resources:
   pipelines:
-  - pipeline: BuildPipeline              # Ідентифікатор цього ресурсу
-    source: 'SaverBackend - build only'  # ТОЧНА назва вашого пайплайну збірки в Azure DevOps
-    trigger: true                        # Автоматичний запуск після успішної збірки
+  - pipeline: BuildPipeline              
+    source: 'SaverBackend - build only' 
+    trigger: true                       
 
 jobs:
 - deployment: DeployToRaspberryPi
+  timeoutInMinutes: 0
   displayName: 'Deploy Backend to Pi'
   pool: 
-    name: 'MyPool' # Назва Agent Pool, де зареєстровано ваш Raspberry Pi
+    name: 'MyPool' 
   environment: 'Production'
   strategy:
     runOnce:
       deploy:
         steps:
-        # Azure DevOps автоматично завантажує артефакт у $(Pipeline.Workspace)
-        
         - script: |
             echo "Stopping Bananas service..."
             sudo service bananas stop
             
             echo "Cleaning up old files..."
-            # Видаляємо старі файли перед розпакуванням
             sudo rm -rf /var/www/saverbackend/BuildDrop/Debug/net6.0/*
             
             echo "Unzipping the new build..."
-            # Розпаковуємо єдиний ZIP-архів безпосередньо в цільову директорію
             sudo unzip -q -o $(Pipeline.Workspace)/BuildPipeline/BuildDrop/BuildDrop.zip -d /var/www/saverbackend/BuildDrop/Debug/net6.0/
             
             echo "Restoring libtensorflow..."
