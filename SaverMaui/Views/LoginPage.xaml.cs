@@ -26,7 +26,7 @@ public partial class LoginPage : ContentPage
 
     public async void OnPageLoaded(object sender, EventArgs e)
     {
-        if (DeviceInfo.Platform == DevicePlatform.Android) 
+        if (DeviceInfo.Platform == DevicePlatform.Android)
         {
             var request = new AuthenticationRequestConfiguration("Please process bimetric authentication", "In case of authentication fail, the app will be closed");
             var result = await CrossFingerprint.Current.AuthenticateAsync(request);

@@ -74,7 +74,7 @@ namespace SaverBackend.Controllers
             return StatusCode(404);
         }
 
-        public async Task InitializeMaxIdCounterAsync()
+        private async Task InitializeMaxIdCounterAsync()
         {
             var counterKey = new RedisKey("Content:MaxId");
 
