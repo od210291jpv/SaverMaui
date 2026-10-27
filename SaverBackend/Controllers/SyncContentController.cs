@@ -16,13 +16,15 @@ namespace SaverBackend.Controllers
         private ApplicationContext db;
         private ConnectionMultiplexer redis;
         private IDatabase redisDb;
+        private IDatabase redisContentDb;
 
         private IHubContext<MainNotificationsHub> notificationsHubContext { get; set; }
 
         public SyncContentController(ApplicationContext database, IHubContext<MainNotificationsHub> hubcontext)
         {
             this.redis = ConnectionMultiplexer.Connect("192.168.88.252:6379");// fix, get from config
-            this.redisDb = redis.GetDatabase(1);
+            this.redisDb = redis.GetDatabase(8);
+            this.redisContentDb = redis.GetDatabase(1);
             this.db = database;
             this.notificationsHubContext = hubcontext;
         }
@@ -55,7 +57,7 @@ namespace SaverBackend.Controllers
                         };
 
                         await db.Contents.AddAsync(newContent);
-                        await this.redisDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
+                        await this.redisContentDb.StringSetAsync(newId.ToString(), JsonConvert.SerializeObject(newContent));
                     }
                 }
 
@@ -216,7 +218,7 @@ namespace SaverBackend.Controllers
 
             this.db.Contents.Remove(content);
             var deleteDbResult =  await this.db.SaveChangesAsync();
-            var deleteRedisResult = await this.redisDb.KeyDeleteAsync(contentId.ToString());
+            var deleteRedisResult = await this.redisContentDb.KeyDeleteAsync(contentId.ToString());
 
             if (deleteDbResult == 0) 
             {

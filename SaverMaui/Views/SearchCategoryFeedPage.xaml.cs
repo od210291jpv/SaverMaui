@@ -56,20 +56,20 @@ public partial class SearchCategoryFeedPage : ContentPage
         var reqCat = catss.Single(c => c.Name.ToLower() == "rest");
         //var reqCat = catss.FirstOrDefault(c => c.Name == JsonConvert.DeserializeObject<string>(resp.Content)) ?? catss.Single(c => c.Name.ToLower() == "rest");
 
-        var lastIdResponse = await BackendServiceClient.GetInstance().GetAllContentAsync();
-        var lastId = lastIdResponse.Select(c => c.Id).Max();
+        //var lastIdResponse = await BackendServiceClient.GetInstance().GetAllContentAsync();
+        //var lastId = lastIdResponse.Select(c => c.Id).Max();
 
         if (reqCat != null)
         {
-            Content content = new Content()
-            {
-                CategoryId = reqCat.CategoryId,
-                ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value,
-                Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value.Split("/").Last().Split("_").First(),
-                Id = lastId + 1,
-            };
+            //Content content = new Content()
+            //{
+            //    CategoryId = reqCat.CategoryId,
+            //    ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value,
+            //    Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value.Split("/").Last().Split("_").First(),
+            //    Id = lastId + 1,
+            //};
 
-            _realm.Write(() => _realm.Add<Content>(content));
+            //_realm.Write(() => _realm.Add<Content>(content));
 
             PostContentDataRequest request = new PostContentDataRequest()
             {
@@ -80,9 +80,7 @@ public partial class SearchCategoryFeedPage : ContentPage
                     DateCreated = DateTime.Now,
                     Title = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value.Split("/").Last().Split("_").First(),
                     ImageUri = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Value,
-                    Id = content.Id,
                     CmsRefId = SearchCategoryFeedViewModel.instance.CurrentResult.Url.Key,
-                    
                 }}
             };
 
