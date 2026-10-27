@@ -10,6 +10,10 @@ using SaverBackend.Services.RabbitMq;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
